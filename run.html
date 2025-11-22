@@ -479,13 +479,8 @@
           <div>
             <h3>Movement</h3>
             <ul>
-              <li>
-                Your runner moves automatically toward the right side of the
-                screen.
-              </li>
-              <li>
-                Press <span class="kbd">Space</span> (or tap on mobile) to jump.
-              </li>
+              <li>Your runner moves automatically toward the right side of the screen.</li>
+              <li>Press <span class="kbd">Space</span> (or tap on mobile) to jump.</li>
               <li>You can chain up to <strong>3 jumps</strong> in the air by default.</li>
               <li>Power-ups can temporarily increase your jump capacity.</li>
             </ul>
@@ -495,11 +490,9 @@
             <h3>Obstacles &amp; Stomp</h3>
             <ul>
               <li>Obstacles come in different shapes and heights: ground, floating and ceiling traps.</li>
+              <li>Some obstacles also move horizontally as they slide across the screen.</li>
               <li>Touching an obstacle from the side or below = instant loss (unless shielded).</li>
-              <li>
-                If you land on an obstacle from above you
-                <strong>stomp</strong> it, destroy it, and get bonus points.
-              </li>
+              <li>If you land on an obstacle from above you <strong>stomp</strong> it, destroy it, and get bonus points.</li>
               <li>Obstacle intensity grows gradually as time passes.</li>
             </ul>
           </div>
@@ -518,33 +511,22 @@
             <ul>
               <li><strong>+1</strong> point every second you stay alive.</li>
               <li><strong>+1</strong> point for each obstacle destroyed (stomp or shield-hit).</li>
-              <li>
-                Your total score is shown live in the top-left corner of the
-                HUD.
-              </li>
+              <li>Your total score is shown live in the top-left corner of the HUD.</li>
             </ul>
           </div>
 
           <div>
             <h3>Levels &amp; Parallax</h3>
             <ul>
-              <li>
-                Survive to automatically advance through multiple parallax
-                worlds (city, desert, mountains).
-              </li>
-              <li>
-                Each level has its own layered background that scrolls at
-                different speeds for a smooth parallax effect.
-              </li>
+              <li>Survive to automatically advance through multiple parallax worlds (city, desert, mountains).</li>
+              <li>Each level has its own layered background that scrolls at different speeds for a smooth parallax effect.</li>
             </ul>
           </div>
 
           <div>
             <h3>Difficulty</h3>
             <ul>
-              <li>
-                Choose <strong>Easy / Normal / Hard</strong> from the main menu.
-              </li>
+              <li>Choose <strong>Easy / Normal / Hard</strong> from the main menu.</li>
               <li>Difficulty controls world speed and base obstacle frequency.</li>
               <li>All difficulties gradually ramp up the number of obstacles.</li>
             </ul>
@@ -639,6 +621,12 @@
   </div>
 
   <script>
+    // NOTE FOR AUDIO:
+    // Coloca un archivo MP3 en tu repo en la ruta:
+    // /assets/audio/game-start.mp3
+    // (por ejemplo en: <raiz-del-repo>/assets/audio/game-start.mp3)
+    // El juego lo reproducirá al iniciar cada partida.
+
     // ---------- Basic DOM helpers ----------
     const screens = {
       mainMenu: document.getElementById("mainMenu"),
@@ -666,22 +654,22 @@
 
     let difficulty = "normal";
 
-    // Increased obstacle density vs previous version
+    // Increased obstacle density
     const difficultySettings = {
       easy: {
         speed: 260,
-        minSpawn: 0.65,
-        maxSpawn: 0.95,
+        minSpawn: 0.55,
+        maxSpawn: 0.8,
       },
       normal: {
         speed: 320,
-        minSpawn: 0.45,
-        maxSpawn: 0.75,
+        minSpawn: 0.38,
+        maxSpawn: 0.6,
       },
       hard: {
         speed: 380,
-        minSpawn: 0.3,
-        maxSpawn: 0.55,
+        minSpawn: 0.25,
+        maxSpawn: 0.45,
       },
     };
 
@@ -739,7 +727,7 @@
     let haveShield = false;
     let jumpBoostTime = 0;
 
-    // Running animation (much faster)
+    // Running animation (even faster now)
     let runAnimationTime = 0;
 
     const levelThemes = [
@@ -807,9 +795,9 @@
 
     function computeObstacleSpawnWindow() {
       const settings = difficultySettings[difficulty];
-      // Over ~60 seconds, spawn intervals shrink to 40% (more obstacles over time)
+      // Over ~60 seconds, spawn intervals shrink strongly (more obstacles over time)
       const progress = Math.min(1, survivalTime / 60);
-      const factor = 1 - 0.6 * progress; // 1 -> 0.4
+      const factor = 1 - 0.65 * progress; // 1 -> 0.35
       return {
         min: settings.minSpawn * factor,
         max: settings.maxSpawn * factor,
@@ -842,11 +830,12 @@
         },
       ];
 
+      // Smaller, much shorter character
       player = {
-        w: 46,
-        h: 80,
+        w: 32,
+        h: 60,
         x: GAME_WIDTH * 0.2,
-        y: GROUND_TOP - 80,
+        y: GROUND_TOP - 60,
         vy: 0,
         jumpCount: 0,
       };
@@ -872,19 +861,18 @@
     }
 
     function spawnObstacle() {
-      const settings = difficultySettings[difficulty];
       const typeRoll = Math.random();
 
       let w, h;
       if (typeRoll < 0.4) {
-        w = 40;
-        h = 50;
-      } else if (typeRoll < 0.75) {
-        w = 50;
-        h = 80;
-      } else {
-        w = 70;
+        w = 36;
         h = 40;
+      } else if (typeRoll < 0.75) {
+        w = 44;
+        h = 65;
+      } else {
+        w = 60;
+        h = 34;
       }
 
       let y;
@@ -909,13 +897,35 @@
       else if (shapeRoll < 0.8) shape = "circle";
       else shape = "spike";
 
+      // Some obstacles move horizontally (zig-zag)
+      let moveType = "static";
+      let amplitude = 0;
+      let moveSpeed = 0;
+      let phase = 0;
+
+      const moveRoll = Math.random();
+      if (moveRoll < 0.35) {
+        moveType = "hmove";
+        amplitude = randRange(10, 30);
+        moveSpeed = randRange(3, 6);
+        phase = Math.random() * Math.PI * 2;
+      }
+
+      const baseX = GAME_WIDTH + w;
+
       obstacles.push({
-        x: GAME_WIDTH + w,
+        baseX,
+        x: baseX,
         y,
         w,
         h,
         shape,
         verticalType,
+        moveType,
+        amplitude,
+        moveSpeed,
+        phase,
+        offsetX: 0,
       });
 
       const spawnWindow = computeObstacleSpawnWindow();
@@ -980,16 +990,37 @@
       }
     }
 
-    // ---------- Sound (Web Audio beeps) ----------
+    // ---------- Audio ----------
     let audioCtx = null;
+    const startSound = new Audio("assets/audio/game-start.mp3");
+
+    function ensureAudioContext() {
+      if (!audioCtx) {
+        const AudioContext =
+          window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume().catch(() => {});
+      }
+    }
+
+    function playStartSound() {
+      try {
+        ensureAudioContext();
+        startSound.currentTime = 0;
+        startSound.play().catch(() => {});
+      } catch (_) {
+        // ignore audio errors
+      }
+    }
+
     function playBeep(type) {
       try {
-        if (!audioCtx) {
-          const AudioContext =
-            window.AudioContext || window.webkitAudioContext;
-          if (!AudioContext) return;
-          audioCtx = new AudioContext();
-        }
+        ensureAudioContext();
+        if (!audioCtx) return;
+
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
 
@@ -1027,7 +1058,7 @@
         osc.start();
         osc.stop(audioCtx.currentTime + dur);
       } catch (_) {
-        // ignore audio errors
+        // ignore
       }
     }
 
@@ -1094,9 +1125,20 @@
 
       for (let i = obstacles.length - 1; i >= 0; i--) {
         const o = obstacles[i];
-        o.x -= gameSpeed * dt;
+        // base scroll
+        o.baseX -= gameSpeed * dt;
 
-        if (o.x + o.w < -60) {
+        // horizontal movement (local)
+        if (o.moveType === "hmove") {
+          o.phase += o.moveSpeed * dt;
+          o.offsetX = Math.sin(o.phase) * o.amplitude;
+        } else {
+          o.offsetX = 0;
+        }
+
+        o.x = o.baseX + o.offsetX;
+
+        if (o.baseX + o.w < -60) {
           obstacles.splice(i, 1);
           continue;
         }
@@ -1160,7 +1202,7 @@
         }
       });
 
-      // Much faster running animation
+      // Even faster running animation
       runAnimationTime += dt;
     }
 
@@ -1185,26 +1227,26 @@
         );
       });
 
-      // Player (simplified runner)
+      // Player (smaller runner)
       ctx.save();
       ctx.translate(player.x, player.y);
 
       // Body
       ctx.fillStyle = "#ffeb3b";
-      const torsoW = 26;
-      const torsoH = 34;
+      const torsoW = 18;
+      const torsoH = 26;
       const torsoX = (player.w - torsoW) / 2;
-      const torsoY = 20;
+      const torsoY = 18;
       ctx.fillRect(torsoX, torsoY, torsoW, torsoH);
 
       // Head
       ctx.fillStyle = "#ffe082";
-      const headSize = 24;
+      const headSize = 18;
       const headX = (player.w - headSize) / 2;
-      const headY = 0;
+      const headY = 2;
       if (ctx.roundRect) {
         ctx.beginPath();
-        ctx.roundRect(headX, headY, headSize, headSize, 6);
+        ctx.roundRect(headX, headY, headSize, headSize, 5);
         ctx.fill();
       } else {
         ctx.fillRect(headX, headY, headSize, headSize);
@@ -1212,31 +1254,31 @@
 
       // Headband
       ctx.fillStyle = "#ff5252";
-      ctx.fillRect(headX, headY + 6, headSize, 6);
+      ctx.fillRect(headX, headY + 4, headSize, 5);
 
       // Face
       ctx.fillStyle = "#212121";
-      ctx.fillRect(headX + 6, headY + 11, 3, 3);
-      ctx.fillRect(headX + 15, headY + 11, 3, 3);
+      ctx.fillRect(headX + 4, headY + 8, 2, 2);
+      ctx.fillRect(headX + 11, headY + 8, 2, 2);
       ctx.beginPath();
       ctx.strokeStyle = "#212121";
-      ctx.lineWidth = 1.7;
+      ctx.lineWidth = 1.3;
       ctx.arc(
         headX + headSize / 2,
-        headY + 18,
-        6,
+        headY + 13,
+        4,
         0.15 * Math.PI,
         0.85 * Math.PI
       );
       ctx.stroke();
 
-      // Arms (very fast movement)
-      const armBaseY = torsoY + 10;
-      const armLength = 18;
-      const armSwing = Math.sin(runAnimationTime * 40) * 6;
+      // Arms (even faster movement)
+      const armBaseY = torsoY + 8;
+      const armLength = 14;
+      const armSwing = Math.sin(runAnimationTime * 80) * 5;
 
       ctx.strokeStyle = "#ffeb3b";
-      ctx.lineWidth = 4;
+      ctx.lineWidth = 3;
       ctx.lineCap = "round";
 
       // Front arm
@@ -1250,36 +1292,36 @@
 
       // Back arm
       ctx.beginPath();
-      ctx.moveTo(torsoX, armBaseY + 4);
+      ctx.moveTo(torsoX, armBaseY + 3);
       ctx.lineTo(
         torsoX - armLength * 0.6,
         armBaseY - armSwing * 0.8
       );
       ctx.stroke();
 
-      // Legs (very fast movement)
+      // Legs (even faster movement)
       const legBaseY = torsoY + torsoH;
       const legBaseX = player.w / 2;
-      const legLength = 26;
-      const legSwing = Math.sin(runAnimationTime * 40 + Math.PI) * 8;
+      const legLength = 22;
+      const legSwing = Math.sin(runAnimationTime * 80 + Math.PI) * 7;
 
       ctx.strokeStyle = "#ffca28";
-      ctx.lineWidth = 5;
+      ctx.lineWidth = 4;
 
       // Right leg
       ctx.beginPath();
-      ctx.moveTo(legBaseX + 5, legBaseY);
+      ctx.moveTo(legBaseX + 3, legBaseY);
       ctx.lineTo(
-        legBaseX + 5 + legSwing,
+        legBaseX + 3 + legSwing,
         legBaseY + legLength
       );
       ctx.stroke();
 
       // Left leg
       ctx.beginPath();
-      ctx.moveTo(legBaseX - 5, legBaseY);
+      ctx.moveTo(legBaseX - 3, legBaseY);
       ctx.lineTo(
-        legBaseX - 5 - legSwing,
+        legBaseX - 3 - legSwing,
         legBaseY + legLength
       );
       ctx.stroke();
@@ -1381,10 +1423,10 @@
 
       // Jump "notepad"
       const jumpsLeft = Math.max(0, maxJumps - player.jumpCount);
-      const noteX = player.x + player.w + 12;
-      const noteY = player.y + 6;
-      const noteW = 90;
-      const noteH = 28;
+      const noteX = player.x + player.w + 10;
+      const noteY = player.y + 4;
+      const noteW = 80;
+      const noteH = 26;
 
       ctx.fillStyle = "rgba(0,0,0,0.55)";
       ctx.fillRect(noteX, noteY, noteW, noteH);
@@ -1393,11 +1435,11 @@
       ctx.strokeRect(noteX, noteY, noteW, noteH);
 
       ctx.fillStyle = "#ffeb3b";
-      ctx.font = "11px system-ui";
+      ctx.font = "10px system-ui";
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
-      ctx.fillText("Jumps", noteX + 8, noteY + 4);
-      ctx.fillText("left: " + jumpsLeft, noteX + 8, noteY + 16);
+      ctx.fillText("Jumps", noteX + 6, noteY + 3);
+      ctx.fillText("left: " + jumpsLeft, noteX + 6, noteY + 14);
     }
 
     function gameLoop(timestamp) {
@@ -1420,6 +1462,7 @@
       showScreen("gameContainer");
       isRunning = true;
       lastTime = 0;
+      playStartSound();
       requestAnimationFrame(gameLoop);
     }
 
@@ -1453,9 +1496,9 @@
     window.addEventListener("keydown", (e) => {
       if (e.code === "Space") {
         e.preventDefault();
-        if (isRunning) {
+        if (isRunning && currentScreen === "gameContainer") {
           tryJump();
-        } else if (currentScreen === "gameOver") {
+        } else if (!isRunning && currentScreen === "gameOver") {
           // Restart with Space on Game Over screen
           restartGame();
         }
