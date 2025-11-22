@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>2D Runner – Triple Jump</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --ui-bg: #0b1020;
+      --card-bg: #151a30;
+      --accent: #ffca28;
+      --accent-soft: rgba(255, 202, 40, 0.2);
+      --danger: #ff5252;
+      --text-main: #f5f5f5;
+      --text-muted: #b0bec5;
+    }
+
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #283593 0, #0b1020 55%);
+      min-height: 100vh;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 1100px;
+      padding: 16px;
+    }
+
+    .screen {
+      background: linear-gradient(145deg, #151a30 0, #111425 60%, #03040b 100%);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      padding: 24px 18px 20px;
+      display: none;
+      min-height: min(90vh, 650px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .screen-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .screen-header h1 {
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(255, 202, 40, 0.5);
+    }
+
+    .screen-header p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .menu-card {
+      background: radial-gradient(circle at top left, #243b6b 0, #151a30 48%);
+      border-radius: 18px;
+      padding: 18px;
+      max-width: 420px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .menu-section + .menu-section {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+    }
+
+    .menu-section-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      color: #10131f;
+      background: linear-gradient(135deg, #ffca28, #ffeb3b);
+      box-shadow: 0 8px 18px rgba(255, 202, 40, 0.45);
+      font-weight: 600;
+      transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        filter 0.12s ease,
+        background 0.15s ease;
+      width: 100%;
+      text-align: center;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 10px 24px rgba(255, 202, 40, 0.6);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 16px rgba(255, 202, 40, 0.5);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(255, 202, 40, 0.6);
+      box-shadow: none;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 202, 40, 0.09);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    .difficulty-toggle {
+      display: flex;
+      gap: 6px;
+      background: rgba(5, 10, 25, 0.9);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .difficulty-btn {
+      flex: 1;
+      border-radius: 999px;
+      border: none;
+      padding: 6px 0;
+      font-size: 0.8rem;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .difficulty-btn.active {
+      background: linear-gradient(135deg, #ffca28, #ffb300);
+      color: #10131f;
+      box-shadow: 0 4px 14px rgba(255, 202, 40, 0.5);
+    }
+
+    .menu-main-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .helper-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* Instructions screen */
+
+    #instructions .content {
+      max-width: 560px;
+      width: 100%;
+      background: radial-gradient(circle at top, #263a6b 0, #151a30 50%);
+      border-radius: 18px;
+      padding: 18px 16px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .instructions-grid {
+      display: grid;
+      gap: 12px;
+      font-size: 0.9rem;
+    }
+
+    .instructions-grid h3 {
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+      color: var(--accent);
+    }
+
+    ul {
+      padding-left: 16px;
+      color: var(--text-muted);
+    }
+
+    li + li {
+      margin-top: 4px;
+    }
+
+    .kbd {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.4);
+      font-size: 0.8rem;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+        Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .instructions-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Game screen */
+
+    #gameContainer {
+      padding: 14px 12px 14px;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 10px;
+    }
+
+    .hud {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 0 auto;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: linear-gradient(
+        120deg,
+        rgba(3, 6, 18, 0.95),
+        rgba(7, 12, 35, 0.98)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .hud-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hud-pill {
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.55);
+      color: var(--text-muted);
+    }
+
+    .hud-pill strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .hud-pill.score {
+      background: radial-gradient(circle at top, #ffca28 0, #f57f17 72%);
+      color: #10131f;
+      box-shadow: 0 0 20px rgba(255, 202, 40, 0.6);
+    }
+
+    .hud-pill.score strong {
+      color: #10131f;
+    }
+
+    .hud-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .hud-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #53e079;
+      box-shadow: 0 0 8px rgba(83, 224, 121, 0.7);
+    }
+
+    #gameCanvas {
+      margin: 8px auto 0;
+      width: 100%;
+      max-width: 960px;
+      border-radius: 18px;
+      display: block;
+      background: #7ec8ff;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.9);
+    }
+
+    .mobileHint {
+      margin: 8px auto 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Game Over */
+
+    #gameOver .card {
+      background: radial-gradient(circle at top, #4a1c2f 0, #15121f 55%);
+      border-radius: 18px;
+      padding: 20px 18px 16px;
+      max-width: 420px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85);
+      text-align: center;
+    }
+
+    #gameOver h2 {
+      font-size: 1.4rem;
+      color: var(--danger);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 2px;
+      text-shadow: 0 0 10px rgba(255, 82, 82, 0.7);
+    }
+
+    .gameover-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin: 4px 0;
+      color: var(--text-muted);
+    }
+
+    .score-row strong {
+      color: var(--accent);
+    }
+
+    .gameover-actions {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .gameover-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 700px) {
+      .screen {
+        padding: 16px 10px 12px;
+        min-height: 88vh;
+      }
+
+      .screen-header h1 {
+        font-size: 1.35rem;
+      }
+
+      .menu-card {
+        padding: 16px 14px;
+      }
+
+      .hud {
+        flex-direction: column;
+        align-items: flex-start;
+        border-radius: 14px;
+      }
+
+      .hud-right {
+        align-self: flex-end;
+      }
+
+      .mobileHint {
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- MAIN MENU -->
+    <section id="mainMenu" class="screen active">
+      <div class="screen-header">
+        <h1>Parallax Runner</h1>
+        <p>Cartoon side-scroller with triple jump and multi-level parallax worlds.</p>
+      </div>
+
+      <div class="menu-card">
+        <div class="menu-section">
+          <div class="menu-section-title">Difficulty</div>
+          <div class="difficulty-toggle" id="difficultyToggle">
+            <button class="difficulty-btn" data-difficulty="easy">Easy</button>
+            <button class="difficulty-btn active" data-difficulty="normal">
+              Normal
+            </button>
+            <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+          </div>
+          <p class="helper-text">
+            Easy = slower world and fewer obstacles. Hard = faster pace and
+            denser waves.
+          </p>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-section-title">Play</div>
+          <div class="menu-main-buttons">
+            <button id="btnStart" class="btn">Start Game</button>
+            <button id="btnInstructions" class="btn btn-ghost">
+              Instructions
+            </button>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-section-title">Controls</div>
+          <p class="helper-text">
+            Desktop: press <span class="kbd">Space</span> to jump
+            (up to 3 jumps in mid-air).<br />
+            Mobile: tap anywhere on the game area.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTRUCTIONS -->
+    <section id="instructions" class="screen">
+      <div class="screen-header">
+        <h1>How to Play</h1>
+        <p>Survive, stomp obstacles, and climb through colorful worlds.</p>
+      </div>
+
+      <div class="content">
+        <div class="instructions-grid">
+          <div>
+            <h3>Movement</h3>
+            <ul>
+              <li>
+                Your runner moves automatically toward the right side of the
+                screen.
+              </li>
+              <li>
+                Press <span class="kbd">Space</span> (or tap on mobile) to jump.
+              </li>
+              <li>You can chain up to <strong>3 jumps</strong> in the air.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Obstacles &amp; Stomp</h3>
+            <ul>
+              <li>Different obstacle types slide in from the right.</li>
+              <li>Touching an obstacle from the side or below = instant loss.</li>
+              <li>
+                If you land on an obstacle from above you
+                <strong>stomp</strong> it, destroy it, and get bonus points.
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Score</h3>
+            <ul>
+              <li><strong>+1</strong> point every second you stay alive.</li>
+              <li><strong>+1</strong> point for each obstacle destroyed.</li>
+              <li>
+                Your total score is shown live in the top-left corner of the
+                HUD.
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Levels &amp; Parallax</h3>
+            <ul>
+              <li>
+                Survive to automatically advance through multiple parallax
+                worlds (city, desert, mountains).
+              </li>
+              <li>
+                Each level has its own layered background that scrolls at
+                different speeds for a smooth parallax effect.
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Difficulty</h3>
+            <ul>
+              <li>
+                Choose <strong>Easy / Normal / Hard</strong> from the main menu.
+              </li>
+              <li>Difficulty controls world speed and obstacle frequency.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="instructions-footer">
+          <button id="btnBackToMenu" class="btn btn-ghost">
+            Back to Menu
+          </button>
+          <button id="btnPlayFromInstructions" class="btn">Play Now</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME -->
+    <section id="gameContainer" class="screen">
+      <div class="hud">
+        <div class="hud-left">
+          <div class="hud-pill score">
+            SCORE:
+            <strong id="scoreDisplay">0</strong>
+          </div>
+          <div class="hud-pill">
+            LEVEL:
+            <strong id="levelDisplay">1 – City</strong>
+          </div>
+          <div class="hud-pill">
+            MODE:
+            <strong id="difficultyDisplay">Normal</strong>
+          </div>
+        </div>
+        <div class="hud-right">
+          <span class="hud-dot"></span>
+          Running
+        </div>
+      </div>
+
+      <canvas id="gameCanvas" width="960" height="540"></canvas>
+      <p class="mobileHint">
+        Desktop: press <span class="kbd">Space</span> to jump (up to 3 times).<br />
+        Mobile: tap anywhere on the game area to jump.
+      </p>
+    </section>
+
+    <!-- GAME OVER -->
+    <section id="gameOver" class="screen">
+      <div class="card">
+        <h2>Game Over</h2>
+        <p class="gameover-sub">The world caught you. Try another run.</p>
+
+        <div class="score-row">
+          <span>Final Score</span>
+          <strong id="finalScoreDisplay">0</strong>
+        </div>
+        <div class="score-row">
+          <span>Best Score (this session)</span>
+          <strong id="bestScoreDisplay">0</strong>
+        </div>
+        <div class="score-row">
+          <span>Obstacles Destroyed</span>
+          <strong id="destroyedDisplay">0</strong>
+        </div>
+        <div class="score-row">
+          <span>Time Survived</span>
+          <strong id="timeDisplay">0 s</strong>
+        </div>
+
+        <div class="gameover-actions">
+          <button id="btnRestart" class="btn">Restart</button>
+          <button id="btnReturnToMenu" class="btn btn-ghost">
+            Return to Main Menu
+          </button>
+        </div>
+
+        <p class="gameover-label">
+          Tip: Use triple jumps to stomp obstacles rather than crashing into
+          them.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ---------- Basic DOM helpers ----------
+    const screens = {
+      mainMenu: document.getElementById("mainMenu"),
+      instructions: document.getElementById("instructions"),
+      gameContainer: document.getElementById("gameContainer"),
+      gameOver: document.getElementById("gameOver"),
+    };
+
+    function showScreen(key) {
+      Object.values(screens).forEach((el) =>
+        el.classList.remove("active")
+      );
+      screens[key].classList.add("active");
+    }
+
+    // ---------- Difficulty ----------
+    const difficultyToggle = document.getElementById("difficultyToggle");
+    const difficultyButtons =
+      difficultyToggle.querySelectorAll(".difficulty-btn");
+    const difficultyDisplay = document.getElementById("difficultyDisplay");
+
+    let difficulty = "normal";
+
+    const difficultySettings = {
+      easy: {
+        speed: 220,
+        minSpawn: 1.1,
+        maxSpawn: 1.7,
+      },
+      normal: {
+        speed: 280,
+        minSpawn: 0.9,
+        maxSpawn: 1.4,
+      },
+      hard: {
+        speed: 340,
+        minSpawn: 0.7,
+        maxSpawn: 1.1,
+      },
+    };
+
+    difficultyButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        difficultyButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        difficulty = btn.dataset.difficulty;
+        difficultyDisplay.textContent =
+          difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+      });
+    });
+
+    // ---------- Canvas + Game State ----------
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const GAME_WIDTH = canvas.width;
+    const GAME_HEIGHT = canvas.height;
+    const GROUND_HEIGHT = 120;
+    const GROUND_TOP = GAME_HEIGHT - GROUND_HEIGHT;
+
+    const GRAVITY = 2000;
+    const JUMP_FORCE = 750;
+    const LEVEL_DURATION = 25; // seconds per level
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const levelDisplay = document.getElementById("levelDisplay");
+
+    const finalScoreDisplay = document.getElementById("finalScoreDisplay");
+    const bestScoreDisplay = document.getElementById("bestScoreDisplay");
+    const destroyedDisplay = document.getElementById("destroyedDisplay");
+    const timeDisplay = document.getElementById("timeDisplay");
+
+    let lastTime = 0;
+    let isRunning = false;
+
+    let player;
+    let obstacles = [];
+    let survivalTime = 0;
+    let obstaclesDestroyed = 0;
+    let bestScore = 0;
+
+    let obstacleTimer = 0;
+    let nextObstacleSpawn = 1;
+
+    let currentLevelIndex = 0;
+
+    const levelThemes = [
+      {
+        name: "City",
+        sky: "#8ed6ff",
+        far: "#283593",
+        mid: "#3949ab",
+        ground: "#43a047",
+      },
+      {
+        name: "Desert",
+        sky: "#ffe082",
+        far: "#ffb74d",
+        mid: "#fb8c00",
+        ground: "#f9a825",
+      },
+      {
+        name: "Mountains",
+        sky: "#b3e5fc",
+        far: "#5c6bc0",
+        mid: "#455a64",
+        ground: "#4caf50",
+      },
+    ];
+
+    let parallaxLayers = [];
+
+    function applyLevelTheme() {
+      const theme =
+        levelThemes[currentLevelIndex % levelThemes.length];
+
+      // Define three parallax layers: far, mid, ground
+      parallaxLayers = [
+        {
+          color: theme.far,
+          y: GAME_HEIGHT - 260,
+          h: 180,
+          speedFactor: 0.25,
+          offset: 0,
+        },
+        {
+          color: theme.mid,
+          y: GAME_HEIGHT - 200,
+          h: 180,
+          speedFactor: 0.5,
+          offset: 0,
+        },
+        {
+          color: theme.ground,
+          y: GROUND_TOP,
+          h: GROUND_HEIGHT + 20,
+          speedFactor: 1.0,
+          offset: 0,
+        },
+      ];
+
+      levelDisplay.textContent = `${currentLevelIndex + 1} – ${
+        theme.name
+      }`;
+    }
+
+    function resetGameState() {
+      const theme = levelThemes[0];
+      parallaxLayers = [
+        {
+          color: theme.far,
+          y: GAME_HEIGHT - 260,
+          h: 180,
+          speedFactor: 0.25,
+          offset: 0,
+        },
+        {
+          color: theme.mid,
+          y: GAME_HEIGHT - 200,
+          h: 180,
+          speedFactor: 0.5,
+          offset: 0,
+        },
+        {
+          color: theme.ground,
+          y: GROUND_TOP,
+          h: GROUND_HEIGHT + 20,
+          speedFactor: 1.0,
+          offset: 0,
+        },
+      ];
+
+      player = {
+        w: 52,
+        h: 72,
+        x: GAME_WIDTH * 0.2,
+        y: GROUND_TOP - 72,
+        vy: 0,
+        jumpCount: 0,
+      };
+
+      obstacles = [];
+      survivalTime = 0;
+      obstaclesDestroyed = 0;
+      obstacleTimer = 0;
+      nextObstacleSpawn = 1;
+      currentLevelIndex = 0;
+      applyLevelTheme();
+      updateScoreDisplay();
+    }
+
+    function randRange(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function spawnObstacle() {
+      const settings = difficultySettings[difficulty];
+      const type = Math.random();
+
+      let w, h, y;
+      if (type < 0.4) {
+        w = 40;
+        h = 50; // small crate
+      } else if (type < 0.75) {
+        w = 50;
+        h = 80; // tall box
+      } else {
+        w = 70;
+        h = 40; // low wide
+      }
+      y = GROUND_TOP - h;
+
+      obstacles.push({
+        x: GAME_WIDTH + w,
+        y,
+        w,
+        h,
+      });
+
+      nextObstacleSpawn = randRange(
+        settings.minSpawn,
+        settings.maxSpawn
+      );
+    }
+
+    function rectsOverlap(a, b) {
+      return !(
+        a.x + a.w < b.x ||
+        a.x > b.x + b.w ||
+        a.y + a.h < b.y ||
+        a.y > b.y + b.h
+      );
+    }
+
+    function getDisplayedScore() {
+      return Math.floor(survivalTime) + obstaclesDestroyed;
+    }
+
+    function updateScoreDisplay() {
+      scoreDisplay.textContent = getDisplayedScore();
+    }
+
+    function updateGame(dt) {
+      if (!isRunning) return;
+
+      const settings = difficultySettings[difficulty];
+      const gameSpeed = settings.speed;
+
+      // Level progression
+      survivalTime += dt;
+      const targetLevel =
+        Math.floor(survivalTime / LEVEL_DURATION);
+      if (targetLevel !== currentLevelIndex) {
+        currentLevelIndex = targetLevel;
+        applyLevelTheme();
+      }
+
+      // Player physics
+      const prevBottom = player.y + player.h;
+
+      player.vy += GRAVITY * dt;
+      let newY = player.y + player.vy * dt;
+      const newBottom = newY + player.h;
+
+      if (newBottom >= GROUND_TOP) {
+        newY = GROUND_TOP - player.h;
+        player.vy = 0;
+        player.jumpCount = 0;
+      }
+
+      player.y = newY;
+
+      // Obstacles
+      obstacleTimer += dt;
+      if (obstacleTimer >= nextObstacleSpawn) {
+        spawnObstacle();
+        obstacleTimer = 0;
+      }
+
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        obstacles[i].x -= gameSpeed * dt;
+
+        if (obstacles[i].x + obstacles[i].w < -40) {
+          obstacles.splice(i, 1);
+        }
+      }
+
+      // Collision and stomp
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        const o = obstacles[i];
+        if (
+          rectsOverlap(
+            { x: player.x, y: player.y, w: player.w, h: player.h },
+            o
+          )
+        ) {
+          const wasAbove = prevBottom <= o.y + 8;
+          if (wasAbove && player.vy > 0) {
+            // Stomp
+            obstacles.splice(i, 1);
+            obstaclesDestroyed++;
+            player.vy = -JUMP_FORCE * 0.7;
+          } else {
+            handleGameOver();
+            return;
+          }
+        }
+      }
+
+      updateScoreDisplay();
+
+      // Parallax background movement
+      parallaxLayers.forEach((layer) => {
+        layer.offset -= gameSpeed * layer.speedFactor * dt;
+        if (layer.offset <= -GAME_WIDTH) {
+          layer.offset += GAME_WIDTH;
+        }
+      });
+    }
+
+    function drawGame() {
+      const theme =
+        levelThemes[currentLevelIndex % levelThemes.length];
+
+      // Sky
+      ctx.fillStyle = theme.sky;
+      ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+      // Parallax layers
+      parallaxLayers.forEach((layer) => {
+        ctx.fillStyle = layer.color;
+        const offset = layer.offset;
+        ctx.fillRect(offset, layer.y, GAME_WIDTH, layer.h);
+        ctx.fillRect(
+          offset + GAME_WIDTH,
+          layer.y,
+          GAME_WIDTH,
+          layer.h
+        );
+      });
+
+      // Player (cartoon rectangle with face)
+      ctx.save();
+      ctx.translate(player.x, player.y);
+
+      // Body
+      ctx.fillStyle = "#ffeb3b";
+      ctx.fillRect(0, 0, player.w, player.h);
+
+      // Headband
+      ctx.fillStyle = "#ff5252";
+      ctx.fillRect(0, 10, player.w, 10);
+
+      // Eyes
+      ctx.fillStyle = "#212121";
+      ctx.fillRect(14, 26, 5, 5);
+      ctx.fillRect(32, 26, 5, 5);
+
+      // Smile
+      ctx.beginPath();
+      ctx.strokeStyle = "#212121";
+      ctx.lineWidth = 2;
+      ctx.arc(26, 40, 7, 0.1 * Math.PI, 0.9 * Math.PI);
+      ctx.stroke();
+
+      ctx.restore();
+
+      // Obstacles
+      ctx.fillStyle = "#ff5252";
+      obstacles.forEach((o) => {
+        ctx.fillRect(o.x, o.y, o.w, o.h);
+
+        // Cartoon outline lines
+        ctx.strokeStyle = "rgba(0,0,0,0.6)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(o.x, o.y, o.w, o.h);
+      });
+
+      // Ground highlight line
+      ctx.strokeStyle = "rgba(255,255,255,0.25)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, GROUND_TOP + 1.5);
+      ctx.lineTo(GAME_WIDTH, GROUND_TOP + 1.5);
+      ctx.stroke();
+    }
+
+    function gameLoop(timestamp) {
+      if (!isRunning) return;
+
+      if (!lastTime) lastTime = timestamp;
+      const dt = (timestamp - lastTime) / 1000;
+      lastTime = timestamp;
+
+      updateGame(dt);
+      drawGame();
+
+      if (isRunning) {
+        requestAnimationFrame(gameLoop);
+      }
+    }
+
+    function startGame() {
+      resetGameState();
+      showScreen("gameContainer");
+      isRunning = true;
+      lastTime = 0;
+      requestAnimationFrame(gameLoop);
+    }
+
+    function handleGameOver() {
+      isRunning = false;
+      const finalScore = getDisplayedScore();
+      bestScore = Math.max(bestScore, finalScore);
+
+      finalScoreDisplay.textContent = finalScore;
+      bestScoreDisplay.textContent = bestScore;
+      destroyedDisplay.textContent = obstaclesDestroyed;
+      timeDisplay.textContent = `${Math.floor(survivalTime)} s`;
+
+      showScreen("gameOver");
+    }
+
+    function restartGame() {
+      startGame();
+    }
+
+    // ---------- Input ----------
+    function tryJump() {
+      if (!isRunning) return;
+      if (player.jumpCount < 3) {
+        player.vy = -JUMP_FORCE;
+        player.jumpCount++;
+      }
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        tryJump();
+      }
+    });
+
+    // Mobile tap
+    function addTapListener(target) {
+      target.addEventListener(
+        "touchstart",
+        (e) => {
+          e.preventDefault();
+          tryJump();
+        },
+        { passive: false }
+      );
+    }
+    addTapListener(canvas);
+    addTapListener(document.body);
+
+    // ---------- Buttons ----------
+    document.getElementById("btnStart").addEventListener("click", () => {
+      startGame();
+    });
+
+    document
+      .getElementById("btnInstructions")
+      .addEventListener("click", () => {
+        showScreen("instructions");
+      });
+
+    document
+      .getElementById("btnBackToMenu")
+      .addEventListener("click", () => {
+        showScreen("mainMenu");
+      });
+
+    document
+      .getElementById("btnPlayFromInstructions")
+      .addEventListener("click", () => {
+        startGame();
+      });
+
+    document.getElementById("btnRestart").addEventListener("click", () => {
+      restartGame();
+    });
+
+    document
+      .getElementById("btnReturnToMenu")
+      .addEventListener("click", () => {
+        showScreen("mainMenu");
+      });
+  </script>
+</body>
+</html>
