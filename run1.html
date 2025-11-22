@@ -34,7 +34,7 @@
 
     .wrapper {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1300px;
       padding: 16px;
     }
 
@@ -44,7 +44,7 @@
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
       padding: 24px 18px 20px;
       display: none;
-      min-height: min(90vh, 650px);
+      min-height: min(95vh, 780px);
       position: relative;
       overflow: hidden;
     }
@@ -250,7 +250,7 @@
 
     .hud {
       width: 100%;
-      max-width: 960px;
+      max-width: 1200px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -321,7 +321,7 @@
     #gameCanvas {
       margin: 8px auto 0;
       width: 100%;
-      max-width: 960px;
+      max-width: 1200px;
       border-radius: 18px;
       display: block;
       background: #7ec8ff;
@@ -482,6 +482,7 @@
               <li>Your runner moves automatically toward the right side of the screen.</li>
               <li>Press <span class="kbd">Space</span> (or tap on mobile) to jump.</li>
               <li>You can chain up to <strong>3 jumps</strong> in the air by default.</li>
+              <li>Stomping an obstacle from above restores all jumps.</li>
               <li>Power-ups can temporarily increase your jump capacity.</li>
             </ul>
           </div>
@@ -519,7 +520,7 @@
             <h3>Levels &amp; Parallax</h3>
             <ul>
               <li>Survive to automatically advance through multiple parallax worlds (city, desert, mountains).</li>
-              <li>Each level has its own layered background that scrolls at different speeds for a smooth parallax effect.</li>
+              <li>Each level has its own layered background with sun, clouds, hills and buildings.</li>
             </ul>
           </div>
 
@@ -573,11 +574,10 @@
         </div>
       </div>
 
-      <canvas id="gameCanvas" width="960" height="540"></canvas>
+      <canvas id="gameCanvas" width="1280" height="640"></canvas>
       <p class="mobileHint">
         Desktop: press <span class="kbd">Space</span> to jump (up to 3 times by default).<br />
-        Mobile: tap anywhere on the game area to jump. Watch the small notepad next to the runner
-        to see how many jumps are left.
+        Stomping an obstacle from above restores all jumps. Mobile: tap anywhere on the game area.
       </p>
     </section>
 
@@ -614,7 +614,7 @@
         </div>
 
         <p class="gameover-label">
-          Tip: Use triple jumps and jump boosts to stomp floating traps instead of crashing into them.
+          Tip: Stomp floating or moving traps to refill your triple jumps.
         </p>
       </div>
     </section>
@@ -689,7 +689,7 @@
 
     const GAME_WIDTH = canvas.width;
     const GAME_HEIGHT = canvas.height;
-    const GROUND_HEIGHT = 120;
+    const GROUND_HEIGHT = 140;
     const GROUND_TOP = GAME_HEIGHT - GROUND_HEIGHT;
 
     const GRAVITY = 2000;
@@ -727,7 +727,7 @@
     let haveShield = false;
     let jumpBoostTime = 0;
 
-    // Running animation (even faster now)
+    // Running animation (very fast)
     let runAnimationTime = 0;
 
     const levelThemes = [
@@ -763,22 +763,22 @@
       parallaxLayers = [
         {
           color: theme.far,
-          y: GAME_HEIGHT - 260,
-          h: 180,
+          y: GAME_HEIGHT - 320,
+          h: 220,
           speedFactor: 0.25,
           offset: 0,
         },
         {
           color: theme.mid,
-          y: GAME_HEIGHT - 200,
-          h: 180,
+          y: GAME_HEIGHT - 250,
+          h: 200,
           speedFactor: 0.5,
           offset: 0,
         },
         {
           color: theme.ground,
           y: GROUND_TOP,
-          h: GROUND_HEIGHT + 20,
+          h: GROUND_HEIGHT + 30,
           speedFactor: 1.0,
           offset: 0,
         },
@@ -795,7 +795,6 @@
 
     function computeObstacleSpawnWindow() {
       const settings = difficultySettings[difficulty];
-      // Over ~60 seconds, spawn intervals shrink strongly (more obstacles over time)
       const progress = Math.min(1, survivalTime / 60);
       const factor = 1 - 0.65 * progress; // 1 -> 0.35
       return {
@@ -809,32 +808,32 @@
       parallaxLayers = [
         {
           color: theme.far,
-          y: GAME_HEIGHT - 260,
-          h: 180,
+          y: GAME_HEIGHT - 320,
+          h: 220,
           speedFactor: 0.25,
           offset: 0,
         },
         {
           color: theme.mid,
-          y: GAME_HEIGHT - 200,
-          h: 180,
+          y: GAME_HEIGHT - 250,
+          h: 200,
           speedFactor: 0.5,
           offset: 0,
         },
         {
           color: theme.ground,
           y: GROUND_TOP,
-          h: GROUND_HEIGHT + 20,
+          h: GROUND_HEIGHT + 30,
           speedFactor: 1.0,
           offset: 0,
         },
       ];
 
-      // Smaller, much shorter character
+      // Smaller, shorter character
       player = {
         w: 32,
         h: 60,
-        x: GAME_WIDTH * 0.2,
+        x: GAME_WIDTH * 0.18,
         y: GROUND_TOP - 60,
         vy: 0,
         jumpCount: 0,
@@ -882,12 +881,12 @@
         y = GROUND_TOP - h;
         verticalType = "ground";
       } else if (verticalRoll < 0.8) {
-        const minY = GROUND_TOP - h - 210;
-        const maxY = GROUND_TOP - h - 90;
+        const minY = GROUND_TOP - h - 220;
+        const maxY = GROUND_TOP - h - 100;
         y = randRange(Math.max(60, minY), Math.max(80, maxY));
         verticalType = "floating";
       } else {
-        y = randRange(40, 110);
+        y = randRange(40, 150);
         verticalType = "ceiling";
       }
 
@@ -906,8 +905,8 @@
       const moveRoll = Math.random();
       if (moveRoll < 0.35) {
         moveType = "hmove";
-        amplitude = randRange(10, 30);
-        moveSpeed = randRange(3, 6);
+        amplitude = randRange(15, 40);
+        moveSpeed = randRange(3.5, 7);
         phase = Math.random() * Math.PI * 2;
       }
 
@@ -947,7 +946,7 @@
       } else if (heightRoll < 0.66) {
         y = GROUND_TOP - size - 160;
       } else {
-        y = randRange(70, GROUND_TOP - size - 140);
+        y = randRange(90, GROUND_TOP - size - 160);
       }
 
       powerups.push({
@@ -1109,7 +1108,7 @@
 
       player.y = newY;
 
-      // Obstacles
+      // Obstacles movement
       obstacleTimer += dt;
       if (obstacleTimer >= nextObstacleSpawn) {
         spawnObstacle();
@@ -1138,7 +1137,7 @@
 
         o.x = o.baseX + o.offsetX;
 
-        if (o.baseX + o.w < -60) {
+        if (o.baseX + o.w < -80) {
           obstacles.splice(i, 1);
           continue;
         }
@@ -1151,9 +1150,11 @@
         if (rectsOverlap(playerRect, o)) {
           const wasAbove = prevBottom <= o.y + 8;
           if (wasAbove && player.vy > 0) {
+            // Stomp: destroy, bounce and restore jumps
             obstacles.splice(i, 1);
             obstaclesDestroyed++;
             player.vy = -JUMP_FORCE * 0.7;
+            player.jumpCount = 0; // restore all jumps after stomp
             playBeep("stomp");
           } else if (haveShield) {
             haveShield = false;
@@ -1180,7 +1181,7 @@
         const p = powerups[i];
         p.x -= gameSpeed * dt * 0.8;
 
-        if (p.x + p.w < -60) {
+        if (p.x + p.w < -80) {
           powerups.splice(i, 1);
           continue;
         }
@@ -1202,8 +1203,98 @@
         }
       });
 
-      // Even faster running animation
+      // Running animation
       runAnimationTime += dt;
+    }
+
+    function drawSkyDetails(theme) {
+      // Sun
+      ctx.save();
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = "#ffe082";
+      const sunX = GAME_WIDTH * 0.12;
+      const sunY = 80;
+      const sunR = 50;
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, sunR, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Clouds
+      ctx.save();
+      ctx.fillStyle = "rgba(255,255,255,0.9)";
+      const cloudBaseY = 70;
+      for (let i = 0; i < 4; i++) {
+        const offset = (survivalTime * 40 + i * 260) % (GAME_WIDTH + 200);
+        const x = offset - 100;
+        const y = cloudBaseY + (i % 2) * 25;
+        ctx.beginPath();
+        ctx.ellipse(x, y, 55, 24, 0, 0, Math.PI * 2);
+        ctx.ellipse(x + 30, y - 10, 40, 20, 0, 0, Math.PI * 2);
+        ctx.ellipse(x - 25, y - 8, 32, 18, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      // Distant mountains / dunes / hills (depend on theme)
+      ctx.save();
+      if (theme.name === "Mountains") {
+        ctx.fillStyle = theme.far;
+        const baseY = GAME_HEIGHT - 260;
+        for (let i = 0; i < 5; i++) {
+          const w = 220;
+          const x = i * 220 - (survivalTime * 30 % 220);
+          ctx.beginPath();
+          ctx.moveTo(x, baseY + 120);
+          ctx.lineTo(x + w / 2, baseY);
+          ctx.lineTo(x + w, baseY + 120);
+          ctx.closePath();
+          ctx.fill();
+        }
+      } else if (theme.name === "Desert") {
+        ctx.fillStyle = theme.far;
+        const baseY = GAME_HEIGHT - 240;
+        for (let i = 0; i < 4; i++) {
+          const w = 260;
+          const x = i * 260 - (survivalTime * 25 % 260);
+          ctx.beginPath();
+          ctx.moveTo(x, baseY + 90);
+          ctx.quadraticCurveTo(
+            x + w / 2,
+            baseY - 10,
+            x + w,
+            baseY + 90
+          );
+          ctx.lineTo(x + w, GAME_HEIGHT);
+          ctx.lineTo(x, GAME_HEIGHT);
+          ctx.closePath();
+          ctx.fill();
+        }
+      } else {
+        // City skyline
+        const baseY = GAME_HEIGHT - 260;
+        for (let i = 0; i < 10; i++) {
+          const w = 70;
+          const h = 80 + (i % 3) * 30;
+          const x =
+            i * 120 - (survivalTime * 40 % 120);
+          ctx.fillStyle =
+            i % 2 === 0 ? theme.far : theme.mid;
+          ctx.fillRect(x, baseY + 140 - h, w, h);
+
+          // windows
+          ctx.fillStyle = "rgba(255, 249, 196, 0.8)";
+          for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 2; c++) {
+              if ((r + c + i) % 2 === 0) continue;
+              const wx = x + 8 + c * 26;
+              const wy = baseY + 132 - h + r * 18;
+              ctx.fillRect(wx, wy, 10, 8);
+            }
+          }
+        }
+      }
+      ctx.restore();
     }
 
     function drawGame() {
@@ -1214,7 +1305,10 @@
       ctx.fillStyle = theme.sky;
       ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
-      // Parallax layers
+      // Decorative elements: sun, clouds, mountains/buildings
+      drawSkyDetails(theme);
+
+      // Parallax layers (hills/ground bands)
       parallaxLayers.forEach((layer) => {
         ctx.fillStyle = layer.color;
         const offset = layer.offset;
@@ -1275,7 +1369,7 @@
       // Arms (even faster movement)
       const armBaseY = torsoY + 8;
       const armLength = 14;
-      const armSwing = Math.sin(runAnimationTime * 80) * 5;
+      const armSwing = Math.sin(runAnimationTime * 90) * 5;
 
       ctx.strokeStyle = "#ffeb3b";
       ctx.lineWidth = 3;
@@ -1303,7 +1397,7 @@
       const legBaseY = torsoY + torsoH;
       const legBaseX = player.w / 2;
       const legLength = 22;
-      const legSwing = Math.sin(runAnimationTime * 80 + Math.PI) * 7;
+      const legSwing = Math.sin(runAnimationTime * 90 + Math.PI) * 7;
 
       ctx.strokeStyle = "#ffca28";
       ctx.lineWidth = 4;
