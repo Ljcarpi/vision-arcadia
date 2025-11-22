@@ -603,7 +603,9 @@
     <section id="gameOver" class="screen">
       <div class="card">
         <h2>Game Over</h2>
-        <p class="gameover-sub">The world caught you. Try another powered run.</p>
+        <p class="gameover-sub">
+          The world caught you. Press "Restart", or press Space to try again.
+        </p>
 
         <div class="score-row">
           <span>Final Score</span>
@@ -644,12 +646,14 @@
       gameContainer: document.getElementById("gameContainer"),
       gameOver: document.getElementById("gameOver"),
     };
+    let currentScreen = "mainMenu";
 
     function showScreen(key) {
       Object.values(screens).forEach((el) =>
         el.classList.remove("active")
       );
       screens[key].classList.add("active");
+      currentScreen = key;
     }
 
     // ---------- Difficulty ----------
@@ -662,22 +666,22 @@
 
     let difficulty = "normal";
 
+    // Increased obstacle density vs previous version
     const difficultySettings = {
-      // Increased base obstacle density vs previous version
       easy: {
         speed: 260,
-        minSpawn: 0.95,
-        maxSpawn: 1.35,
+        minSpawn: 0.65,
+        maxSpawn: 0.95,
       },
       normal: {
         speed: 320,
-        minSpawn: 0.75,
-        maxSpawn: 1.15,
+        minSpawn: 0.45,
+        maxSpawn: 0.75,
       },
       hard: {
         speed: 380,
-        minSpawn: 0.55,
-        maxSpawn: 0.95,
+        minSpawn: 0.3,
+        maxSpawn: 0.55,
       },
     };
 
@@ -702,7 +706,7 @@
 
     const GRAVITY = 2000;
     const JUMP_FORCE = 750;
-    const LEVEL_DURATION = 25; // seconds per level
+    const LEVEL_DURATION = 25;
     const BASE_MAX_JUMPS = 3;
 
     const scoreDisplay = document.getElementById("scoreDisplay");
@@ -735,7 +739,7 @@
     let haveShield = false;
     let jumpBoostTime = 0;
 
-    // Simple running animation
+    // Running animation (much faster)
     let runAnimationTime = 0;
 
     const levelThemes = [
@@ -803,9 +807,9 @@
 
     function computeObstacleSpawnWindow() {
       const settings = difficultySettings[difficulty];
-      // Over ~60 seconds, spawn intervals shrink to 50% (more obstacles over time)
+      // Over ~60 seconds, spawn intervals shrink to 40% (more obstacles over time)
       const progress = Math.min(1, survivalTime / 60);
-      const factor = 1 - 0.5 * progress; // 1 -> 0.5
+      const factor = 1 - 0.6 * progress; // 1 -> 0.4
       return {
         min: settings.minSpawn * factor,
         max: settings.maxSpawn * factor,
@@ -871,20 +875,18 @@
       const settings = difficultySettings[difficulty];
       const typeRoll = Math.random();
 
-      // Base size
       let w, h;
       if (typeRoll < 0.4) {
         w = 40;
-        h = 50; // small crate
+        h = 50;
       } else if (typeRoll < 0.75) {
         w = 50;
-        h = 80; // tall box
+        h = 80;
       } else {
         w = 70;
-        h = 40; // low wide
+        h = 40;
       }
 
-      // Vertical position: ground, floating or ceiling
       let y;
       const verticalRoll = Math.random();
       let verticalType;
@@ -892,18 +894,15 @@
         y = GROUND_TOP - h;
         verticalType = "ground";
       } else if (verticalRoll < 0.8) {
-        // Floating mid-air
         const minY = GROUND_TOP - h - 210;
         const maxY = GROUND_TOP - h - 90;
         y = randRange(Math.max(60, minY), Math.max(80, maxY));
         verticalType = "floating";
       } else {
-        // Ceiling-ish
         y = randRange(40, 110);
         verticalType = "ceiling";
       }
 
-      // Shape: box / circle / spike
       let shape = "box";
       const shapeRoll = Math.random();
       if (shapeRoll < 0.5) shape = "box";
@@ -931,7 +930,6 @@
       const kind = kindRoll < 0.5 ? "shield" : "jump";
 
       const size = 32;
-      // Spawn around mid heights so they are reachable but varied
       const heightRoll = Math.random();
       let y;
       if (heightRoll < 0.33) {
@@ -950,9 +948,8 @@
         kind,
       });
 
-      // Power-ups appear occasionally; slightly more common as time passes
       const progress = Math.min(1, survivalTime / 80);
-      const factor = 1 - 0.4 * progress; // down to 60%
+      const factor = 1 - 0.4 * progress;
       nextPowerSpawn = randRange(7 * factor, 13 * factor);
     }
 
@@ -983,7 +980,7 @@
       }
     }
 
-    // ---------- Sound (Web Audio beeps, no external files) ----------
+    // ---------- Sound (Web Audio beeps) ----------
     let audioCtx = null;
     function playBeep(type) {
       try {
@@ -1016,8 +1013,6 @@
             freq = 820;
             dur = 0.15;
             break;
-          default:
-            break;
         }
 
         osc.type = "sine";
@@ -1031,8 +1026,8 @@
         gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + dur);
-      } catch (e) {
-        // Fail silently if audio is blocked
+      } catch (_) {
+        // ignore audio errors
       }
     }
 
@@ -1040,7 +1035,7 @@
       if (kind === "shield") {
         haveShield = true;
       } else if (kind === "jump") {
-        jumpBoostTime = 10; // seconds
+        jumpBoostTime = 10;
       }
       updatePowerHud();
     }
@@ -1114,13 +1109,11 @@
         if (rectsOverlap(playerRect, o)) {
           const wasAbove = prevBottom <= o.y + 8;
           if (wasAbove && player.vy > 0) {
-            // Stomp
             obstacles.splice(i, 1);
             obstaclesDestroyed++;
             player.vy = -JUMP_FORCE * 0.7;
             playBeep("stomp");
           } else if (haveShield) {
-            // Shield absorbs hit and destroys obstacle
             haveShield = false;
             updatePowerHud();
             obstacles.splice(i, 1);
@@ -1167,7 +1160,7 @@
         }
       });
 
-      // Running animation time
+      // Much faster running animation
       runAnimationTime += dt;
     }
 
@@ -1209,9 +1202,13 @@
       const headSize = 24;
       const headX = (player.w - headSize) / 2;
       const headY = 0;
-      ctx.beginPath();
-      ctx.roundRect(headX, headY, headSize, headSize, 6);
-      ctx.fill();
+      if (ctx.roundRect) {
+        ctx.beginPath();
+        ctx.roundRect(headX, headY, headSize, headSize, 6);
+        ctx.fill();
+      } else {
+        ctx.fillRect(headX, headY, headSize, headSize);
+      }
 
       // Headband
       ctx.fillStyle = "#ff5252";
@@ -1233,10 +1230,10 @@
       );
       ctx.stroke();
 
-      // Arms
+      // Arms (very fast movement)
       const armBaseY = torsoY + 10;
       const armLength = 18;
-      const armSwing = Math.sin(runAnimationTime * 12) * 6;
+      const armSwing = Math.sin(runAnimationTime * 40) * 6;
 
       ctx.strokeStyle = "#ffeb3b";
       ctx.lineWidth = 4;
@@ -1260,11 +1257,11 @@
       );
       ctx.stroke();
 
-      // Legs
+      // Legs (very fast movement)
       const legBaseY = torsoY + torsoH;
       const legBaseX = player.w / 2;
       const legLength = 26;
-      const legSwing = Math.sin(runAnimationTime * 12 + Math.PI) * 8;
+      const legSwing = Math.sin(runAnimationTime * 40 + Math.PI) * 8;
 
       ctx.strokeStyle = "#ffca28";
       ctx.lineWidth = 5;
@@ -1289,12 +1286,11 @@
 
       ctx.restore();
 
-      // Obstacle drawing
+      // Obstacles
       obstacles.forEach((o) => {
         ctx.save();
         ctx.translate(o.x, o.y);
 
-        // Color by height type
         let color = "#ff5252";
         if (o.verticalType === "floating") color = "#ff8a65";
         else if (o.verticalType === "ceiling") color = "#ff7043";
@@ -1313,7 +1309,6 @@
           ctx.fill();
           ctx.stroke();
         } else {
-          // spike / triangle
           ctx.beginPath();
           ctx.moveTo(0, o.h);
           ctx.lineTo(o.w / 2, 0);
@@ -1332,7 +1327,6 @@
         ctx.translate(p.x, p.y);
 
         if (p.kind === "shield") {
-          // Blue circle with "S"
           ctx.fillStyle = "#40c4ff";
           ctx.strokeStyle = "rgba(0,0,0,0.5)";
           ctx.lineWidth = 2;
@@ -1348,15 +1342,19 @@
           ctx.textBaseline = "middle";
           ctx.fillText("S", r, r);
         } else if (p.kind === "jump") {
-          // Green rounded square with arrow
           ctx.fillStyle = "#66bb6a";
           ctx.strokeStyle = "rgba(0,0,0,0.5)";
           ctx.lineWidth = 2;
           const r = 6;
-          ctx.beginPath();
-          ctx.roundRect(0, 0, p.w, p.h, r);
-          ctx.fill();
-          ctx.stroke();
+          if (ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(0, 0, p.w, p.h, r);
+            ctx.fill();
+            ctx.stroke();
+          } else {
+            ctx.fillRect(0, 0, p.w, p.h);
+            ctx.strokeRect(0, 0, p.w, p.h);
+          }
 
           ctx.strokeStyle = "#ffffff";
           ctx.lineWidth = 2;
@@ -1381,7 +1379,7 @@
       ctx.lineTo(GAME_WIDTH, GROUND_TOP + 1.5);
       ctx.stroke();
 
-      // Jump "notepad" next to player
+      // Jump "notepad"
       const jumpsLeft = Math.max(0, maxJumps - player.jumpCount);
       const noteX = player.x + player.w + 12;
       const noteY = player.y + 6;
@@ -1455,11 +1453,16 @@
     window.addEventListener("keydown", (e) => {
       if (e.code === "Space") {
         e.preventDefault();
-        tryJump();
+        if (isRunning) {
+          tryJump();
+        } else if (currentScreen === "gameOver") {
+          // Restart with Space on Game Over screen
+          restartGame();
+        }
       }
     });
 
-    // Mobile tap
+    // Mobile tap for jump
     function addTapListener(target) {
       target.addEventListener(
         "touchstart",
