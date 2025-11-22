@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>2D Runner – Triple Jump</title>
+  <title>2D Runner – Triple Jump+</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
@@ -187,7 +187,7 @@
       margin-top: 8px;
     }
 
-    /* Instructions screen */
+    /* Instructions */
 
     #instructions .content {
       max-width: 560px;
@@ -239,7 +239,7 @@
       flex-wrap: wrap;
     }
 
-    /* Game screen */
+    /* Game */
 
     #gameContainer {
       padding: 14px 12px 14px;
@@ -270,6 +270,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .hud-pill {
@@ -306,6 +307,7 @@
       gap: 8px;
       font-size: 0.75rem;
       color: var(--text-muted);
+      flex-wrap: wrap;
     }
 
     .hud-dot {
@@ -424,8 +426,8 @@
     <!-- MAIN MENU -->
     <section id="mainMenu" class="screen active">
       <div class="screen-header">
-        <h1>Parallax Runner</h1>
-        <p>Cartoon side-scroller with triple jump and multi-level parallax worlds.</p>
+        <h1>Parallax Runner+</h1>
+        <p>Cartoon side-scroller with triple jump, power-ups and evolving chaos.</p>
       </div>
 
       <div class="menu-card">
@@ -439,8 +441,8 @@
             <button class="difficulty-btn" data-difficulty="hard">Hard</button>
           </div>
           <p class="helper-text">
-            Easy = slower world and fewer obstacles. Hard = faster pace and
-            denser waves.
+            Easy = slower world and fewer waves. Hard = faster pace and dense obstacle storms.
+            All modes spawn more and more obstacles over time.
           </p>
         </div>
 
@@ -458,7 +460,7 @@
           <div class="menu-section-title">Controls</div>
           <p class="helper-text">
             Desktop: press <span class="kbd">Space</span> to jump
-            (up to 3 jumps in mid-air).<br />
+            (up to 3 jumps in mid-air by default).<br />
             Mobile: tap anywhere on the game area.
           </p>
         </div>
@@ -469,7 +471,7 @@
     <section id="instructions" class="screen">
       <div class="screen-header">
         <h1>How to Play</h1>
-        <p>Survive, stomp obstacles, and climb through colorful worlds.</p>
+        <p>Survive, stomp obstacles, grab power-ups and ride through parallax worlds.</p>
       </div>
 
       <div class="content">
@@ -484,19 +486,30 @@
               <li>
                 Press <span class="kbd">Space</span> (or tap on mobile) to jump.
               </li>
-              <li>You can chain up to <strong>3 jumps</strong> in the air.</li>
+              <li>You can chain up to <strong>3 jumps</strong> in the air by default.</li>
+              <li>Power-ups can temporarily increase your jump capacity.</li>
             </ul>
           </div>
 
           <div>
             <h3>Obstacles &amp; Stomp</h3>
             <ul>
-              <li>Different obstacle types slide in from the right.</li>
-              <li>Touching an obstacle from the side or below = instant loss.</li>
+              <li>Obstacles come in different shapes and heights: ground, floating and ceiling traps.</li>
+              <li>Touching an obstacle from the side or below = instant loss (unless shielded).</li>
               <li>
                 If you land on an obstacle from above you
                 <strong>stomp</strong> it, destroy it, and get bonus points.
               </li>
+              <li>Obstacle intensity grows gradually as time passes.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Power-ups</h3>
+            <ul>
+              <li><strong>Shield</strong>: absorbs one hit and turns it into a safe smash.</li>
+              <li><strong>Jump Boost</strong>: temporarily increases your available jumps.</li>
+              <li>Catch power-ups by running through them.</li>
             </ul>
           </div>
 
@@ -504,7 +517,7 @@
             <h3>Score</h3>
             <ul>
               <li><strong>+1</strong> point every second you stay alive.</li>
-              <li><strong>+1</strong> point for each obstacle destroyed.</li>
+              <li><strong>+1</strong> point for each obstacle destroyed (stomp or shield-hit).</li>
               <li>
                 Your total score is shown live in the top-left corner of the
                 HUD.
@@ -532,7 +545,8 @@
               <li>
                 Choose <strong>Easy / Normal / Hard</strong> from the main menu.
               </li>
-              <li>Difficulty controls world speed and obstacle frequency.</li>
+              <li>Difficulty controls world speed and base obstacle frequency.</li>
+              <li>All difficulties gradually ramp up the number of obstacles.</li>
             </ul>
           </div>
         </div>
@@ -562,6 +576,14 @@
             MODE:
             <strong id="difficultyDisplay">Normal</strong>
           </div>
+          <div class="hud-pill">
+            SHIELD:
+            <strong id="shieldDisplay">Off</strong>
+          </div>
+          <div class="hud-pill">
+            JUMP BOOST:
+            <strong id="jumpBoostDisplay">-</strong>
+          </div>
         </div>
         <div class="hud-right">
           <span class="hud-dot"></span>
@@ -571,8 +593,9 @@
 
       <canvas id="gameCanvas" width="960" height="540"></canvas>
       <p class="mobileHint">
-        Desktop: press <span class="kbd">Space</span> to jump (up to 3 times).<br />
-        Mobile: tap anywhere on the game area to jump.
+        Desktop: press <span class="kbd">Space</span> to jump (up to 3 times by default).<br />
+        Mobile: tap anywhere on the game area to jump. Watch the small notepad next to the runner
+        to see how many jumps are left.
       </p>
     </section>
 
@@ -580,7 +603,7 @@
     <section id="gameOver" class="screen">
       <div class="card">
         <h2>Game Over</h2>
-        <p class="gameover-sub">The world caught you. Try another run.</p>
+        <p class="gameover-sub">The world caught you. Try another powered run.</p>
 
         <div class="score-row">
           <span>Final Score</span>
@@ -607,8 +630,7 @@
         </div>
 
         <p class="gameover-label">
-          Tip: Use triple jumps to stomp obstacles rather than crashing into
-          them.
+          Tip: Use triple jumps and jump boosts to stomp floating traps instead of crashing into them.
         </p>
       </div>
     </section>
@@ -635,24 +657,27 @@
     const difficultyButtons =
       difficultyToggle.querySelectorAll(".difficulty-btn");
     const difficultyDisplay = document.getElementById("difficultyDisplay");
+    const shieldDisplay = document.getElementById("shieldDisplay");
+    const jumpBoostDisplay = document.getElementById("jumpBoostDisplay");
 
     let difficulty = "normal";
 
     const difficultySettings = {
+      // Increased base obstacle density vs previous version
       easy: {
-        speed: 220,
-        minSpawn: 1.1,
-        maxSpawn: 1.7,
+        speed: 260,
+        minSpawn: 0.95,
+        maxSpawn: 1.35,
       },
       normal: {
-        speed: 280,
-        minSpawn: 0.9,
-        maxSpawn: 1.4,
+        speed: 320,
+        minSpawn: 0.75,
+        maxSpawn: 1.15,
       },
       hard: {
-        speed: 340,
-        minSpawn: 0.7,
-        maxSpawn: 1.1,
+        speed: 380,
+        minSpawn: 0.55,
+        maxSpawn: 0.95,
       },
     };
 
@@ -678,6 +703,7 @@
     const GRAVITY = 2000;
     const JUMP_FORCE = 750;
     const LEVEL_DURATION = 25; // seconds per level
+    const BASE_MAX_JUMPS = 3;
 
     const scoreDisplay = document.getElementById("scoreDisplay");
     const levelDisplay = document.getElementById("levelDisplay");
@@ -692,6 +718,7 @@
 
     let player;
     let obstacles = [];
+    let powerups = [];
     let survivalTime = 0;
     let obstaclesDestroyed = 0;
     let bestScore = 0;
@@ -699,7 +726,17 @@
     let obstacleTimer = 0;
     let nextObstacleSpawn = 1;
 
+    let powerTimer = 0;
+    let nextPowerSpawn = 8;
+
     let currentLevelIndex = 0;
+
+    let maxJumps = BASE_MAX_JUMPS;
+    let haveShield = false;
+    let jumpBoostTime = 0;
+
+    // Simple running animation
+    let runAnimationTime = 0;
 
     const levelThemes = [
       {
@@ -731,7 +768,6 @@
       const theme =
         levelThemes[currentLevelIndex % levelThemes.length];
 
-      // Define three parallax layers: far, mid, ground
       parallaxLayers = [
         {
           color: theme.far,
@@ -761,6 +797,21 @@
       }`;
     }
 
+    function randRange(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function computeObstacleSpawnWindow() {
+      const settings = difficultySettings[difficulty];
+      // Over ~60 seconds, spawn intervals shrink to 50% (more obstacles over time)
+      const progress = Math.min(1, survivalTime / 60);
+      const factor = 1 - 0.5 * progress; // 1 -> 0.5
+      return {
+        min: settings.minSpawn * factor,
+        max: settings.maxSpawn * factor,
+      };
+    }
+
     function resetGameState() {
       const theme = levelThemes[0];
       parallaxLayers = [
@@ -788,56 +839,121 @@
       ];
 
       player = {
-        w: 52,
-        h: 72,
+        w: 46,
+        h: 80,
         x: GAME_WIDTH * 0.2,
-        y: GROUND_TOP - 72,
+        y: GROUND_TOP - 80,
         vy: 0,
         jumpCount: 0,
       };
 
       obstacles = [];
+      powerups = [];
       survivalTime = 0;
       obstaclesDestroyed = 0;
       obstacleTimer = 0;
-      nextObstacleSpawn = 1;
+      powerTimer = 0;
+      const spawnWindow = computeObstacleSpawnWindow();
+      nextObstacleSpawn = randRange(spawnWindow.min, spawnWindow.max);
+      nextPowerSpawn = randRange(6, 11);
       currentLevelIndex = 0;
+
+      maxJumps = BASE_MAX_JUMPS;
+      haveShield = false;
+      jumpBoostTime = 0;
       applyLevelTheme();
       updateScoreDisplay();
-    }
-
-    function randRange(min, max) {
-      return min + Math.random() * (max - min);
+      updatePowerHud();
+      runAnimationTime = 0;
     }
 
     function spawnObstacle() {
       const settings = difficultySettings[difficulty];
-      const type = Math.random();
+      const typeRoll = Math.random();
 
-      let w, h, y;
-      if (type < 0.4) {
+      // Base size
+      let w, h;
+      if (typeRoll < 0.4) {
         w = 40;
         h = 50; // small crate
-      } else if (type < 0.75) {
+      } else if (typeRoll < 0.75) {
         w = 50;
         h = 80; // tall box
       } else {
         w = 70;
         h = 40; // low wide
       }
-      y = GROUND_TOP - h;
+
+      // Vertical position: ground, floating or ceiling
+      let y;
+      const verticalRoll = Math.random();
+      let verticalType;
+      if (verticalRoll < 0.45) {
+        y = GROUND_TOP - h;
+        verticalType = "ground";
+      } else if (verticalRoll < 0.8) {
+        // Floating mid-air
+        const minY = GROUND_TOP - h - 210;
+        const maxY = GROUND_TOP - h - 90;
+        y = randRange(Math.max(60, minY), Math.max(80, maxY));
+        verticalType = "floating";
+      } else {
+        // Ceiling-ish
+        y = randRange(40, 110);
+        verticalType = "ceiling";
+      }
+
+      // Shape: box / circle / spike
+      let shape = "box";
+      const shapeRoll = Math.random();
+      if (shapeRoll < 0.5) shape = "box";
+      else if (shapeRoll < 0.8) shape = "circle";
+      else shape = "spike";
 
       obstacles.push({
         x: GAME_WIDTH + w,
         y,
         w,
         h,
+        shape,
+        verticalType,
       });
 
+      const spawnWindow = computeObstacleSpawnWindow();
       nextObstacleSpawn = randRange(
-        settings.minSpawn,
-        settings.maxSpawn
+        spawnWindow.min,
+        spawnWindow.max
       );
+    }
+
+    function spawnPowerup() {
+      const kindRoll = Math.random();
+      const kind = kindRoll < 0.5 ? "shield" : "jump";
+
+      const size = 32;
+      // Spawn around mid heights so they are reachable but varied
+      const heightRoll = Math.random();
+      let y;
+      if (heightRoll < 0.33) {
+        y = GROUND_TOP - size - 70;
+      } else if (heightRoll < 0.66) {
+        y = GROUND_TOP - size - 160;
+      } else {
+        y = randRange(70, GROUND_TOP - size - 140);
+      }
+
+      powerups.push({
+        x: GAME_WIDTH + 80,
+        y,
+        w: size,
+        h: size,
+        kind,
+      });
+
+      // Power-ups appear occasionally; slightly more common as time passes
+      const progress = Math.min(1, survivalTime / 80);
+      const factor = 1 - 0.4 * progress; // down to 60%
+      nextPowerSpawn = randRange(7 * factor, 13 * factor);
     }
 
     function rectsOverlap(a, b) {
@@ -857,6 +973,78 @@
       scoreDisplay.textContent = getDisplayedScore();
     }
 
+    function updatePowerHud() {
+      shieldDisplay.textContent = haveShield ? "On" : "Off";
+      if (jumpBoostTime > 0) {
+        jumpBoostDisplay.textContent =
+          Math.ceil(jumpBoostTime) + "s";
+      } else {
+        jumpBoostDisplay.textContent = "-";
+      }
+    }
+
+    // ---------- Sound (Web Audio beeps, no external files) ----------
+    let audioCtx = null;
+    function playBeep(type) {
+      try {
+        if (!audioCtx) {
+          const AudioContext =
+            window.AudioContext || window.webkitAudioContext;
+          if (!AudioContext) return;
+          audioCtx = new AudioContext();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        let freq = 440;
+        let dur = 0.08;
+
+        switch (type) {
+          case "jump":
+            freq = 640;
+            dur = 0.07;
+            break;
+          case "stomp":
+            freq = 280;
+            dur = 0.1;
+            break;
+          case "hit":
+            freq = 140;
+            dur = 0.18;
+            break;
+          case "power":
+            freq = 820;
+            dur = 0.15;
+            break;
+          default:
+            break;
+        }
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.22, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioCtx.currentTime + dur
+        );
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+      } catch (e) {
+        // Fail silently if audio is blocked
+      }
+    }
+
+    function applyPowerup(kind) {
+      if (kind === "shield") {
+        haveShield = true;
+      } else if (kind === "jump") {
+        jumpBoostTime = 10; // seconds
+      }
+      updatePowerHud();
+    }
+
     function updateGame(dt) {
       if (!isRunning) return;
 
@@ -871,6 +1059,14 @@
         currentLevelIndex = targetLevel;
         applyLevelTheme();
       }
+
+      // Power timers & max jumps
+      if (jumpBoostTime > 0) {
+        jumpBoostTime -= dt;
+        if (jumpBoostTime < 0) jumpBoostTime = 0;
+      }
+      maxJumps = jumpBoostTime > 0 ? 5 : BASE_MAX_JUMPS;
+      updatePowerHud();
 
       // Player physics
       const prevBottom = player.y + player.h;
@@ -894,33 +1090,70 @@
         obstacleTimer = 0;
       }
 
-      for (let i = obstacles.length - 1; i >= 0; i--) {
-        obstacles[i].x -= gameSpeed * dt;
+      const playerRect = {
+        x: player.x,
+        y: player.y,
+        w: player.w,
+        h: player.h,
+      };
 
-        if (obstacles[i].x + obstacles[i].w < -40) {
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        const o = obstacles[i];
+        o.x -= gameSpeed * dt;
+
+        if (o.x + o.w < -60) {
           obstacles.splice(i, 1);
+          continue;
         }
       }
 
-      // Collision and stomp
+      // Collision and stomp / shield
       for (let i = obstacles.length - 1; i >= 0; i--) {
         const o = obstacles[i];
-        if (
-          rectsOverlap(
-            { x: player.x, y: player.y, w: player.w, h: player.h },
-            o
-          )
-        ) {
+
+        if (rectsOverlap(playerRect, o)) {
           const wasAbove = prevBottom <= o.y + 8;
           if (wasAbove && player.vy > 0) {
             // Stomp
             obstacles.splice(i, 1);
             obstaclesDestroyed++;
             player.vy = -JUMP_FORCE * 0.7;
+            playBeep("stomp");
+          } else if (haveShield) {
+            // Shield absorbs hit and destroys obstacle
+            haveShield = false;
+            updatePowerHud();
+            obstacles.splice(i, 1);
+            obstaclesDestroyed++;
+            playBeep("stomp");
           } else {
+            playBeep("hit");
             handleGameOver();
             return;
           }
+        }
+      }
+
+      // Power-ups
+      powerTimer += dt;
+      if (powerTimer >= nextPowerSpawn) {
+        spawnPowerup();
+        powerTimer = 0;
+      }
+
+      for (let i = powerups.length - 1; i >= 0; i--) {
+        const p = powerups[i];
+        p.x -= gameSpeed * dt * 0.8;
+
+        if (p.x + p.w < -60) {
+          powerups.splice(i, 1);
+          continue;
+        }
+
+        if (rectsOverlap(playerRect, p)) {
+          applyPowerup(p.kind);
+          playBeep("power");
+          powerups.splice(i, 1);
         }
       }
 
@@ -933,6 +1166,9 @@
           layer.offset += GAME_WIDTH;
         }
       });
+
+      // Running animation time
+      runAnimationTime += dt;
     }
 
     function drawGame() {
@@ -956,41 +1192,185 @@
         );
       });
 
-      // Player (cartoon rectangle with face)
+      // Player (simplified runner)
       ctx.save();
       ctx.translate(player.x, player.y);
 
       // Body
       ctx.fillStyle = "#ffeb3b";
-      ctx.fillRect(0, 0, player.w, player.h);
+      const torsoW = 26;
+      const torsoH = 34;
+      const torsoX = (player.w - torsoW) / 2;
+      const torsoY = 20;
+      ctx.fillRect(torsoX, torsoY, torsoW, torsoH);
+
+      // Head
+      ctx.fillStyle = "#ffe082";
+      const headSize = 24;
+      const headX = (player.w - headSize) / 2;
+      const headY = 0;
+      ctx.beginPath();
+      ctx.roundRect(headX, headY, headSize, headSize, 6);
+      ctx.fill();
 
       // Headband
       ctx.fillStyle = "#ff5252";
-      ctx.fillRect(0, 10, player.w, 10);
+      ctx.fillRect(headX, headY + 6, headSize, 6);
 
-      // Eyes
+      // Face
       ctx.fillStyle = "#212121";
-      ctx.fillRect(14, 26, 5, 5);
-      ctx.fillRect(32, 26, 5, 5);
-
-      // Smile
+      ctx.fillRect(headX + 6, headY + 11, 3, 3);
+      ctx.fillRect(headX + 15, headY + 11, 3, 3);
       ctx.beginPath();
       ctx.strokeStyle = "#212121";
-      ctx.lineWidth = 2;
-      ctx.arc(26, 40, 7, 0.1 * Math.PI, 0.9 * Math.PI);
+      ctx.lineWidth = 1.7;
+      ctx.arc(
+        headX + headSize / 2,
+        headY + 18,
+        6,
+        0.15 * Math.PI,
+        0.85 * Math.PI
+      );
+      ctx.stroke();
+
+      // Arms
+      const armBaseY = torsoY + 10;
+      const armLength = 18;
+      const armSwing = Math.sin(runAnimationTime * 12) * 6;
+
+      ctx.strokeStyle = "#ffeb3b";
+      ctx.lineWidth = 4;
+      ctx.lineCap = "round";
+
+      // Front arm
+      ctx.beginPath();
+      ctx.moveTo(torsoX + torsoW, armBaseY);
+      ctx.lineTo(
+        torsoX + torsoW + armLength * 0.9,
+        armBaseY + armSwing
+      );
+      ctx.stroke();
+
+      // Back arm
+      ctx.beginPath();
+      ctx.moveTo(torsoX, armBaseY + 4);
+      ctx.lineTo(
+        torsoX - armLength * 0.6,
+        armBaseY - armSwing * 0.8
+      );
+      ctx.stroke();
+
+      // Legs
+      const legBaseY = torsoY + torsoH;
+      const legBaseX = player.w / 2;
+      const legLength = 26;
+      const legSwing = Math.sin(runAnimationTime * 12 + Math.PI) * 8;
+
+      ctx.strokeStyle = "#ffca28";
+      ctx.lineWidth = 5;
+
+      // Right leg
+      ctx.beginPath();
+      ctx.moveTo(legBaseX + 5, legBaseY);
+      ctx.lineTo(
+        legBaseX + 5 + legSwing,
+        legBaseY + legLength
+      );
+      ctx.stroke();
+
+      // Left leg
+      ctx.beginPath();
+      ctx.moveTo(legBaseX - 5, legBaseY);
+      ctx.lineTo(
+        legBaseX - 5 - legSwing,
+        legBaseY + legLength
+      );
       ctx.stroke();
 
       ctx.restore();
 
-      // Obstacles
-      ctx.fillStyle = "#ff5252";
+      // Obstacle drawing
       obstacles.forEach((o) => {
-        ctx.fillRect(o.x, o.y, o.w, o.h);
+        ctx.save();
+        ctx.translate(o.x, o.y);
 
-        // Cartoon outline lines
+        // Color by height type
+        let color = "#ff5252";
+        if (o.verticalType === "floating") color = "#ff8a65";
+        else if (o.verticalType === "ceiling") color = "#ff7043";
+
+        ctx.fillStyle = color;
         ctx.strokeStyle = "rgba(0,0,0,0.6)";
         ctx.lineWidth = 2;
-        ctx.strokeRect(o.x, o.y, o.w, o.h);
+
+        if (o.shape === "box") {
+          ctx.fillRect(0, 0, o.w, o.h);
+          ctx.strokeRect(0, 0, o.w, o.h);
+        } else if (o.shape === "circle") {
+          const r = Math.min(o.w, o.h) / 2;
+          ctx.beginPath();
+          ctx.arc(o.w / 2, o.h / 2, r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        } else {
+          // spike / triangle
+          ctx.beginPath();
+          ctx.moveTo(0, o.h);
+          ctx.lineTo(o.w / 2, 0);
+          ctx.lineTo(o.w, o.h);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      });
+
+      // Power-ups
+      powerups.forEach((p) => {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+
+        if (p.kind === "shield") {
+          // Blue circle with "S"
+          ctx.fillStyle = "#40c4ff";
+          ctx.strokeStyle = "rgba(0,0,0,0.5)";
+          ctx.lineWidth = 2;
+          const r = p.w / 2;
+          ctx.beginPath();
+          ctx.arc(r, r, r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 14px system-ui";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText("S", r, r);
+        } else if (p.kind === "jump") {
+          // Green rounded square with arrow
+          ctx.fillStyle = "#66bb6a";
+          ctx.strokeStyle = "rgba(0,0,0,0.5)";
+          ctx.lineWidth = 2;
+          const r = 6;
+          ctx.beginPath();
+          ctx.roundRect(0, 0, p.w, p.h, r);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(p.w / 2, p.h - 6);
+          ctx.lineTo(p.w / 2, 8);
+          ctx.moveTo(p.w / 2, 8);
+          ctx.lineTo(p.w / 2 - 5, 13);
+          ctx.moveTo(p.w / 2, 8);
+          ctx.lineTo(p.w / 2 + 5, 13);
+          ctx.stroke();
+        }
+
+        ctx.restore();
       });
 
       // Ground highlight line
@@ -1000,6 +1380,26 @@
       ctx.moveTo(0, GROUND_TOP + 1.5);
       ctx.lineTo(GAME_WIDTH, GROUND_TOP + 1.5);
       ctx.stroke();
+
+      // Jump "notepad" next to player
+      const jumpsLeft = Math.max(0, maxJumps - player.jumpCount);
+      const noteX = player.x + player.w + 12;
+      const noteY = player.y + 6;
+      const noteW = 90;
+      const noteH = 28;
+
+      ctx.fillStyle = "rgba(0,0,0,0.55)";
+      ctx.fillRect(noteX, noteY, noteW, noteH);
+      ctx.strokeStyle = "rgba(255,255,255,0.6)";
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(noteX, noteY, noteW, noteH);
+
+      ctx.fillStyle = "#ffeb3b";
+      ctx.font = "11px system-ui";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "top";
+      ctx.fillText("Jumps", noteX + 8, noteY + 4);
+      ctx.fillText("left: " + jumpsLeft, noteX + 8, noteY + 16);
     }
 
     function gameLoop(timestamp) {
@@ -1045,9 +1445,10 @@
     // ---------- Input ----------
     function tryJump() {
       if (!isRunning) return;
-      if (player.jumpCount < 3) {
+      if (player.jumpCount < maxJumps) {
         player.vy = -JUMP_FORCE;
         player.jumpCount++;
+        playBeep("jump");
       }
     }
 
