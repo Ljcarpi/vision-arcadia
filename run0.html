@@ -524,7 +524,7 @@
             <ul>
               <li>Survive to automatically advance through multiple parallax worlds (city, desert, mountains).</li>
               <li>Each level has its own layered background with sun, clouds, hills and buildings.</li>
-              <li>Additional floating platforms let you route above or below, with gaps to drop or climb.</li>
+              <li>Multiple upper platforms let you route above or below, with gaps to drop or climb.</li>
             </ul>
           </div>
 
@@ -712,6 +712,7 @@
 
     const PLATFORM_LENGTH = 260;
     const PLATFORM_GAP = 180;
+    const BANDS_COUNT = 3;
 
     const scoreDisplay = document.getElementById("scoreDisplay");
     const levelDisplay = document.getElementById("levelDisplay");
@@ -813,14 +814,15 @@
     function initPlatforms() {
       platforms = [];
       const bands = [
-        { y: GROUND_TOP - 110 },
-        { y: GROUND_TOP - 220 },
+        { y: GROUND_TOP - 110, baseOffset: 80 },
+        { y: GROUND_TOP - 220, baseOffset: 260 },
+        { y: GROUND_TOP - 330, baseOffset: 440 },
       ];
+
       bands.forEach((band, index) => {
-        const baseOffset = index === 0 ? 80 : 260;
         for (let i = 0; i < 3; i++) {
           platforms.push({
-            x: baseOffset + i * (PLATFORM_LENGTH + PLATFORM_GAP),
+            x: band.baseOffset + i * (PLATFORM_LENGTH + PLATFORM_GAP),
             w: PLATFORM_LENGTH,
             y: band.y,
             h: 18,
@@ -870,12 +872,12 @@
         },
       ];
 
-      // Smaller, shorter character
+      // Even shorter character
       player = {
         w: 32,
-        h: 60,
+        h: 50,
         x: GAME_WIDTH * 0.18,
-        y: GROUND_TOP - 60,
+        y: GROUND_TOP - 50,
         vy: 0,
         jumpCount: 0,
       };
@@ -1125,8 +1127,8 @@
     }
 
     function updatePlatforms(dt, gameSpeed) {
-      // Move and wrap platforms band by band
-      for (let bandIndex = 0; bandIndex < 2; bandIndex++) {
+      // Move and wrap platforms band by band (3 bands)
+      for (let bandIndex = 0; bandIndex < BANDS_COUNT; bandIndex++) {
         let maxXInBand = -Infinity;
         platforms.forEach((p) => {
           if (p.band === bandIndex && p.x > maxXInBand) {
@@ -1443,21 +1445,21 @@
       });
       ctx.restore();
 
-      // Player (smaller runner)
+      // Player (even shorter runner)
       ctx.save();
       ctx.translate(player.x, player.y);
 
       // Body
       ctx.fillStyle = "#ffeb3b";
-      const torsoW = 18;
-      const torsoH = 26;
+      const torsoW = 16;
+      const torsoH = 22;
       const torsoX = (player.w - torsoW) / 2;
-      const torsoY = 18;
+      const torsoY = 16;
       ctx.fillRect(torsoX, torsoY, torsoW, torsoH);
 
       // Head
       ctx.fillStyle = "#ffe082";
-      const headSize = 18;
+      const headSize = 16;
       const headX = (player.w - headSize) / 2;
       const headY = 2;
       if (ctx.roundRect) {
@@ -1470,19 +1472,19 @@
 
       // Headband
       ctx.fillStyle = "#ff5252";
-      ctx.fillRect(headX, headY + 4, headSize, 5);
+      ctx.fillRect(headX, headY + 4, headSize, 4);
 
       // Face
       ctx.fillStyle = "#212121";
-      ctx.fillRect(headX + 4, headY + 8, 2, 2);
-      ctx.fillRect(headX + 11, headY + 8, 2, 2);
+      ctx.fillRect(headX + 4, headY + 7, 2, 2);
+      ctx.fillRect(headX + 9, headY + 7, 2, 2);
       ctx.beginPath();
       ctx.strokeStyle = "#212121";
-      ctx.lineWidth = 1.3;
+      ctx.lineWidth = 1.2;
       ctx.arc(
         headX + headSize / 2,
-        headY + 13,
-        4,
+        headY + 12,
+        3.5,
         0.15 * Math.PI,
         0.85 * Math.PI
       );
@@ -1518,7 +1520,7 @@
       // Legs (very fast movement)
       const legBaseY = torsoY + torsoH;
       const legBaseX = player.w / 2;
-      const legLength = 22;
+      const legLength = 18;
       const legSwing = Math.sin(runAnimationTime * 90 + Math.PI) * 7;
 
       ctx.strokeStyle = "#ffca28";
