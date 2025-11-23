@@ -2,18 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Neon Runner – Triple Jump</title>
+  <title>Andromadorian Runner – Neon Skies</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      --bg-main: radial-gradient(circle at top, #10172f 0, #020617 55%);
-      --panel: rgba(15, 23, 42, 0.96);
-      --panel-soft: rgba(15, 23, 42, 0.9);
-      --accent: #22c55e;
-      --accent-2: #38bdf8;
+      --bg-main: radial-gradient(circle at top, #f5f3ff 0, #0b1120 60%);
+      --panel: rgba(15, 23, 42, 0.98);
+      --accent: #06b6d4;
+      --accent-2: #6366f1;
       --accent-3: #f97316;
-      --danger: #f97373;
-      --text: #e5f0ff;
+      --danger: #ef4444;
+      --text: #e5e7eb;
       --muted: #9ca3af;
     }
 
@@ -36,17 +35,17 @@
 
     .app {
       width: 100%;
-      max-width: 1200px;
+      max-width: 1400px;
       padding: 12px;
     }
 
     .view {
       display: none;
-      background: radial-gradient(circle at top, #020617 0, #020617 60%, #000 100%);
-      border-radius: 20px;
-      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.9);
+      background: radial-gradient(circle at top, #020617 0, #020617 55%, #020617 100%);
+      border-radius: 22px;
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.95);
       padding: 18px 14px 16px;
-      min-height: min(95vh, 760px);
+      min-height: min(96vh, 780px);
       position: relative;
       overflow: hidden;
     }
@@ -64,11 +63,13 @@
     }
 
     .view-header h1 {
-      font-size: 2rem;
-      letter-spacing: 0.16em;
+      font-size: 2.1rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--accent-2);
-      text-shadow: 0 0 10px rgba(56, 189, 248, 0.9);
+      color: #f97316;
+      text-shadow:
+        0 0 10px rgba(249, 115, 22, 0.9),
+        0 0 28px rgba(56, 189, 248, 0.6);
       margin-bottom: 4px;
     }
 
@@ -77,16 +78,16 @@
       color: var(--muted);
     }
 
-    /* MENU */
+    /* CARD / MENU */
 
     .card {
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), #020617);
-      border-radius: 18px;
-      padding: 16px;
-      max-width: 420px;
+      background: radial-gradient(circle at top, #0b1120 0, #020617 52%, #020617 100%);
+      border-radius: 20px;
+      padding: 18px 16px 14px;
+      max-width: 520px;
       width: 100%;
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
       position: relative;
       overflow: hidden;
     }
@@ -94,8 +95,10 @@
     .card::before {
       content: "";
       position: absolute;
-      inset: -120px;
-      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 60%);
+      inset: -140px;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.16), transparent 60%);
       pointer-events: none;
       opacity: 0.9;
     }
@@ -110,16 +113,16 @@
     }
 
     .section + .section {
-      border-top: 1px dashed rgba(148, 163, 184, 0.35);
-      margin-top: 8px;
+      border-top: 1px dashed rgba(148, 163, 184, 0.4);
+      margin-top: 9px;
     }
 
     .section-title {
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       text-transform: uppercase;
-      letter-spacing: 0.13em;
+      letter-spacing: 0.14em;
       color: var(--muted);
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
 
     .btn {
@@ -132,7 +135,7 @@
       letter-spacing: 0.07em;
       text-transform: uppercase;
       width: 100%;
-      background: linear-gradient(135deg, #22c55e, #4ade80);
+      background: linear-gradient(135deg, #22c55e, #a3e635);
       color: #022c22;
       box-shadow: 0 10px 24px rgba(34, 197, 94, 0.65);
       transition:
@@ -143,8 +146,8 @@
 
     .btn:hover {
       transform: translateY(-1px);
-      filter: brightness(1.04);
-      box-shadow: 0 14px 28px rgba(34, 197, 94, 0.75);
+      filter: brightness(1.05);
+      box-shadow: 0 14px 30px rgba(34, 197, 94, 0.78);
     }
 
     .btn:active {
@@ -155,19 +158,13 @@
     .btn-ghost {
       background: transparent;
       color: var(--accent-2);
-      border: 1px solid rgba(56, 189, 248, 0.7);
+      border: 1px solid rgba(129, 140, 248, 0.9);
       box-shadow: none;
     }
 
     .btn-ghost:hover {
       box-shadow: 0 10px 24px rgba(15, 23, 42, 0.9);
-      background: radial-gradient(circle, rgba(56, 189, 248, 0.12), transparent 65%);
-    }
-
-    .btn-danger {
-      background: linear-gradient(135deg, #ef4444, #f97373);
-      color: #1f0202;
-      box-shadow: 0 10px 24px rgba(239, 68, 68, 0.7);
+      background: radial-gradient(circle, rgba(129, 140, 248, 0.16), transparent 70%);
     }
 
     .btn-row {
@@ -182,8 +179,8 @@
       gap: 6px;
       padding: 3px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.6);
     }
 
     .diff-btn {
@@ -205,9 +202,68 @@
     }
 
     .diff-btn.active {
-      background: linear-gradient(135deg, #38bdf8, #22c55e);
+      background: linear-gradient(135deg, #6366f1, #22c55e);
       color: #020617;
-      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.7);
+      box-shadow: 0 4px 12px rgba(129, 140, 248, 0.75);
+    }
+
+    .skin-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .skin-option {
+      border-radius: 12px;
+      padding: 4px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      min-width: 70px;
+      transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.12s ease,
+        background 0.15s ease;
+    }
+
+    .skin-option:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.7);
+    }
+
+    .skin-option.active {
+      border-color: #f97316;
+      box-shadow: 0 0 16px rgba(249, 115, 22, 0.7);
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.16), rgba(15, 23, 42, 0.95));
+    }
+
+    .skin-preview {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .skin-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .skin-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
     .hint {
@@ -230,7 +286,7 @@
     /* INSTRUCTIONS */
 
     #viewInstructions .card {
-      max-width: 680px;
+      max-width: 760px;
     }
 
     .instructions-grid {
@@ -239,7 +295,7 @@
       font-size: 0.9rem;
     }
 
-    @media (min-width: 720px) {
+    @media (min-width: 820px) {
       .instructions-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -280,7 +336,7 @@
 
     .hud-bar {
       width: 100%;
-      max-width: 1120px;
+      max-width: 1320px;
       margin: 0 auto;
       display: flex;
       align-items: center;
@@ -340,10 +396,10 @@
       display: block;
       background: #020617;
       width: 100%;
-      max-width: 1120px;
-      border-radius: 18px;
+      max-width: 1320px;
+      border-radius: 20px;
       border: 1px solid rgba(148, 163, 184, 0.7);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 22px 52px rgba(0, 0, 0, 0.95);
     }
 
     .touch-hint {
@@ -356,8 +412,8 @@
     /* GAME OVER */
 
     #viewGameOver .card {
-      max-width: 420px;
-      background: radial-gradient(circle at top, #1e293b 0, #020617 70%);
+      max-width: 440px;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 70%);
     }
 
     .go-title {
@@ -365,7 +421,7 @@
       text-transform: uppercase;
       letter-spacing: 0.14em;
       color: var(--danger);
-      text-shadow: 0 0 12px rgba(249, 115, 129, 0.9);
+      text-shadow: 0 0 12px rgba(239, 68, 68, 0.9);
       margin-bottom: 2px;
       text-align: center;
     }
@@ -396,18 +452,18 @@
       color: var(--muted);
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 840px) {
       .view {
         padding: 14px 10px 10px;
         min-height: 90vh;
       }
       .view-header h1 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
       }
       .hud-bar {
         flex-direction: column;
         align-items: flex-start;
-        border-radius: 14px;
+        border-radius: 16px;
       }
       .hud-right {
         justify-content: flex-end;
@@ -421,8 +477,8 @@
     <!-- MAIN MENU -->
     <section id="viewMenu" class="view active">
       <div class="view-header">
-        <h1>NEON RUNNER</h1>
-        <p>Triple-jump runner with evolving chaos, power-ups and parallax worlds.</p>
+        <h1>ANDROMADORIAN RUNNER</h1>
+        <p>Triple-jump skies, sliding islands and swappable neon heads.</p>
       </div>
 
       <div class="card">
@@ -435,8 +491,34 @@
               <button class="diff-btn" data-mode="hard">Hard</button>
             </div>
             <p class="hint">
-              Higher difficulty = faster world and denser obstacle waves.
-              All modes ramp up over time.
+              Higher difficulty = faster world and denser obstacle waves (which ramp over time).
+            </p>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Skin (Head)</div>
+            <div class="skin-grid" id="skinGrid">
+              <div class="skin-option active" data-skin="face1.png">
+                <div class="skin-preview">
+                  <img src="assets/faces/face1.png" alt="Skin 1" />
+                </div>
+                <div class="skin-label">Skin 1</div>
+              </div>
+              <div class="skin-option" data-skin="face2.png">
+                <div class="skin-preview">
+                  <img src="assets/faces/face2.png" alt="Skin 2" />
+                </div>
+                <div class="skin-label">Skin 2</div>
+              </div>
+              <div class="skin-option" data-skin="face3.png">
+                <div class="skin-preview">
+                  <img src="assets/faces/face3.png" alt="Skin 3" />
+                </div>
+                <div class="skin-label">Skin 3</div>
+              </div>
+            </div>
+            <p class="hint">
+              Place PNGs in <span class="kbd">/assets/faces/face1.png</span>, <span class="kbd">face2.png</span>, etc.
             </p>
           </div>
 
@@ -451,8 +533,8 @@
           <div class="section">
             <div class="section-title">Controls</div>
             <p class="hint">
-              Desktop: press <span class="kbd">Space</span> to jump (up to 3 jumps in mid-air),
-              <span class="kbd">Shift</span> to drop down from a platform.<br />
+              Desktop: <span class="kbd">Space</span> = jump (up to 3 jumps), 
+              <span class="kbd">Shift</span> = drop through platform.<br />
               Mobile: tap on the game area to jump.
             </p>
           </div>
@@ -464,7 +546,7 @@
     <section id="viewInstructions" class="view">
       <div class="view-header">
         <h1>How to Play</h1>
-        <p>Survive, stomp obstacles, grab power-ups and ride across stacked platforms.</p>
+        <p>Jump between floating lanes, stomp hazards, collect orbs and keep your head intact.</p>
       </div>
 
       <div class="card">
@@ -475,63 +557,60 @@
               <ul>
                 <li>Your runner auto-moves to the right.</li>
                 <li>Press <span class="kbd">Space</span> or tap to jump.</li>
-                <li>You can chain up to <strong>3 jumps</strong> by default.</li>
-                <li>Landing on the ground or platforms restores all jumps.</li>
-                <li>Stomping an obstacle from above also restores all jumps.</li>
-                <li>
-                  Press <span class="kbd">Shift</span> while standing on a platform to
-                  drop down through it (no gap required).
-                </li>
-                <li>There is a ceiling: you cannot go higher than the top limit.</li>
+                <li>You can chain up to <strong>3 jumps</strong> mid-air by default.</li>
+                <li>Landing on ground or platforms restores all jumps.</li>
+                <li>Stomping an obstacle from above restores jumps and destroys it.</li>
+                <li>Press <span class="kbd">Shift</span> while on a platform to drop through it.</li>
+                <li>There's a ceiling: you cannot go above it, but you won't lose by touching it.</li>
               </ul>
             </div>
 
             <div>
               <h3>Obstacles</h3>
               <ul>
-                <li>Different shapes and heights: ground, floating and ceiling traps.</li>
-                <li>Some obstacles move horizontally as they slide in.</li>
-                <li>Touching an obstacle from the side or below = instant defeat (unless shielded).</li>
-                <li>Obstacle spawn rate grows the longer you survive.</li>
+                <li>Neon shards and blocks appear on the ground, mid-air and near the ceiling.</li>
+                <li>Most hazards sway horizontally for trickier timing.</li>
+                <li>Touching a hazard from the side or below = instant defeat (unless shielded).</li>
+                <li>Spawn frequency increases over time on every difficulty.</li>
               </ul>
             </div>
 
             <div>
               <h3>Power-ups</h3>
               <ul>
-                <li><strong>Shield</strong>: blocks one hit and turns it into a smash.</li>
+                <li><strong>Shield</strong>: survives one hit and turns it into a smash.</li>
                 <li><strong>Jump Boost</strong>: temporarily increases max jumps.</li>
-                <li><strong>Score Burst</strong>: injects bonus score instantly.</li>
-                <li><strong>Slow Time</strong>: slows the world speed for a short time.</li>
-                <li>Run through power-ups to collect them.</li>
+                <li><strong>Score Burst</strong>: instantly adds bonus score.</li>
+                <li><strong>Slow Time</strong>: slows world speed for a while.</li>
+                <li>Run through power-ups to grab them.</li>
               </ul>
             </div>
 
             <div>
               <h3>Score</h3>
               <ul>
-                <li><strong>+1</strong> point every second you stay alive.</li>
-                <li><strong>+1</strong> point for each obstacle destroyed.</li>
-                <li>Power-ups may give extra score.</li>
+                <li><strong>+1</strong> point every second you survive.</li>
+                <li><strong>+1</strong> point per obstacle destroyed.</li>
+                <li>Some power-ups add extra score.</li>
                 <li>Live score is shown in the HUD at the top.</li>
               </ul>
             </div>
 
             <div>
-              <h3>Levels &amp; Parallax</h3>
+              <h3>Platforms &amp; Levels</h3>
               <ul>
-                <li>Run through several parallax worlds (neon city, dunes, mountains).</li>
-                <li>Each world has animated sky, foreground and ground layers.</li>
-                <li>Three floors of platforms let you route above or below.</li>
+                <li>Three vertical lanes of floating platforms, each with gaps.</li>
+                <li>Use upper floors to route around dense waves of hazards.</li>
+                <li>World themes shift as time passes (sky, colors and silhouettes change).</li>
               </ul>
             </div>
 
             <div>
-              <h3>Difficulty</h3>
+              <h3>Difficulty &amp; Skins</h3>
               <ul>
-                <li>Select Easy / Normal / Hard in the main menu.</li>
-                <li>Changes game speed and base obstacle frequency.</li>
-                <li>All modes gradually become more intense.</li>
+                <li>Select Easy / Normal / Hard for speed + spawn tuning.</li>
+                <li>Choose your head skin in the main menu. It is drawn as a large PNG sprite.</li>
+                <li>Music plays only during the actual run, never in menus or after defeat.</li>
               </ul>
             </div>
           </div>
@@ -552,7 +631,7 @@
             SCORE:<strong id="scoreText">0</strong>
           </div>
           <div class="pill">
-            LEVEL:<strong id="levelText">1 – City</strong>
+            LEVEL:<strong id="levelText">1 – Dawn City</strong>
           </div>
           <div class="pill">
             MODE:<strong id="modeText">Normal</strong>
@@ -578,10 +657,11 @@
         </div>
       </div>
 
-      <canvas id="gameCanvas" width="960" height="540"></canvas>
+      <!-- Canvas ampliado -->
+      <canvas id="gameCanvas" width="1280" height="640"></canvas>
       <p class="touch-hint">
-        Space / tap = jump (up to 3 jumps by default). Shift = drop down from platforms.<br />
-        Stomp obstacles from above to refill jumps and gain points.
+        Space / tap = jump (up to 3 default jumps). Shift = drop down from platforms.<br />
+        Stomp from above to crush hazards and refill jumps.
       </p>
     </section>
 
@@ -591,7 +671,7 @@
         <div class="card-inner">
           <div class="go-title">RUN ENDED</div>
           <p class="go-sub">
-            Press <strong>Restart</strong> or hit <span class="kbd">Space</span> to jump back in.
+            Press <strong>Restart</strong> or hit <span class="kbd">Space</span> to launch a new run.
           </p>
 
           <div class="stat-row">
@@ -617,7 +697,7 @@
           </div>
 
           <p class="go-tip">
-            Tip: Use upper floors to dodge dense waves, drop with Shift, and stomp to keep your triple jump alive.
+            Tip: Pick a skin you like, ride upper lanes, drop down with Shift and chain stomps to keep your triple jump alive.
           </p>
         </div>
       </div>
@@ -626,10 +706,12 @@
 
   <script>
     // AUDIO:
-    // Coloca un archivo MP3 de inicio de partida en:
+    // Coloca un archivo MP3 de música de partida en:
     // /assets/audio/game-start.mp3
-    // El juego lo intentará reproducir cada vez que inicies un run.
-    const startSound = new Audio("assets/audio/game-start.mp3");
+    // Se reproducirá en loop SOLO mientras la partida esté en curso.
+    const bgMusic = new Audio("assets/audio/game-start.mp3");
+    bgMusic.loop = true;
+
     let audioCtx = null;
 
     function ensureAudioContext() {
@@ -643,11 +725,17 @@
       }
     }
 
-    function playStartSound() {
+    function playMusic() {
       try {
         ensureAudioContext();
-        startSound.currentTime = 0;
-        startSound.play().catch(() => {});
+        bgMusic.currentTime = 0;
+        bgMusic.play().catch(() => {});
+      } catch (_) {}
+    }
+
+    function stopMusic() {
+      try {
+        bgMusic.pause();
       } catch (_) {}
     }
 
@@ -662,19 +750,19 @@
 
         switch (type) {
           case "jump":
-            freq = 820;
+            freq = 880;
             dur = 0.06;
             break;
           case "stomp":
-            freq = 260;
-            dur = 0.1;
+            freq = 240;
+            dur = 0.11;
             break;
           case "hit":
-            freq = 140;
-            dur = 0.15;
+            freq = 130;
+            dur = 0.16;
             break;
           case "power":
-            freq = 1000;
+            freq = 1020;
             dur = 0.12;
             break;
         }
@@ -718,9 +806,9 @@
     let difficulty = "normal";
 
     const difficultySettings = {
-      easy: { speed: 260, minSpawn: 0.55, maxSpawn: 0.8 },
-      normal: { speed: 320, minSpawn: 0.38, maxSpawn: 0.6 },
-      hard: { speed: 380, minSpawn: 0.24, maxSpawn: 0.45 },
+      easy: { speed: 280, minSpawn: 0.5, maxSpawn: 0.75 },
+      normal: { speed: 340, minSpawn: 0.35, maxSpawn: 0.55 },
+      hard: { speed: 400, minSpawn: 0.22, maxSpawn: 0.42 },
     };
 
     diffButtons.forEach((btn) => {
@@ -733,6 +821,21 @@
       });
     });
 
+    // SKINS
+
+    const skinGrid = document.getElementById("skinGrid");
+    const skinOptions = skinGrid.querySelectorAll(".skin-option");
+    let selectedSkinFile = "face1.png";
+
+    skinOptions.forEach((opt) => {
+      opt.addEventListener("click", () => {
+        skinOptions.forEach((o) => o.classList.remove("active"));
+        opt.classList.add("active");
+        selectedSkinFile = opt.getAttribute("data-skin") || "face1.png";
+        faceImg.src = "assets/faces/" + selectedSkinFile;
+      });
+    });
+
     // GAME CONSTANTS & STATE
 
     const canvas = document.getElementById("gameCanvas");
@@ -740,17 +843,19 @@
 
     const WORLD_WIDTH = canvas.width;
     const WORLD_HEIGHT = canvas.height;
-    const GROUND_HEIGHT = 120;
+
+    // Menos piso, más espacio superior
+    const GROUND_HEIGHT = 110;
     const GROUND_Y = WORLD_HEIGHT - GROUND_HEIGHT;
-    const CEILING_Y = 30; // top limit for the runner
+    const CEILING_Y = 40;
 
-    const GRAVITY = 2000;
-    const JUMP_FORCE = 750;
+    const GRAVITY = 2200;
+    const JUMP_FORCE = 800;
     const BASE_MAX_JUMPS = 3;
-    const LEVEL_DURATION = 25;
+    const LEVEL_DURATION = 26;
 
-    const PLATFORM_LENGTH = 260;
-    const PLATFORM_GAP = 180;
+    const PLATFORM_LENGTH = 300;
+    const PLATFORM_GAP = 200;
     const PLATFORM_BANDS = 3;
 
     // HUD refs
@@ -798,29 +903,36 @@
     // Drop-through control
     let dropRequested = false;
 
+    // Runner head image (big)
+    const faceImg = new Image();
+    faceImg.src = "assets/faces/" + selectedSkinFile;
+
     const themes = [
       {
-        name: "City",
-        sky: "#020617",
-        skyGlow: "#38bdf8",
+        name: "Dawn City",
+        skyTop: "#0ea5e9",
+        skyBottom: "#020617",
+        glow: "#fde047",
         far: "#0f172a",
+        mid: "#1e293b",
+        ground: "#22c55e",
+      },
+      {
+        name: "Solar Desert",
+        skyTop: "#fb923c",
+        skyBottom: "#7c2d12",
+        glow: "#facc15",
+        far: "#92400e",
+        mid: "#b45309",
+        ground: "#facc15",
+      },
+      {
+        name: "Night Peaks",
+        skyTop: "#1e293b",
+        skyBottom: "#020617",
+        glow: "#a855f7",
+        far: "#020617",
         mid: "#1f2937",
-        ground: "#16a34a",
-      },
-      {
-        name: "Dunes",
-        sky: "#0b1120",
-        skyGlow: "#f97316",
-        far: "#9a3412",
-        mid: "#c2410c",
-        ground: "#fbbf24",
-      },
-      {
-        name: "Peaks",
-        sky: "#020617",
-        skyGlow: "#a855f7",
-        far: "#1f2937",
-        mid: "#374151",
         ground: "#22c55e",
       },
     ];
@@ -833,22 +945,22 @@
       parallaxLayers = [
         {
           color: theme.far,
-          y: WORLD_HEIGHT - 320,
-          h: 220,
-          speedFactor: 0.25,
+          y: WORLD_HEIGHT - 380,
+          h: 260,
+          speedFactor: 0.2,
           offset: 0,
         },
         {
           color: theme.mid,
-          y: WORLD_HEIGHT - 250,
-          h: 200,
-          speedFactor: 0.5,
+          y: WORLD_HEIGHT - 290,
+          h: 230,
+          speedFactor: 0.45,
           offset: 0,
         },
         {
           color: theme.ground,
           y: GROUND_Y,
-          h: GROUND_HEIGHT + 40,
+          h: GROUND_HEIGHT + 60,
           speedFactor: 1,
           offset: 0,
         },
@@ -861,9 +973,9 @@
       platforms = [];
 
       const bands = [
-        { y: GROUND_Y - 110, offset: 80 },
-        { y: GROUND_Y - 220, offset: 260 },
-        { y: GROUND_Y - 330, offset: 440 },
+        { y: GROUND_Y - 130, offset: 120 },
+        { y: GROUND_Y - 250, offset: 350 },
+        { y: GROUND_Y - 370, offset: 610 },
       ];
 
       bands.forEach((band, index) => {
@@ -872,7 +984,7 @@
             x: band.offset + i * (PLATFORM_LENGTH + PLATFORM_GAP),
             y: band.y,
             w: PLATFORM_LENGTH,
-            h: 18,
+            h: 20,
             band: index,
           });
         }
@@ -886,7 +998,7 @@
     function obstacleSpawnWindow() {
       const cfg = difficultySettings[difficulty];
       const progress = Math.min(1, survivalTime / 60);
-      const factor = 1 - 0.65 * progress; // 1 -> 0.35
+      const factor = 1 - 0.65 * progress;
       return {
         min: cfg.minSpawn * factor,
         max: cfg.maxSpawn * factor,
@@ -898,33 +1010,33 @@
       parallaxLayers = [
         {
           color: theme.far,
-          y: WORLD_HEIGHT - 320,
-          h: 220,
-          speedFactor: 0.25,
+          y: WORLD_HEIGHT - 380,
+          h: 260,
+          speedFactor: 0.2,
           offset: 0,
         },
         {
           color: theme.mid,
-          y: WORLD_HEIGHT - 250,
-          h: 200,
-          speedFactor: 0.5,
+          y: WORLD_HEIGHT - 290,
+          h: 230,
+          speedFactor: 0.45,
           offset: 0,
         },
         {
           color: theme.ground,
           y: GROUND_Y,
-          h: GROUND_HEIGHT + 40,
+          h: GROUND_HEIGHT + 60,
           speedFactor: 1,
           offset: 0,
         },
       ];
 
-      // Runner: más bajo y más cuadrado
+      // Runner: solo piernitas + cabeza grande
       player = {
-        w: 30,
-        h: 36,
+        w: 34,
+        h: 56,                       // un poco más alto para incluir cabeza y piernas
         x: WORLD_WIDTH * 0.16,
-        y: GROUND_Y - 36,
+        y: GROUND_Y - 56,
         vy: 0,
         jumpsUsed: 0,
       };
@@ -955,21 +1067,25 @@
       updatePowerHUD();
       runAnimTime = 0;
       dropRequested = false;
+
+      // aplicar skin seleccionada
+      faceImg.src = "assets/faces/" + selectedSkinFile;
     }
 
     function spawnObstacle() {
       const typeRoll = Math.random();
 
+      // un poco más pequeños
       let w, h;
       if (typeRoll < 0.4) {
-        w = 34;
-        h = 40;
+        w = 30;
+        h = 36;
       } else if (typeRoll < 0.75) {
-        w = 42;
-        h = 60;
+        w = 38;
+        h = 52;
       } else {
-        w = 58;
-        h = 32;
+        w = 48;
+        h = 28;
       }
 
       const verticalRoll = Math.random();
@@ -979,12 +1095,12 @@
         y = GROUND_Y - h;
         vType = "ground";
       } else if (verticalRoll < 0.8) {
-        const minY = GROUND_Y - h - 220;
-        const maxY = GROUND_Y - h - 100;
-        y = rand(Math.max(60, minY), Math.max(80, maxY));
+        const minY = GROUND_Y - h - 240;
+        const maxY = GROUND_Y - h - 110;
+        y = rand(Math.max(70, minY), Math.max(100, maxY));
         vType = "mid";
       } else {
-        y = rand(40, 150);
+        y = rand(50, 180);
         vType = "ceiling";
       }
 
@@ -994,16 +1110,16 @@
       else if (shapeRoll < 0.8) shape = "circle";
       else shape = "spike";
 
-      // Movimiento horizontal opcional
+      // Movimiento horizontal más marcado
       let moveType = "static";
       let amplitude = 0;
       let moveSpeed = 0;
       let phase = 0;
       const moveRoll = Math.random();
-      if (moveRoll < 0.35) {
+      if (moveRoll < 0.55) {
         moveType = "hmove";
-        amplitude = rand(15, 42);
-        moveSpeed = rand(3.5, 7);
+        amplitude = rand(28, 60);
+        moveSpeed = rand(5, 10);
         phase = Math.random() * Math.PI * 2;
       }
 
@@ -1032,19 +1148,19 @@
       const kinds = ["shield", "jump", "score", "slow"];
       const kind = kinds[Math.floor(Math.random() * kinds.length)];
 
-      const size = 32;
+      const size = 34;
       const roll = Math.random();
       let y;
       if (roll < 0.33) {
-        y = GROUND_Y - size - 60;
+        y = GROUND_Y - size - 70;
       } else if (roll < 0.66) {
-        y = GROUND_Y - size - 160;
+        y = GROUND_Y - size - 180;
       } else {
-        y = rand(90, GROUND_Y - size - 180);
+        y = rand(110, GROUND_Y - size - 200);
       }
 
       powerups.push({
-        x: WORLD_WIDTH + 80,
+        x: WORLD_WIDTH + 100,
         y,
         w: size,
         h: size,
@@ -1107,7 +1223,7 @@
         platforms.forEach((p) => {
           if (p.band !== band) return;
           p.x -= gameSpeed * dt;
-          if (p.x + p.w < -120) {
+          if (p.x + p.w < -150) {
             p.x = maxX + PLATFORM_LENGTH + PLATFORM_GAP;
             maxX = p.x;
           }
@@ -1150,7 +1266,7 @@
       let newY = player.y + player.vy * dt;
       let newBottom = newY + player.h;
 
-      // Tope superior (techo): no puede superar el techo, pero no pierde
+      // Techo: no se puede pasar, pero no pierde
       if (newY < CEILING_Y) {
         newY = CEILING_Y;
         newBottom = newY + player.h;
@@ -1159,7 +1275,7 @@
 
       let onPlatform = false;
 
-      // Plataformas (desde arriba), considerando drop con Shift
+      // Plataformas con drop
       for (let i = 0; i < platforms.length; i++) {
         const pf = platforms[i];
         const top = pf.y;
@@ -1167,14 +1283,13 @@
           player.x + player.w > pf.x &&
           player.x < pf.x + pf.w;
 
-        // Si se ha pedido un drop y estamos sobre la plataforma, la atravesamos
         if (
           dropRequested &&
           overlapX &&
           prevBottom >= top - 2 &&
           prevBottom <= top + 6
         ) {
-          // ignorar esta plataforma este frame para caer
+          // saltar esta plataforma para caer
           continue;
         }
 
@@ -1230,7 +1345,7 @@
         }
         o.x = o.baseX + o.offsetX;
 
-        if (o.baseX + o.w < -80) {
+        if (o.baseX + o.w < -100) {
           obstacles.splice(i, 1);
           continue;
         }
@@ -1246,7 +1361,7 @@
           obstacles.splice(i, 1);
           obstaclesDestroyed++;
           player.vy = -JUMP_FORCE * 0.7;
-          player.jumpsUsed = 0; // recarga saltos al stomp
+          player.jumpsUsed = 0;
           playBeep("stomp");
         } else if (shieldActive) {
           shieldActive = false;
@@ -1272,7 +1387,7 @@
         const p = powerups[i];
         p.x -= worldSpeed * dt * 0.85;
 
-        if (p.x + p.w < -80) {
+        if (p.x + p.w < -100) {
           powerups.splice(i, 1);
           continue;
         }
@@ -1292,11 +1407,8 @@
         }
       });
 
-      // Animación de correr
       runAnimTime += dt;
       updateScoreHUD();
-
-      // Drop-request se consume en este frame
       dropRequested = false;
     }
 
@@ -1309,34 +1421,36 @@
         0,
         WORLD_HEIGHT
       );
-      gradient.addColorStop(0, theme.skyGlow);
-      gradient.addColorStop(0.25, theme.sky);
+      gradient.addColorStop(0, theme.skyTop);
+      gradient.addColorStop(0.5, theme.skyBottom);
       gradient.addColorStop(1, "#020617");
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 
-      // Estrellas / glow
+      // Nubes
       ctx.save();
-      ctx.fillStyle = "rgba(148, 163, 184, 0.7)";
-      for (let i = 0; i < 50; i++) {
-        const x = (i * 180 + survivalTime * 45) % (WORLD_WIDTH + 200) - 100;
-        const y = (i * 70) % 160 + 10;
-        const s = 1 + (i % 3);
-        ctx.globalAlpha = 0.2 + 0.6 * ((i % 5) / 4);
-        ctx.fillRect(x, y, s, s);
+      ctx.fillStyle = "rgba(248, 250, 252, 0.85)";
+      for (let i = 0; i < 6; i++) {
+        const baseX = (i * 260 - (survivalTime * 40) % 260) - 100;
+        const y = 60 + (i % 3) * 40;
+        ctx.beginPath();
+        ctx.ellipse(baseX, y, 90, 26, 0, 0, Math.PI * 2);
+        ctx.ellipse(baseX + 52, y + 4, 60, 20, 0, 0, Math.PI * 2);
+        ctx.ellipse(baseX - 52, y + 4, 60, 20, 0, 0, Math.PI * 2);
+        ctx.fill();
       }
       ctx.restore();
 
-      // Luna / sol estilizado
+      // Disco solar / lunar
       ctx.save();
       ctx.globalAlpha = 0.9;
-      ctx.fillStyle = theme.skyGlow;
+      ctx.fillStyle = theme.glow;
       ctx.beginPath();
-      ctx.arc(WORLD_WIDTH * 0.1, 70, 36, 0, Math.PI * 2);
+      ctx.arc(WORLD_WIDTH * 0.1, 90, 40, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
 
-      // Línea visual de techo
+      // Línea techo
       ctx.save();
       ctx.strokeStyle = "rgba(148, 163, 184, 0.4)";
       ctx.setLineDash([6, 6]);
@@ -1350,41 +1464,42 @@
 
     function drawDecor(theme) {
       ctx.save();
-      if (theme.name === "City") {
-        const baseY = WORLD_HEIGHT - 260;
-        for (let i = 0; i < 12; i++) {
-          const w = 60;
-          const h = 80 + (i % 3) * 26;
-          const x =
-            (i * 100 - (survivalTime * 40) % 100) - 40;
-          ctx.fillStyle = i % 2 === 0 ? theme.far : theme.mid;
-          ctx.fillRect(x, baseY + 130 - h, w, h);
 
-          // windows
+      if (theme.name.includes("City")) {
+        const baseY = WORLD_HEIGHT - 260;
+        for (let i = 0; i < 14; i++) {
+          const w = 70;
+          const h = 100 + (i % 3) * 30;
+          const x =
+            (i * 110 - (survivalTime * 45) % 110) - 60;
+          ctx.fillStyle = i % 2 === 0 ? theme.far : theme.mid;
+          ctx.fillRect(x, baseY + 140 - h, w, h);
+
+          // Ventanas
           ctx.fillStyle = "rgba(250, 250, 210, 0.7)";
           for (let r = 0; r < 4; r++) {
             for (let c = 0; c < 2; c++) {
               if ((r + c + i) % 2 === 0) continue;
-              const wx = x + 8 + c * 24;
-              const wy = baseY + 124 - h + r * 16;
+              const wx = x + 10 + c * 26;
+              const wy = baseY + 134 - h + r * 18;
               ctx.fillRect(wx, wy, 10, 7);
             }
           }
         }
-      } else if (theme.name === "Dunes") {
-        const baseY = WORLD_HEIGHT - 240;
+      } else if (theme.name.includes("Desert")) {
+        const baseY = WORLD_HEIGHT - 260;
         ctx.fillStyle = theme.far;
         for (let i = 0; i < 4; i++) {
-          const w = 260;
+          const w = 280;
           const x =
-            (i * 260 - (survivalTime * 30) % 260) - 80;
+            (i * 280 - (survivalTime * 36) % 280) - 100;
           ctx.beginPath();
-          ctx.moveTo(x, baseY + 90);
+          ctx.moveTo(x, baseY + 110);
           ctx.quadraticCurveTo(
             x + w / 2,
             baseY - 10,
             x + w,
-            baseY + 90
+            baseY + 110
           );
           ctx.lineTo(x + w, WORLD_HEIGHT);
           ctx.lineTo(x, WORLD_HEIGHT);
@@ -1392,21 +1507,22 @@
           ctx.fill();
         }
       } else {
-        // Mountains
-        const baseY = WORLD_HEIGHT - 250;
+        // Peaks
+        const baseY = WORLD_HEIGHT - 270;
         ctx.fillStyle = theme.far;
         for (let i = 0; i < 5; i++) {
-          const w = 220;
+          const w = 240;
           const x =
-            (i * 220 - (survivalTime * 25) % 220) - 80;
+            (i * 240 - (survivalTime * 30) % 240) - 90;
           ctx.beginPath();
           ctx.moveTo(x, baseY + 130);
-          ctx.lineTo(x + w / 2, baseY - 10);
+          ctx.lineTo(x + w / 2, baseY - 20);
           ctx.lineTo(x + w, baseY + 130);
           ctx.closePath();
           ctx.fill();
         }
       }
+
       ctx.restore();
     }
 
@@ -1426,7 +1542,7 @@
 
       // Plataformas
       ctx.save();
-      ctx.fillStyle = "rgba(15, 23, 42, 0.95)";
+      ctx.fillStyle = "rgba(15, 23, 42, 0.96)";
       ctx.strokeStyle = "rgba(148, 163, 184, 0.9)";
       ctx.lineWidth = 2;
       platforms.forEach((p) => {
@@ -1435,92 +1551,57 @@
       });
       ctx.restore();
 
-      // Runner (más bajo y cuadrado)
+      // Runner: solo piernitas + cabeza grande
       ctx.save();
       ctx.translate(player.x, player.y);
 
-      // torso
-      const torsoW = 16;
-      const torsoH = 17;
-      const torsoX = (player.w - torsoW) / 2;
-      const torsoY = 14;
-      ctx.fillStyle = "#22c55e";
-      ctx.fillRect(torsoX, torsoY, torsoW, torsoH);
-
-      // head
-      const headSize = 13;
-      const headX = (player.w - headSize) / 2;
-      const headY = 2;
-      ctx.fillStyle = "#facc15";
-      if (ctx.roundRect) {
-        ctx.beginPath();
-        ctx.roundRect(headX, headY, headSize, headSize, 4);
-        ctx.fill();
-      } else {
-        ctx.fillRect(headX, headY, headSize, headSize);
-      }
-
-      // visor / band
-      ctx.fillStyle = "#0f172a";
-      ctx.fillRect(headX + 2, headY + 4, headSize - 4, 5);
-
-      // face detail
-      ctx.fillStyle = "#a5b4fc";
-      ctx.fillRect(headX + 3, headY + 5, 3, 2);
-      ctx.fillRect(headX + 8, headY + 5, 3, 2);
-
-      // arms (muy rápidos)
-      const armBaseY = torsoY + 7;
-      const armLen = 12;
-      const armSwing = Math.sin(runAnimTime * 90) * 5;
-      ctx.strokeStyle = "#22c55e";
-      ctx.lineCap = "round";
-      ctx.lineWidth = 3;
-
-      // front arm
-      ctx.beginPath();
-      ctx.moveTo(torsoX + torsoW, armBaseY);
-      ctx.lineTo(
-        torsoX + torsoW + armLen * 0.9,
-        armBaseY + armSwing
-      );
-      ctx.stroke();
-
-      // back arm
-      ctx.beginPath();
-      ctx.moveTo(torsoX, armBaseY + 3);
-      ctx.lineTo(
-        torsoX - armLen * 0.6,
-        armBaseY - armSwing * 0.8
-      );
-      ctx.stroke();
-
-      // legs (muy rápidos)
-      const legBaseY = torsoY + torsoH;
+      // Piernas (rápidas)
+      const legBaseY = player.h - 6;
       const legBaseX = player.w / 2;
-      const legLen = 10;
-      const legSwing = Math.sin(runAnimTime * 90 + Math.PI) * 7;
+      const legLen = 14;
+      const legSwing = Math.sin(runAnimTime * 90 + Math.PI) * 9;
 
-      ctx.strokeStyle = "#4ade80";
+      ctx.strokeStyle = "#22c55e";
       ctx.lineWidth = 4;
+      ctx.lineCap = "round";
 
-      // right leg
+      // pierna derecha
       ctx.beginPath();
-      ctx.moveTo(legBaseX + 2, legBaseY);
+      ctx.moveTo(legBaseX + 3, legBaseY);
       ctx.lineTo(
-        legBaseX + 2 + legSwing,
+        legBaseX + 3 + legSwing,
         legBaseY + legLen
       );
       ctx.stroke();
 
-      // left leg
+      // pierna izquierda
       ctx.beginPath();
-      ctx.moveTo(legBaseX - 2, legBaseY);
+      ctx.moveTo(legBaseX - 3, legBaseY);
       ctx.lineTo(
-        legBaseX - 2 - legSwing,
+        legBaseX - 3 - legSwing,
         legBaseY + legLen
       );
       ctx.stroke();
+
+      // Cabeza: PNG grande (sin cuerpo)
+      const headSize = 34;
+      const headX = (player.w - headSize) / 2;
+      const headY = 4; // más arriba para dejar buen espacio para las piernas
+
+      if (faceImg.complete && faceImg.naturalWidth) {
+        ctx.drawImage(faceImg, headX, headY, headSize, headSize);
+      } else {
+        ctx.fillStyle = "#facc15";
+        if (ctx.roundRect) {
+          ctx.beginPath();
+          ctx.roundRect(headX, headY, headSize, headSize, 6);
+          ctx.fill();
+        } else {
+          ctx.fillRect(headX, headY, headSize, headSize);
+        }
+        ctx.fillStyle = "#0f172a";
+        ctx.fillRect(headX + 4, headY + 8, headSize - 8, 7);
+      }
 
       ctx.restore();
 
@@ -1530,16 +1611,24 @@
         ctx.translate(o.x, o.y);
 
         let color = "#f97373";
-        if (o.vType === "mid") color = "#fb923c";
-        if (o.vType === "ceiling") color = "#facc15";
+        if (o.vType === "mid") color = "#fbbf24";
+        if (o.vType === "ceiling") color = "#22d3ee";
 
         ctx.fillStyle = color;
         ctx.strokeStyle = "rgba(15, 23, 42, 0.9)";
         ctx.lineWidth = 2;
 
         if (o.shape === "box") {
-          ctx.fillRect(0, 0, o.w, o.h);
-          ctx.strokeRect(0, 0, o.w, o.h);
+          ctx.beginPath();
+          const radius = 6;
+          if (ctx.roundRect) {
+            ctx.roundRect(0, 0, o.w, o.h, radius);
+            ctx.fill();
+            ctx.stroke();
+          } else {
+            ctx.fillRect(0, 0, o.w, o.h);
+            ctx.strokeRect(0, 0, o.w, o.h);
+          }
         } else if (o.shape === "circle") {
           const r = Math.min(o.w, o.h) / 2;
           ctx.beginPath();
@@ -1565,7 +1654,7 @@
         ctx.translate(p.x, p.y);
 
         if (p.kind === "shield") {
-          ctx.fillStyle = "#38bdf8";
+          ctx.fillStyle = "#22d3ee";
           ctx.strokeStyle = "#0f172a";
           ctx.lineWidth = 2;
           const r = p.w / 2;
@@ -1573,7 +1662,7 @@
           ctx.arc(r, r, r, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
-          ctx.fillStyle = "#e5f0ff";
+          ctx.fillStyle = "#e5e7eb";
           ctx.font = "bold 14px system-ui";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
@@ -1582,7 +1671,7 @@
           ctx.fillStyle = "#22c55e";
           ctx.strokeStyle = "#052e16";
           ctx.lineWidth = 2;
-          const radius = 6;
+          const radius = 7;
           if (ctx.roundRect) {
             ctx.beginPath();
             ctx.roundRect(0, 0, p.w, p.h, radius);
@@ -1595,12 +1684,12 @@
           ctx.strokeStyle = "#e5f0ff";
           ctx.lineWidth = 2;
           ctx.beginPath();
-          ctx.moveTo(p.w / 2, p.h - 6);
-          ctx.lineTo(p.w / 2, 8);
-          ctx.moveTo(p.w / 2, 8);
-          ctx.lineTo(p.w / 2 - 5, 13);
-          ctx.moveTo(p.w / 2, 8);
-          ctx.lineTo(p.w / 2 + 5, 13);
+          ctx.moveTo(p.w / 2, p.h - 7);
+          ctx.lineTo(p.w / 2, 9);
+          ctx.moveTo(p.w / 2, 9);
+          ctx.lineTo(p.w / 2 - 6, 15);
+          ctx.moveTo(p.w / 2, 9);
+          ctx.lineTo(p.w / 2 + 6, 15);
           ctx.stroke();
         } else if (p.kind === "score") {
           ctx.fillStyle = "#facc15";
@@ -1635,9 +1724,9 @@
           ctx.lineWidth = 2;
           ctx.beginPath();
           ctx.moveTo(r, r);
-          ctx.lineTo(r, r - 7);
+          ctx.lineTo(r, r - 8);
           ctx.moveTo(r, r);
-          ctx.lineTo(r + 6, r + 3);
+          ctx.lineTo(r + 7, r + 4);
           ctx.stroke();
         }
 
@@ -1652,12 +1741,12 @@
       ctx.lineTo(WORLD_WIDTH, GROUND_Y + 1);
       ctx.stroke();
 
-      // Notita de saltos al lado del jugador
+      // Notita de saltos
       const jumpsLeft = Math.max(0, maxJumps - player.jumpsUsed);
-      const noteX = player.x + player.w + 10;
+      const noteX = player.x + player.w + 12;
       const noteY = player.y + 2;
-      const noteW = 78;
-      const noteH = 24;
+      const noteW = 90;
+      const noteH = 26;
       ctx.fillStyle = "rgba(15, 23, 42, 0.9)";
       ctx.fillRect(noteX, noteY, noteW, noteH);
       ctx.strokeStyle = "rgba(148, 163, 184, 0.9)";
@@ -1693,12 +1782,13 @@
       showView("game");
       isRunning = true;
       lastTime = 0;
-      playStartSound();
+      playMusic();
       requestAnimationFrame(loop);
     }
 
     function endGame() {
       isRunning = false;
+      stopMusic();
       const score = liveScore();
       if (score > bestScore) bestScore = score;
 
@@ -1730,7 +1820,6 @@
           startGame();
         }
       } else if (e.key === "Shift" || e.code === "ShiftLeft" || e.code === "ShiftRight") {
-        // Solicitar drop en este frame si estamos en el juego
         if (currentView === "game" && isRunning) {
           dropRequested = true;
         }
@@ -1764,10 +1853,12 @@
     document
       .getElementById("btnInstructions")
       .addEventListener("click", () => {
+        stopMusic();
         showView("instructions");
       });
 
     document.getElementById("btnBackMenu").addEventListener("click", () => {
+      stopMusic();
       showView("menu");
     });
 
@@ -1782,6 +1873,7 @@
     });
 
     document.getElementById("btnGoMenu").addEventListener("click", () => {
+      stopMusic();
       showView("menu");
     });
   </script>
