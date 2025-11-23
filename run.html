@@ -483,7 +483,7 @@
               <li>Press <span class="kbd">Space</span> (or tap on mobile) to jump.</li>
               <li>You can chain up to <strong>3 jumps</strong> in the air by default.</li>
               <li>Stomping an obstacle from above restores all jumps.</li>
-              <li>Power-ups can temporarily increase your jump capacity.</li>
+              <li>Power-ups can temporarily increase or modify your abilities.</li>
             </ul>
           </div>
 
@@ -493,7 +493,7 @@
               <li>Obstacles come in different shapes and heights: ground, floating and ceiling traps.</li>
               <li>Some obstacles also move horizontally as they slide across the screen.</li>
               <li>Touching an obstacle from the side or below = instant loss (unless shielded).</li>
-              <li>If you land on an obstacle from above you <strong>stomp</strong> it, destroy it, and get bonus points.</li>
+              <li>If you land on an obstacle from above you <strong>stomp</strong> it, destroy it, and get bonus points and jumps back.</li>
               <li>Obstacle intensity grows gradually as time passes.</li>
             </ul>
           </div>
@@ -503,6 +503,8 @@
             <ul>
               <li><strong>Shield</strong>: absorbs one hit and turns it into a safe smash.</li>
               <li><strong>Jump Boost</strong>: temporarily increases your available jumps.</li>
+              <li><strong>Score Burst</strong>: grants extra points instantly.</li>
+              <li><strong>Slow Time</strong>: temporarily slows the world speed.</li>
               <li>Catch power-ups by running through them.</li>
             </ul>
           </div>
@@ -510,9 +512,10 @@
           <div>
             <h3>Score</h3>
             <ul>
-              <li><strong>+1</strong> point every second you stay alive.</li>
+              <li><strong>+1</strong> point every second you stay alive (live counter).</li>
               <li><strong>+1</strong> point for each obstacle destroyed (stomp or shield-hit).</li>
-              <li>Your total score is shown live in the top-left corner of the HUD.</li>
+              <li>Some power-ups add bonus points.</li>
+              <li>Your total score is shown live at the top and updates every frame.</li>
             </ul>
           </div>
 
@@ -521,6 +524,7 @@
             <ul>
               <li>Survive to automatically advance through multiple parallax worlds (city, desert, mountains).</li>
               <li>Each level has its own layered background with sun, clouds, hills and buildings.</li>
+              <li>Additional floating platforms let you route above or below, with gaps to drop or climb.</li>
             </ul>
           </div>
 
@@ -566,6 +570,14 @@
           <div class="hud-pill">
             JUMP BOOST:
             <strong id="jumpBoostDisplay">-</strong>
+          </div>
+          <div class="hud-pill">
+            BONUS:
+            <strong id="bonusDisplay">0</strong>
+          </div>
+          <div class="hud-pill">
+            SLOW:
+            <strong id="slowDisplay">Off</strong>
           </div>
         </div>
         <div class="hud-right">
@@ -614,7 +626,7 @@
         </div>
 
         <p class="gameover-label">
-          Tip: Stomp floating or moving traps to refill your triple jumps.
+          Tip: Use upper platforms and stomps to refill jumps and farm extra points.
         </p>
       </div>
     </section>
@@ -651,10 +663,11 @@
     const difficultyDisplay = document.getElementById("difficultyDisplay");
     const shieldDisplay = document.getElementById("shieldDisplay");
     const jumpBoostDisplay = document.getElementById("jumpBoostDisplay");
+    const bonusDisplay = document.getElementById("bonusDisplay");
+    const slowDisplay = document.getElementById("slowDisplay");
 
     let difficulty = "normal";
 
-    // Increased obstacle density
     const difficultySettings = {
       easy: {
         speed: 260,
@@ -697,6 +710,9 @@
     const LEVEL_DURATION = 25;
     const BASE_MAX_JUMPS = 3;
 
+    const PLATFORM_LENGTH = 260;
+    const PLATFORM_GAP = 180;
+
     const scoreDisplay = document.getElementById("scoreDisplay");
     const levelDisplay = document.getElementById("levelDisplay");
 
@@ -711,8 +727,11 @@
     let player;
     let obstacles = [];
     let powerups = [];
+    let platforms = [];
+
     let survivalTime = 0;
     let obstaclesDestroyed = 0;
+    let bonusScore = 0;
     let bestScore = 0;
 
     let obstacleTimer = 0;
@@ -726,6 +745,8 @@
     let maxJumps = BASE_MAX_JUMPS;
     let haveShield = false;
     let jumpBoostTime = 0;
+    let slowTime = 0;
+    let speedFactor = 1;
 
     // Running animation (very fast)
     let runAnimationTime = 0;
@@ -789,6 +810,26 @@
       }`;
     }
 
+    function initPlatforms() {
+      platforms = [];
+      const bands = [
+        { y: GROUND_TOP - 110 },
+        { y: GROUND_TOP - 220 },
+      ];
+      bands.forEach((band, index) => {
+        const baseOffset = index === 0 ? 80 : 260;
+        for (let i = 0; i < 3; i++) {
+          platforms.push({
+            x: baseOffset + i * (PLATFORM_LENGTH + PLATFORM_GAP),
+            w: PLATFORM_LENGTH,
+            y: band.y,
+            h: 18,
+            band: index,
+          });
+        }
+      });
+    }
+
     function randRange(min, max) {
       return min + Math.random() * (max - min);
     }
@@ -839,10 +880,13 @@
         jumpCount: 0,
       };
 
+      initPlatforms();
+
       obstacles = [];
       powerups = [];
       survivalTime = 0;
       obstaclesDestroyed = 0;
+      bonusScore = 0;
       obstacleTimer = 0;
       powerTimer = 0;
       const spawnWindow = computeObstacleSpawnWindow();
@@ -853,6 +897,8 @@
       maxJumps = BASE_MAX_JUMPS;
       haveShield = false;
       jumpBoostTime = 0;
+      slowTime = 0;
+      speedFactor = 1;
       applyLevelTheme();
       updateScoreDisplay();
       updatePowerHud();
@@ -935,8 +981,8 @@
     }
 
     function spawnPowerup() {
-      const kindRoll = Math.random();
-      const kind = kindRoll < 0.5 ? "shield" : "jump";
+      const kinds = ["shield", "jump", "score", "slow"];
+      const kind = kinds[Math.floor(Math.random() * kinds.length)];
 
       const size = 32;
       const heightRoll = Math.random();
@@ -972,7 +1018,8 @@
     }
 
     function getDisplayedScore() {
-      return Math.floor(survivalTime) + obstaclesDestroyed;
+      // Live score: 1 pt/s + 1 per obstacle + bonus from powers
+      return Math.floor(survivalTime) + obstaclesDestroyed + bonusScore;
     }
 
     function updateScoreDisplay() {
@@ -987,6 +1034,8 @@
       } else {
         jumpBoostDisplay.textContent = "-";
       }
+      bonusDisplay.textContent = bonusScore;
+      slowDisplay.textContent = slowTime > 0 ? "On" : "Off";
     }
 
     // ---------- Audio ----------
@@ -1066,17 +1115,59 @@
         haveShield = true;
       } else if (kind === "jump") {
         jumpBoostTime = 10;
+      } else if (kind === "score") {
+        bonusScore += 10;
+      } else if (kind === "slow") {
+        slowTime = 6;
+        speedFactor = 0.6;
       }
       updatePowerHud();
+    }
+
+    function updatePlatforms(dt, gameSpeed) {
+      // Move and wrap platforms band by band
+      for (let bandIndex = 0; bandIndex < 2; bandIndex++) {
+        let maxXInBand = -Infinity;
+        platforms.forEach((p) => {
+          if (p.band === bandIndex && p.x > maxXInBand) {
+            maxXInBand = p.x;
+          }
+        });
+
+        platforms.forEach((p) => {
+          if (p.band !== bandIndex) return;
+          p.x -= gameSpeed * dt;
+          if (p.x + p.w < -120) {
+            p.x = maxXInBand + PLATFORM_LENGTH + PLATFORM_GAP;
+            maxXInBand = p.x;
+          }
+        });
+      }
     }
 
     function updateGame(dt) {
       if (!isRunning) return;
 
-      const settings = difficultySettings[difficulty];
-      const gameSpeed = settings.speed;
+      // Timers and powers
+      if (jumpBoostTime > 0) {
+        jumpBoostTime -= dt;
+        if (jumpBoostTime < 0) jumpBoostTime = 0;
+      }
+      if (slowTime > 0) {
+        slowTime -= dt;
+        if (slowTime <= 0) {
+          slowTime = 0;
+          speedFactor = 1;
+        }
+      }
 
-      // Level progression
+      maxJumps = jumpBoostTime > 0 ? 5 : BASE_MAX_JUMPS;
+      updatePowerHud();
+
+      const settings = difficultySettings[difficulty];
+      const gameSpeed = settings.speed * speedFactor;
+
+      // Level progression & live time score
       survivalTime += dt;
       const targetLevel =
         Math.floor(survivalTime / LEVEL_DURATION);
@@ -1085,28 +1176,48 @@
         applyLevelTheme();
       }
 
-      // Power timers & max jumps
-      if (jumpBoostTime > 0) {
-        jumpBoostTime -= dt;
-        if (jumpBoostTime < 0) jumpBoostTime = 0;
-      }
-      maxJumps = jumpBoostTime > 0 ? 5 : BASE_MAX_JUMPS;
-      updatePowerHud();
-
       // Player physics
       const prevBottom = player.y + player.h;
 
       player.vy += GRAVITY * dt;
       let newY = player.y + player.vy * dt;
-      const newBottom = newY + player.h;
+      let newBottom = newY + player.h;
+      let onPlatform = false;
 
-      if (newBottom >= GROUND_TOP) {
+      // Platforms collision (from above only)
+      for (let i = 0; i < platforms.length; i++) {
+        const pf = platforms[i];
+        const platformTop = pf.y;
+        const overlapsHoriz =
+          player.x + player.w > pf.x &&
+          player.x < pf.x + pf.w;
+
+        if (
+          overlapsHoriz &&
+          prevBottom <= platformTop &&
+          newBottom >= platformTop
+        ) {
+          newY = platformTop - player.h;
+          newBottom = newY + player.h;
+          player.vy = 0;
+          player.jumpCount = 0; // landing on platform restores jumps
+          onPlatform = true;
+          break;
+        }
+      }
+
+      // Ground collision
+      if (!onPlatform && newBottom >= GROUND_TOP) {
         newY = GROUND_TOP - player.h;
+        newBottom = newY + player.h;
         player.vy = 0;
         player.jumpCount = 0;
       }
 
       player.y = newY;
+
+      // Platforms movement
+      updatePlatforms(dt, gameSpeed);
 
       // Obstacles movement
       obstacleTimer += dt;
@@ -1236,7 +1347,7 @@
       }
       ctx.restore();
 
-      // Distant mountains / dunes / hills (depend on theme)
+      // Distant mountains / dunes / hills / buildings
       ctx.save();
       if (theme.name === "Mountains") {
         ctx.fillStyle = theme.far;
@@ -1321,6 +1432,17 @@
         );
       });
 
+      // Platforms (extra floors with gaps)
+      ctx.save();
+      ctx.fillStyle = "rgba(236, 239, 241, 0.95)";
+      ctx.strokeStyle = "rgba(120, 144, 156, 0.9)";
+      ctx.lineWidth = 2;
+      platforms.forEach((pf) => {
+        ctx.fillRect(pf.x, pf.y, pf.w, pf.h);
+        ctx.strokeRect(pf.x, pf.y, pf.w, pf.h);
+      });
+      ctx.restore();
+
       // Player (smaller runner)
       ctx.save();
       ctx.translate(player.x, player.y);
@@ -1366,7 +1488,7 @@
       );
       ctx.stroke();
 
-      // Arms (even faster movement)
+      // Arms (very fast movement)
       const armBaseY = torsoY + 8;
       const armLength = 14;
       const armSwing = Math.sin(runAnimationTime * 90) * 5;
@@ -1393,7 +1515,7 @@
       );
       ctx.stroke();
 
-      // Legs (even faster movement)
+      // Legs (very fast movement)
       const legBaseY = torsoY + torsoH;
       const legBaseX = player.w / 2;
       const legLength = 22;
@@ -1501,6 +1623,47 @@
           ctx.lineTo(p.w / 2 - 5, 13);
           ctx.moveTo(p.w / 2, 8);
           ctx.lineTo(p.w / 2 + 5, 13);
+          ctx.stroke();
+        } else if (p.kind === "score") {
+          // Score Burst: star
+          ctx.fillStyle = "#ffd54f";
+          ctx.strokeStyle = "rgba(0,0,0,0.5)";
+          ctx.lineWidth = 2;
+          const cx = p.w / 2;
+          const cy = p.h / 2;
+          const outer = 14;
+          const inner = 6;
+          ctx.beginPath();
+          for (let i = 0; i < 10; i++) {
+            const angle = (i * Math.PI) / 5;
+            const r = i % 2 === 0 ? outer : inner;
+            const x = cx + Math.cos(angle) * r;
+            const y = cy + Math.sin(angle) * r;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+        } else if (p.kind === "slow") {
+          // Slow Time: clock
+          ctx.fillStyle = "#b39ddb";
+          ctx.strokeStyle = "rgba(0,0,0,0.5)";
+          ctx.lineWidth = 2;
+          const r = p.w / 2;
+          ctx.beginPath();
+          ctx.arc(r, r, r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 2;
+          // clock hands
+          ctx.beginPath();
+          ctx.moveTo(r, r);
+          ctx.lineTo(r, r - 7);
+          ctx.moveTo(r, r);
+          ctx.lineTo(r + 6, r + 3);
           ctx.stroke();
         }
 
