@@ -451,7 +451,8 @@
           <div class="section">
             <div class="section-title">Controls</div>
             <p class="hint">
-              Desktop: press <span class="kbd">Space</span> to jump (up to 3 jumps in mid-air).<br />
+              Desktop: press <span class="kbd">Space</span> to jump (up to 3 jumps in mid-air),
+              <span class="kbd">Shift</span> to drop down from a platform.<br />
               Mobile: tap on the game area to jump.
             </p>
           </div>
@@ -477,6 +478,11 @@
                 <li>You can chain up to <strong>3 jumps</strong> by default.</li>
                 <li>Landing on the ground or platforms restores all jumps.</li>
                 <li>Stomping an obstacle from above also restores all jumps.</li>
+                <li>
+                  Press <span class="kbd">Shift</span> while standing on a platform to
+                  drop down through it (no gap required).
+                </li>
+                <li>There is a ceiling: you cannot go higher than the top limit.</li>
               </ul>
             </div>
 
@@ -574,7 +580,7 @@
 
       <canvas id="gameCanvas" width="960" height="540"></canvas>
       <p class="touch-hint">
-        Space / tap = jump (up to 3 jumps by default).<br />
+        Space / tap = jump (up to 3 jumps by default). Shift = drop down from platforms.<br />
         Stomp obstacles from above to refill jumps and gain points.
       </p>
     </section>
@@ -611,7 +617,7 @@
           </div>
 
           <p class="go-tip">
-            Tip: Use upper floors to dodge dense waves and stomp to keep your triple jump alive.
+            Tip: Use upper floors to dodge dense waves, drop with Shift, and stomp to keep your triple jump alive.
           </p>
         </div>
       </div>
@@ -736,6 +742,7 @@
     const WORLD_HEIGHT = canvas.height;
     const GROUND_HEIGHT = 120;
     const GROUND_Y = WORLD_HEIGHT - GROUND_HEIGHT;
+    const CEILING_Y = 30; // top limit for the runner
 
     const GRAVITY = 2000;
     const JUMP_FORCE = 750;
@@ -787,6 +794,9 @@
     let speedFactor = 1;
 
     let runAnimTime = 0;
+
+    // Drop-through control
+    let dropRequested = false;
 
     const themes = [
       {
@@ -909,12 +919,12 @@
         },
       ];
 
-      // Runner aún más bajito
+      // Runner: más bajo y más cuadrado
       player = {
-        w: 28,
-        h: 46,
+        w: 30,
+        h: 36,
         x: WORLD_WIDTH * 0.16,
-        y: GROUND_Y - 46,
+        y: GROUND_Y - 36,
         vy: 0,
         jumpsUsed: 0,
       };
@@ -944,10 +954,10 @@
       updateScoreHUD();
       updatePowerHUD();
       runAnimTime = 0;
+      dropRequested = false;
     }
 
     function spawnObstacle() {
-      const cfg = difficultySettings[difficulty];
       const typeRoll = Math.random();
 
       let w, h;
@@ -1139,15 +1149,35 @@
       player.vy += GRAVITY * dt;
       let newY = player.y + player.vy * dt;
       let newBottom = newY + player.h;
+
+      // Tope superior (techo): no puede superar el techo, pero no pierde
+      if (newY < CEILING_Y) {
+        newY = CEILING_Y;
+        newBottom = newY + player.h;
+        if (player.vy < 0) player.vy = 0;
+      }
+
       let onPlatform = false;
 
-      // Plataformas (desde arriba)
+      // Plataformas (desde arriba), considerando drop con Shift
       for (let i = 0; i < platforms.length; i++) {
         const pf = platforms[i];
         const top = pf.y;
         const overlapX =
           player.x + player.w > pf.x &&
           player.x < pf.x + pf.w;
+
+        // Si se ha pedido un drop y estamos sobre la plataforma, la atravesamos
+        if (
+          dropRequested &&
+          overlapX &&
+          prevBottom >= top - 2 &&
+          prevBottom <= top + 6
+        ) {
+          // ignorar esta plataforma este frame para caer
+          continue;
+        }
+
         if (
           overlapX &&
           prevBottom <= top &&
@@ -1265,6 +1295,9 @@
       // Animación de correr
       runAnimTime += dt;
       updateScoreHUD();
+
+      // Drop-request se consume en este frame
+      dropRequested = false;
     }
 
     // DIBUJO
@@ -1301,6 +1334,17 @@
       ctx.beginPath();
       ctx.arc(WORLD_WIDTH * 0.1, 70, 36, 0, Math.PI * 2);
       ctx.fill();
+      ctx.restore();
+
+      // Línea visual de techo
+      ctx.save();
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.4)";
+      ctx.setLineDash([6, 6]);
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, CEILING_Y);
+      ctx.lineTo(WORLD_WIDTH, CEILING_Y);
+      ctx.stroke();
       ctx.restore();
     }
 
@@ -1391,20 +1435,20 @@
       });
       ctx.restore();
 
-      // Runner (pequeño)
+      // Runner (más bajo y cuadrado)
       ctx.save();
       ctx.translate(player.x, player.y);
 
       // torso
-      const torsoW = 14;
-      const torsoH = 20;
+      const torsoW = 16;
+      const torsoH = 17;
       const torsoX = (player.w - torsoW) / 2;
-      const torsoY = 16;
+      const torsoY = 14;
       ctx.fillStyle = "#22c55e";
       ctx.fillRect(torsoX, torsoY, torsoW, torsoH);
 
       // head
-      const headSize = 14;
+      const headSize = 13;
       const headX = (player.w - headSize) / 2;
       const headY = 2;
       ctx.fillStyle = "#facc15";
@@ -1422,7 +1466,7 @@
 
       // face detail
       ctx.fillStyle = "#a5b4fc";
-      ctx.fillRect(headX + 4, headY + 5, 3, 2);
+      ctx.fillRect(headX + 3, headY + 5, 3, 2);
       ctx.fillRect(headX + 8, headY + 5, 3, 2);
 
       // arms (muy rápidos)
@@ -1454,7 +1498,7 @@
       // legs (muy rápidos)
       const legBaseY = torsoY + torsoH;
       const legBaseX = player.w / 2;
-      const legLen = 18;
+      const legLen = 10;
       const legSwing = Math.sin(runAnimTime * 90 + Math.PI) * 7;
 
       ctx.strokeStyle = "#4ade80";
@@ -1684,6 +1728,11 @@
           tryJump();
         } else if (currentView === "gameOver" && !isRunning) {
           startGame();
+        }
+      } else if (e.key === "Shift" || e.code === "ShiftLeft" || e.code === "ShiftRight") {
+        // Solicitar drop en este frame si estamos en el juego
+        if (currentView === "game" && isRunning) {
+          dropRequested = true;
         }
       }
     });
