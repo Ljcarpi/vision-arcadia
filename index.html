@@ -9,8 +9,6 @@
     content="Vision-Arcadia: automatizaciones, agentes de IA para tu negocio, bots de WhatsApp/Telegram, diseño y despliegue de sitios web. De la idea a producción, con foco en resultados."
   />
   <link rel="icon" type="image/png" href="/assets/vision-arcadia/icon.png" />
-
-  <!-- Preload para que la primera imagen del carrusel cargue más rápido -->
   <link rel="preload" as="image" href="/assets/vision-arcadia/imagen1.png" />
 
   <!-- Fuentes -->
@@ -85,6 +83,7 @@
       justify-content: space-between;
       height: 68px;
       column-gap: 4.5rem;
+      position: relative;
     }
 
     .nav-brand {
@@ -149,26 +148,28 @@
 
     /* HERO */
     .hero {
-      padding: 2.6rem 0 2.4rem;
+      padding: 2.4rem 0 1.6rem;
       background: linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0.00));
+      border-top: none;
     }
 
     .hero-inner {
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.05fr);
-      gap: 2.5rem;
+      display: flex;
+      flex-direction: column;
       align-items: center;
+      text-align: center;
+      gap: 1.35rem;
     }
 
-    .hero-logo-wrapper { display: flex; justify-content: center; align-items: center; }
+    .hero-logo-wrapper { display: flex; justify-content: center; align-items: center; width: 100%; }
 
     .hero-logo-card {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 20px;
-      padding: 1.8rem 1.4rem;
+      padding: 1.2rem 1.05rem;
       border: 1px solid rgba(255, 255, 255, 0.10);
       box-shadow: var(--shadow-soft);
-      max-width: 380px;
+      max-width: 300px;   /* más chico */
       width: 100%;
       overflow: hidden;
       position: relative;
@@ -187,35 +188,13 @@
 
     .hero-logo-card img { position: relative; z-index: 1; }
 
-    .hero-socials {
-      position: relative;
-      z-index: 1;
-      margin-top: 1rem;
+    .hero-content {
       display: flex;
-      justify-content: center;
-      gap: 0.6rem;
-    }
-
-    .hero-socials a {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      transition: transform 0.18s ease, background 0.18s ease;
+      gap: 1.0rem;
+      width: 100%;
     }
-
-    .hero-socials a:hover {
-      transform: translateY(-2px);
-      background: rgba(255, 255, 255, 0.10);
-    }
-
-    .hero-socials img { width: 18px; height: 18px; opacity: 0.92; }
-
-    .hero-content { display: flex; flex-direction: column; gap: 1.35rem; }
 
     .eyebrow {
       text-transform: uppercase;
@@ -226,8 +205,8 @@
 
     .hero-title {
       font-family: 'Cinzel', serif;
-      font-size: clamp(1.7rem, 2.4vw, 2.35rem);
-      line-height: 1.25;
+      font-size: clamp(1.8rem, 2.8vw, 2.55rem);
+      line-height: 1.22;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--color-text);
@@ -236,11 +215,12 @@
     .hero-subtitle {
       font-size: 0.98rem;
       color: var(--color-text-muted);
-      max-width: 34rem;
+      max-width: 44rem;
     }
 
     .hero-badges {
       display: flex;
+      justify-content: center;
       flex-wrap: wrap;
       gap: 0.75rem;
     }
@@ -258,9 +238,10 @@
 
     .hero-actions {
       display: flex;
+      justify-content: center;
       flex-wrap: wrap;
       gap: 0.75rem;
-      margin-top: 0.1rem;
+      margin-top: 0.15rem;
     }
 
     .btn-primary {
@@ -329,6 +310,90 @@
       margin-top: 0.55rem;
       font-size: 0.95rem;
       color: var(--color-text-muted);
+    }
+
+    /* STACK / HERRAMIENTAS */
+    .stack {
+      padding: 1.9rem 0 2.2rem;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .stack-inner {
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(255, 255, 255, 0.03);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+      padding: 1.25rem 1.25rem;
+    }
+
+    .stack-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin-bottom: 1.1rem;
+      text-align: center;
+    }
+
+    .stack-header .kicker {
+      text-transform: uppercase;
+      font-size: 0.74rem;
+      letter-spacing: 0.24em;
+      color: rgba(233,231,255,0.62);
+    }
+
+    .stack-header h2 {
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      font-size: 1.12rem;
+      color: rgba(233,231,255,0.96);
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.85rem;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .stack-card {
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(0, 0, 0, 0.22);
+      padding: 0.95rem 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      min-height: 66px;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .stack-card:hover {
+      transform: translateY(-1px);
+      background: rgba(0, 0, 0, 0.30);
+    }
+
+    .stack-card img {
+      height: 26px;
+      width: auto;
+      opacity: 0.92;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.35));
+    }
+
+    .stack-card .fallback {
+      font-size: 0.86rem;
+      color: rgba(233,231,255,0.85);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .stack-note {
+      margin-top: 0.95rem;
+      text-align: center;
+      font-size: 0.86rem;
+      color: rgba(233,231,255,0.62);
     }
 
     /* SOBRE */
@@ -670,14 +735,13 @@
 
     /* RESPONSIVE */
     @media (max-width: 960px) {
-      .hero-inner, .about-grid, .experience-layout, .reservas-grid, .contact-grid {
+      .about-grid, .experience-layout, .reservas-grid, .contact-grid {
         grid-template-columns: minmax(0, 1fr);
       }
-      .hero { padding-top: 2rem; }
-      .hero-logo-card { max-width: 340px; }
       .gallery .carousel { height: 230px; }
       .footer-inner { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
       .footer-meta { text-align: left; grid-column: 1 / -1; }
+      .stack-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 768px) {
@@ -706,10 +770,11 @@
 
     @media (max-width: 520px) {
       .hero-actions { flex-direction: column; align-items: stretch; }
-      .hero-title { font-size: 1.6rem; }
+      .hero-title { font-size: 1.62rem; }
       .gallery .carousel { height: 200px; }
       .about-highlight, .reservas-block, .contact-info-card, .contact-actions { padding: 1.05rem 1rem; }
       .nav-bar { column-gap: 1.5rem; }
+      .stack-grid { grid-template-columns: minmax(0, 1fr); }
     }
   </style>
 </head>
@@ -748,7 +813,7 @@
     <section class="hero" id="inicio">
       <div class="container hero-inner">
         <div class="hero-logo-wrapper">
-          <div class="hero-logo-card">
+          <div class="hero-logo-card" aria-label="Logo Vision-Arcadia">
             <img src="/assets/vision-arcadia/icon.png" alt="Logo Vision-Arcadia" />
           </div>
         </div>
@@ -762,9 +827,9 @@
           </h1>
 
           <p class="hero-subtitle">
-            Soy <strong>Vision-Arcadia</strong>. Diseño e implemento automatizaciones y agentes de IA para que tu negocio
-            responda más rápido, venda mejor y pierda menos tiempo en tareas repetitivas. Bots en WhatsApp/Telegram,
-            integraciones, despliegues y sitios web listos para producción.
+            Diseño e implemento automatizaciones y agentes de IA para que tu negocio <strong>responda en minutos</strong>,
+            <strong>cierre más</strong> y deje de perder tiempo en tareas repetitivas. Bots en WhatsApp/Telegram,
+            integraciones y sitios web listos para producción.
           </p>
 
           <div class="hero-badges">
@@ -788,6 +853,50 @@
       </div>
     </section>
 
+    <!-- STACK / HERRAMIENTAS -->
+    <section class="stack" id="stack">
+      <div class="container">
+        <div class="stack-inner">
+          <div class="stack-header">
+            <div class="kicker">Infra real, resultados reales</div>
+            <h2>Herramientas con las que construyo</h2>
+          </div>
+
+          <div class="stack-grid" aria-label="Herramientas utilizadas">
+            <!-- Nota: poné tus archivos acá (ideal: SVG/PNG con fondo transparente)
+                 /assets/partners/n8n.svg
+                 /assets/partners/gemini.svg
+                 /assets/partners/meta.svg
+                 /assets/partners/google-cloud.svg
+            -->
+            <div class="stack-card">
+              <img src="/assets/partners/n8n.svg" alt="n8n" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+              <span class="fallback" style="display:none;">n8n</span>
+            </div>
+
+            <div class="stack-card">
+              <img src="/assets/partners/gemini.svg" alt="Gemini" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+              <span class="fallback" style="display:none;">Gemini</span>
+            </div>
+
+            <div class="stack-card">
+              <img src="/assets/partners/meta.svg" alt="Meta" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+              <span class="fallback" style="display:none;">Meta</span>
+            </div>
+
+            <div class="stack-card">
+              <img src="/assets/partners/google-cloud.svg" alt="Google Cloud" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+              <span class="fallback" style="display:none;">Google Cloud</span>
+            </div>
+          </div>
+
+          <div class="stack-note">
+            No son “partners”: son piezas confiables del stack para que lo tuyo funcione con estabilidad, métricas y mantenimiento simple.
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- SOBRE -->
     <section class="about" id="sobre">
       <div class="container">
@@ -795,8 +904,7 @@
           <div class="section-eyebrow">Sobre mí</div>
           <h2 class="section-title">Tecnología aplicada, sin humo</h2>
           <p class="section-description">
-            Me obsesiona una idea simple: que la tecnología sirva para mover la aguja del negocio. Menos “demo”, más
-            producción. Menos promesas, más sistemas funcionando.
+            Me obsesiona una idea simple: que la tecnología mueva la aguja del negocio. Menos demo, más producción.
           </p>
         </div>
 
@@ -808,13 +916,12 @@
               “atiende” consultas repetidas, ahí suele haber una máquina esperando nacer.
             </p>
             <p>
-              Lo hago con una lógica de ingeniería práctica: entiendo el proceso, defino el resultado, diseño la
-              arquitectura, y recién ahí automatizo. Cuando corresponde, sumo IA: no como adorno, sino como motor.
+              Lo hago con lógica de ingeniería práctica: entiendo el proceso, defino el resultado, diseño la
+              arquitectura y recién ahí automatizo. Cuando corresponde, sumo IA: no como adorno, sino como motor.
             </p>
 
             <div class="about-highlight">
-              <strong>Enfoque:</strong> construir sistemas robustos, medibles y fáciles de operar. Que no dependan de
-              “magia”, sino de buen diseño.
+              <strong>Enfoque:</strong> sistemas robustos, medibles y fáciles de operar. Que no dependan de “magia”, sino de buen diseño.
             </div>
           </div>
 
@@ -909,8 +1016,7 @@
             </div>
 
             <div class="reservas-note">
-              Tip: si me escribís con “qué hacés”, “qué herramientas usás” y “qué objetivo tenés”, acelera mucho la
-              primera propuesta.
+              Tip: si me escribís con “qué hacés”, “qué herramientas usás” y “qué objetivo tenés”, acelera mucho la primera propuesta.
             </div>
           </div>
 
@@ -1012,7 +1118,7 @@
             <div class="contact-row">
               <div class="contact-label">Email (opcional)</div>
               <div class="contact-value">
-                contacto@vision-arcadia.com
+                contacto@vision-arcadia.store
               </div>
             </div>
 
