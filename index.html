@@ -1,399 +1,1181 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <title>Vision-Arcadia — Automatizaciones, Agentes de IA y Web para Negocios</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Vision-Arcadia: automatizaciones, agentes de IA para tu negocio, bots de WhatsApp/Telegram, diseño y despliegue de sitios web. De la idea a producción, con foco en resultados."
+  />
+  <link rel="icon" type="image/png" href="/assets/vision-arcadia/icon.png" />
 
-  <title data-i18n="meta.title">AutoVid Generator — AI Video Startup (Coming Soon)</title>
-  <meta name="description" data-i18n-attr="content|meta.description" content="AutoVid Generator is an emerging startup that hosts and refines text-to-video AI models and delivers personalized user experiences through automated video editing with FFmpeg. Powered by AI models, Google APIs, Gemini, FFmpeg, and more." />
-  <link rel="canonical" href="https://vision-arcadia.store/" />
-  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <!-- Preload para que la primera imagen del carrusel cargue más rápido -->
+  <link rel="preload" as="image" href="/assets/vision-arcadia/imagen1.png" />
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" data-i18n-attr="content|meta.og_title" content="AutoVid Generator — AI Video Startup (Coming Soon)">
-  <meta property="og:description" data-i18n-attr="content|meta.og_desc" content="Emerging startup: hosting & refining text-to-video AI models + automated video editing via FFmpeg. Powered by AI models, Google APIs, Gemini, FFmpeg, and more.">
-  <meta property="og:url" content="https://vision-arcadia.store/">
-  <meta property="og:image" content="https://vision-arcadia.store/og-image.jpg">
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" data-i18n-attr="content|meta.tw_title" content="AutoVid Generator — AI Video Startup (Coming Soon)">
-  <meta name="twitter:description" data-i18n-attr="content|meta.tw_desc" content="Hosting & refining text-to-video AI models with automated FFmpeg editing. Uses AI models, Google APIs, Gemini, FFmpeg, and more.">
-  <meta name="twitter:image" content="https://vision-arcadia.store/og-image.jpg">
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-
-  <!-- Structured Data (queda en EN por SEO) -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Organization",
-    "name":"Vision Arcadia",
-    "url":"https://vision-arcadia.store/",
-    "brand":"AutoVid Generator",
-    "description":"Emerging startup hosting and refining text-to-video AI models to power personalized, automated video creation with FFmpeg.",
-    "logo":"https://vision-arcadia.store/favicon.ico",
-    "email":"info@vision-arcadia.store",
-    "foundingDate":"2025-01-01",
-    "sameAs":[]
-  }
-  </script>
+  <!-- Iconos -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
 
   <style>
     :root {
-      --bg: #0b0d10;
-      --fg: #e8eef5;
-      --muted: #9fb0c3;
-      --card: #12161b;
-      --acc: #52a8ff;
-      --disabled: #4b5a6e;
+      --color-bg: #0b0f1a;
+      --color-bg-soft: rgba(255, 255, 255, 0.06);
+      --color-bg-soft-alt: rgba(255, 255, 255, 0.04);
+      --color-primary: #7c3aed;           /* violeta */
+      --color-primary-2: #22d3ee;         /* cian */
+      --color-primary-soft: rgba(124, 58, 237, 0.14);
+      --color-text: #e9e7ff;
+      --color-text-muted: rgba(233, 231, 255, 0.72);
+      --color-border: rgba(255, 255, 255, 0.12);
+      --shadow-soft: 0 18px 46px rgba(0, 0, 0, 0.45);
     }
-    * { box-sizing: border-box; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      margin: 0;
-      font-family: Inter, system-ui, Segoe UI, sans-serif;
-      background: linear-gradient(180deg, #0b0d10, #0e141a);
-      color: var(--fg);
+      font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(124,58,237,0.20), transparent 60%),
+                  radial-gradient(900px 500px at 80% 0%, rgba(34,211,238,0.18), transparent 55%),
+                  radial-gradient(1100px 700px at 50% 100%, rgba(124,58,237,0.12), transparent 65%),
+                  var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
     }
-    .wrap { max-width: 1000px; margin: 0 auto; padding: 64px 24px; }
 
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    .page-wrapper { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* NAVBAR */
     header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 56px; position: relative;
-    }
-    .brand { font-weight: 800; font-size: 28px; letter-spacing: .5px;
-      background: linear-gradient(90deg, var(--acc), #7bbcff);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
-    .brand-container { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
-    .brand-subtext { font-size: 14px; color: var(--muted); }
-
-    .startup-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: #0b6dd6; color: white; border-radius: 999px;
-      padding: 8px 14px; font-size: 12px; font-weight: 700; letter-spacing: .4px;
-    }
-    .startup-badge svg { width: 14px; height: 14px; }
-
-    .lang-switch {
-      display: inline-flex; align-items: center; gap: 10px;
-      position: absolute; top: -36px; right: 0;
-      background: #0f141a; border: 1px solid #1c232b; border-radius: 999px;
-      padding: 6px 10px; font-size: 12px; color: var(--muted);
-    }
-    .lang-switch button {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: transparent; color: var(--fg); border: none; cursor: pointer;
-      padding: 4px 8px; border-radius: 999px; font-weight: 700;
-    }
-    .lang-switch button[aria-current="true"]{
-      background: #0b6dd6; color: white;
-    }
-    .flag { width: 16px; height: 12px; border-radius: 2px; overflow: hidden; display: inline-block; }
-    .flag svg { display: block; width: 16px; height: 12px; }
-
-    .card {
-      background: var(--card); border: 1px solid #1c232b; border-radius: 24px;
-      padding: 40px; box-shadow: 0 12px 40px rgba(0,0,0,.3); transition: transform .3s ease;
-    }
-    .card:hover { transform: translateY(-5px); }
-
-    h1 { margin: 0 0 16px; font-size: 40px; font-weight: 800; line-height: 1.2; }
-    h3 { font-size: 20px; font-weight: 600; margin: 0 0 12px; }
-    p { color: var(--muted); line-height: 1.7; font-size: 16px; }
-
-    .grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); margin-top: 32px; }
-
-    .pill {
-      display: inline-block; background: #0b6dd6; color: #fff;
-      border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(11, 15, 26, 0.72);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
     }
 
-    .cta {
-      display: inline-flex; flex-direction: column; align-items: center; gap: 6px;
-      background: var(--disabled); color: #8ea0b8; border: 0; border-radius: 12px;
-      padding: 16px 24px; font-weight: 700; font-size: 16px; text-decoration: none; margin-top: 24px;
-      cursor: not-allowed;
-    }
-    .cta span { font-size: 12px; font-weight: 400; color: #9fb0c3; }
-
-    footer { margin-top: 48px; color: #73839a; font-size: 13px; text-align: center; }
-    .privacy-policy { margin-top: 16px; color: #73839a; font-size: 12px; line-height: 1.6; text-align: center; }
-    .privacy-policy a { color: #73839a; text-decoration: none; }
-    .muted { color: #8ea0b8; }
-    .section { margin-top: 32px; }
-
-    .kpis { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
-    .kpi { background: #0f141a; border: 1px solid #1c232b; border-radius: 12px; padding: 14px 18px; color: #c9d7e6; font-size: 14px; font-weight: 600; }
-
-    @media (max-width:520px){
-      h1 { font-size: 32px; }
-      .card { padding: 24px; }
-      .wrap { padding: 32px 16px; }
-      .lang-switch { top: -44px; }
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      column-gap: 4.5rem;
     }
 
-    .test-btn {
-      background: linear-gradient(90deg, #6a5acd, #1e90ff);
-      color: white; padding: 12px 24px; border-radius: 30px; font-weight: 700;
-      text-decoration: none; font-size: 16px; transition: all .3s ease;
-      box-shadow: 0 6px 16px rgba(0,0,0,.3);
-      position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+    .nav-brand {
+      font-family: 'Cinzel', serif;
+      font-weight: 500;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-size: 0.92rem;
+      white-space: nowrap;
     }
-    .test-btn:hover { background: linear-gradient(90deg, #1e90ff, #6a5acd); transform: translateX(-50%) scale(1.05); }
+
+    .nav-brand span {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      font-size: 0.88rem;
+    }
+
+    .nav-menu a {
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 0.20em;
+      font-weight: 300;
+      color: var(--color-text-muted);
+    }
+
+    .nav-menu a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.3rem;
+      width: 0;
+      height: 1px;
+      background: linear-gradient(to right, var(--color-primary-2), transparent);
+      transition: width 0.25s ease;
+    }
+
+    .nav-menu a:hover { color: var(--color-text); }
+    .nav-menu a:hover::after { width: 72%; }
+
+    .nav-cta {
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: linear-gradient(135deg, rgba(124,58,237,0.95), rgba(34,211,238,0.85));
+      font-size: 0.82rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #0b0f1a !important;
+      font-weight: 700;
+      box-shadow: 0 14px 28px rgba(124,58,237,0.20);
+    }
+
+    .nav-toggle { display: none; font-size: 1.4rem; cursor: pointer; }
+
+    /* HERO */
+    .hero {
+      padding: 2.6rem 0 2.4rem;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0.00));
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.05fr);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .hero-logo-wrapper { display: flex; justify-content: center; align-items: center; }
+
+    .hero-logo-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 1.8rem 1.4rem;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: var(--shadow-soft);
+      max-width: 380px;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-logo-card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: radial-gradient(450px 220px at 20% 10%, rgba(34,211,238,0.22), transparent 60%),
+                  radial-gradient(480px 240px at 80% 0%, rgba(124,58,237,0.25), transparent 55%);
+      filter: blur(10px);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-logo-card img { position: relative; z-index: 1; }
+
+    .hero-socials {
+      position: relative;
+      z-index: 1;
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+
+    .hero-socials a {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .hero-socials a:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.10);
+    }
+
+    .hero-socials img { width: 18px; height: 18px; opacity: 0.92; }
+
+    .hero-content { display: flex; flex-direction: column; gap: 1.35rem; }
+
+    .eyebrow {
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      color: rgba(34,211,238,0.95);
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.7rem, 2.4vw, 2.35rem);
+      line-height: 1.25;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text);
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: var(--color-text-muted);
+      max-width: 34rem;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .hero-badge {
+      border-radius: 999px;
+      border: 1px solid rgba(34,211,238,0.20);
+      padding: 0.38rem 0.85rem;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: rgba(34,211,238,0.08);
+      color: rgba(233,231,255,0.88);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.1rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.2rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-2));
+      color: #0b0f1a;
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      box-shadow: 0 14px 30px rgba(124,58,237,0.25);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.7rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--color-text);
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    /* SECCIONES */
+    section {
+      padding: 2.6rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .section-header { margin-bottom: 1.7rem; text-align: left; }
+
+    .section-eyebrow {
+      text-transform: uppercase;
+      font-size: 0.76rem;
+      letter-spacing: 0.24em;
+      color: rgba(34,211,238,0.95);
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.42rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.35rem;
+      color: var(--color-text);
+    }
+
+    .section-description {
+      max-width: 38rem;
+      margin-top: 0.55rem;
+      font-size: 0.95rem;
+      color: var(--color-text-muted);
+    }
+
+    /* SOBRE */
+    .about { background: rgba(255, 255, 255, 0.02); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2.1rem;
+      align-items: flex-start;
+    }
+
+    .about-text p { font-size: 0.95rem; color: var(--color-text-muted); }
+    .about-text p + p { margin-top: 0.7rem; }
+
+    .about-highlight {
+      margin-top: 1.1rem;
+      padding: 1rem 1.1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+    }
+
+    .about-highlight strong { color: var(--color-text); }
+
+    .about-list {
+      list-style: none;
+      display: grid;
+      gap: 0.45rem;
+      font-size: 0.92rem;
+      margin-top: 0.2rem;
+      color: var(--color-text-muted);
+    }
+
+    .about-list li::before {
+      content: "•";
+      color: rgba(34,211,238,0.95);
+      margin-right: 0.4rem;
+    }
+
+    /* SERVICIOS */
+    .experience { background: rgba(255, 255, 255, 0.03); }
+
+    .experience-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr);
+      gap: 2.3rem;
+      align-items: center;
+    }
+
+    .experience-text p { font-size: 0.95rem; color: var(--color-text-muted); }
+    .experience-text p + p { margin-top: 0.7rem; }
+
+    .experience-tags {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .experience-tag {
+      padding: 0.34rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(233,231,255,0.88);
+    }
+
+    /* PROCESO */
+    .reservas { background: rgba(255, 255, 255, 0.02); }
+
+    .reservas-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    .reservas-block {
+      border-radius: 20px;
+      padding: 1.4rem 1.3rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.30);
+    }
+
+    .reservas-block h3 {
+      font-family: 'Cinzel', serif;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.98rem;
+      margin-bottom: 0.35rem;
+      color: var(--color-text);
+    }
+
+    .reservas-block p { font-size: 0.93rem; color: var(--color-text-muted); }
+
+    .reservas-list {
+      list-style: none;
+      margin-top: 0.8rem;
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+    }
+
+    .reservas-list li + li { margin-top: 0.35rem; }
+    .reservas-list strong { color: var(--color-text); }
+
+    .reservas-cta { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .reservas-cta a { font-size: 0.86rem; }
+
+    .reservas-note { font-size: 0.82rem; color: rgba(233,231,255,0.62); margin-top: 0.8rem; }
+
+    /* CAROUSEL */
+    .carousel {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .carousel-inner { position: relative; width: 100%; height: 100%; }
+
+    .carousel-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+    }
+
+    .carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
+    .carousel-slide.active { opacity: 1; position: relative; }
+
+    .carousel-controls {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0.6rem;
+      pointer-events: none;
+    }
+
+    .carousel-btn {
+      pointer-events: auto;
+      border: none;
+      border-radius: 999px;
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.55);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .carousel-btn:hover { background: rgba(0, 0, 0, 0.85); transform: translateY(-1px); }
+
+    .carousel-indicators {
+      position: absolute;
+      bottom: 0.7rem;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 0.45rem;
+      pointer-events: none;
+    }
+
+    .carousel-indicators span {
+      pointer-events: auto;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.45);
+      transition: transform 0.2s ease, background 0.2s ease, width 0.2s ease;
+    }
+
+    .carousel-indicators span.active {
+      width: 18px;
+      background: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* PORTFOLIO */
+    .gallery { background: rgba(255, 255, 255, 0.03); }
+    .gallery-carousel { max-width: 960px; margin: 0 auto; }
+    .gallery .carousel { height: 260px; }
+
+    /* CONTACTO */
+    .contact { background: rgba(255, 255, 255, 0.02); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    .contact-info-card {
+      border-radius: 20px;
+      padding: 1.3rem 1.2rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.30);
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .contact-row { display: flex; flex-direction: column; gap: 0.25rem; }
+
+    .contact-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: rgba(233,231,255,0.62);
+    }
+
+    .contact-value { font-size: 0.97rem; color: rgba(233,231,255,0.92); }
+
+    .contact-phone-list {
+      list-style: none;
+      font-size: 0.92rem;
+      color: var(--color-text-muted);
+    }
+
+    .contact-phone-list a {
+      color: rgba(233,231,255,0.95);
+      font-weight: 600;
+    }
+
+    .contact-actions {
+      border-radius: 20px;
+      padding: 1.3rem 1.2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.26);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .contact-actions h3 {
+      font-family: 'Cinzel', serif;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.98rem;
+      color: var(--color-text);
+    }
+
+    .contact-actions p { font-size: 0.93rem; color: var(--color-text-muted); }
+
+    .contact-actions .mini {
+      font-size: 0.82rem;
+      color: rgba(233,231,255,0.62);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 1.9rem 0 2.2rem;
+      background: rgba(0, 0, 0, 0.35);
+      color: rgba(233,231,255,0.92);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 2.2rem;
+      font-size: 0.8rem;
+    }
+
+    .footer-brand {
+      font-family: 'Cinzel', serif;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      font-size: 0.82rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-brand span {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .footer-text { color: rgba(233,231,255,0.68); }
+
+    .footer-links {
+      list-style: none;
+      display: grid;
+      gap: 0.3rem;
+    }
+
+    .footer-links a { color: rgba(233,231,255,0.68); }
+    .footer-links a:hover { color: rgba(233,231,255,0.95); }
+
+    .footer-meta { text-align: right; }
+    .footer-meta div { color: rgba(233,231,255,0.68); }
+    .footer-meta small { color: rgba(233,231,255,0.45); }
+
+    /* WHATSAPP FLOTANTE */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      z-index: 60;
+    }
+
+    .whatsapp-btn {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 0 0, #2fe07a, #17a75a);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+      color: #fff;
+    }
+
+    .wa-icon-svg { width: 1.55rem; height: 1.55rem; fill: #ffffff; }
+    .wa-icon-svg-float { width: 2.2rem; height: 2.2rem; fill: #ffffff; }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      .hero-inner, .about-grid, .experience-layout, .reservas-grid, .contact-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero { padding-top: 2rem; }
+      .hero-logo-card { max-width: 340px; }
+      .gallery .carousel { height: 230px; }
+      .footer-inner { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+      .footer-meta { text-align: left; grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-menu {
+        position: absolute;
+        inset-inline: 0;
+        top: 68px;
+        padding: 0.7rem 1.5rem 1.3rem;
+        background: rgba(11, 15, 26, 0.92);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        flex-direction: column;
+        align-items: flex-end;
+        transform-origin: top;
+        transform: scaleY(0);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.18s ease, opacity 0.18s ease;
+      }
+      .nav-menu.open { transform: scaleY(1); opacity: 1; pointer-events: auto; }
+      .nav-brand { letter-spacing: 0.24em; font-size: 0.86rem; }
+      .whatsapp-float { bottom: 1rem; right: 1rem; }
+      .footer-inner { grid-template-columns: minmax(0, 1fr); text-align: left; }
+      .footer-meta { text-align: left; }
+    }
+
+    @media (max-width: 520px) {
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .hero-title { font-size: 1.6rem; }
+      .gallery .carousel { height: 200px; }
+      .about-highlight, .reservas-block, .contact-info-card, .contact-actions { padding: 1.05rem 1rem; }
+      .nav-bar { column-gap: 1.5rem; }
+    }
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand-container" aria-label="Brand">
-        <div class="brand" data-i18n="brand">AutoVid Generator</div>
-        <div class="brand-subtext" data-i18n="brand_by">By Vision Arcadia</div>
-        <span class="startup-badge" title="AI Video Startup" data-i18n="badge">
-          <!-- spark icon -->
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6L12 2z" stroke="currentColor" stroke-width="1.5"/></svg>
-          AI Video Startup
-        </span>
+<div class="page-wrapper">
+  <!-- NAV -->
+  <header>
+    <div class="container nav-bar">
+      <div class="nav-brand"><span>Vision</span>-Arcadia</div>
+
+      <div class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
+        <i class="fa-solid fa-bars"></i>
       </div>
 
-      <!-- EN | ES switch -->
-      <nav class="lang-switch" aria-label="Language switch">
-        <button id="btn-en" type="button" aria-current="true" data-lang="en" title="English">
-          <span class="flag" aria-hidden="true">
-            <!-- Simplified US/UK style flag -->
-            <svg viewBox="0 0 16 12"><rect width="16" height="12" fill="#b22234"/><g fill="#fff"><rect y="1" width="16" height="1"/><rect y="3" width="16" height="1"/><rect y="5" width="16" height="1"/><rect y="7" width="16" height="1"/><rect y="9" width="16" height="1"/><rect y="11" width="16" height="1"/></g><rect width="7" height="5" fill="#3c3b6e"/></svg>
-          </span>
-          EN
-        </button>
-        <span aria-hidden="true">|</span>
-        <button id="btn-es" type="button" data-lang="es" title="Español">
-          <span class="flag" aria-hidden="true">
-            <!-- Simplified Spain flag -->
-            <svg viewBox="0 0 16 12"><rect width="16" height="12" fill="#aa151b"/><rect y="3" width="16" height="6" fill="#f1bf00"/></svg>
-          </span>
-          ES
-        </button>
+      <nav class="nav-menu" id="nav-menu">
+        <a href="#sobre">Sobre mí</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#proceso">Proceso</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contacto">Contacto</a>
+        <a
+          href="https://wa.me/5491162857653"
+          class="nav-cta"
+          target="_blank"
+          rel="noopener"
+        >
+          Hablemos
+        </a>
       </nav>
-
-      <a href="test.html" class="test-btn" aria-label="Open Test App" data-i18n="test_app">Test App</a>
-    </header>
-
-    <main class="card">
-      <p class="pill" aria-label="Application note" data-i18n="applying">Applying to Google for Startups</p>
-
-      <h1 data-i18n="hero_title">Host & refine text-to-video AI with automated editing</h1>
-      <p class="muted" data-i18n="hero_body">
-        <strong>AutoVid Generator</strong> is an <strong>emerging startup</strong> focused on hosting and refining <strong>text-to-video AI models</strong>
-        and delivering a <strong>personalized user experience</strong> through an automated <strong>FFmpeg</strong>-driven editing pipeline.
-        We integrate <strong>AI models</strong>, <strong>Google APIs</strong>, <strong>Gemini</strong>, <strong>FFmpeg</strong>, and more.
-      </p>
-
-      <div class="section">
-        <h3 data-i18n="problem_h3">The problem we solve</h3>
-        <p data-i18n="problem_p">
-          Video creation at scale is slow, fragmented, and hard to personalize across channels. Teams frequently stitch together ad-hoc scripts,
-          inconsistent post-processing, and manual timelines—leading to brittle pipelines, unpredictable quality, and missed deadlines.
-          Beyond generation, organizations also need deterministic editing, templating, and metadata-driven personalization (e.g., captions, overlays,
-          audio ducking, aspect-ratio variants) with auditability and repeatable outputs for production use.
-        </p>
-      </div>
-
-      <div class="section grid" role="list">
-        <div role="listitem">
-          <h3 data-i18n="solution_h3">Our solution (MVP)</h3>
-          <p data-i18n="solution_p">
-            We are building a <strong>centralized platform</strong> for AI video <strong>generation</strong> and <strong>automated editing</strong>.
-            It orchestrates prompt intake, model outputs, an <strong>FFmpeg</strong>-based compositing engine and more.
-            Our focus is the <em>production pipeline</em>.
-          </p>
-        </div>
-        <div role="listitem">
-          <h3 data-i18n="status_h3">Current status</h3>
-          <p data-i18n="status_p">We are in <strong>alpha</strong> building core orchestration and media pipelines. A <strong>beta</strong> is planned for <strong>Q1 2026</strong>. Subscribe to get updates.</p>
-        </div>
-        <div role="listitem">
-          <h3 data-i18n="aboutus_h3">About Us</h3>
-          <p data-i18n="aboutus_p">
-            Vision Arcadia is an emerging project looking to develop and integrate AI models with a robust automation layer for video generation and
-            editing. Our goal is to deliver a reliable, scalable, and developer-friendly experience that turns creative intent into production-ready
-            outputs.
-          </p>
-        </div>
-      </div>
-
-      <div class="kpis" aria-label="Key metrics">
-        <div class="kpi" data-i18n="kpi_beta">Beta: <strong>Early registration closed</strong></div>
-        <div class="kpi" data-i18n="kpi_time">Time savings: <strong>~90%</strong></div>
-        <div class="kpi" data-i18n="kpi_stack">Stack: <strong>AI Models, Google APIs, Gemini, FFmpeg + more</strong></div>
-      </div>
-
-      <a class="cta" href="#" role="button" aria-disabled="true" data-i18n="cta">Join the beta <span data-i18n="cta_sub">Coming Soon</span></a>
-
-      <div class="section">
-        <h3 data-i18n="aboutstartup_h3">About the Startup</h3>
-        <p class="muted" data-i18n="aboutstartup_p">
-          Vision Arcadia powers AutoVid Generator with a focus on <strong>AI-driven video applications</strong>.
-          Our mission is to enable anyone to produce hundreds of high-impact, personalized video variations in minutes—not days.
-        </p>
-      </div>
-
-      <div class="section">
-        <p class="muted">© <span id="y"></span> Vision Arcadia — <span data-i18n="rights">All rights reserved.</span></p>
-      </div>
-    </main>
-
-    <footer>
-      <div><a href="mailto:info@vision-arcadia.store" style="color:#73839a;text-decoration:none;">info@vision-arcadia.store</a></div>
-    </footer>
-
-    <div class="privacy-policy">
-      <p data-i18n="privacy">
-        <strong>Privacy Policy:</strong> We collect only the information you voluntarily provide (e.g., an email for beta access) and we do not sell your data. To request access or deletion, write to
-        <a href="mailto:info@vision-arcadia.store">info@vision-arcadia.store</a>.
-      </p>
     </div>
+  </header>
+
+  <!-- HERO -->
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-inner">
+        <div class="hero-logo-wrapper">
+          <div class="hero-logo-card">
+            <img src="/assets/vision-arcadia/logo.png" alt="Logo Vision-Arcadia" />
+            <div class="hero-socials">
+              <!-- Reemplazá por tus links reales -->
+              <a href="#" target="_blank" rel="noopener" aria-label="Instagram Vision-Arcadia">
+                <img src="/assets/vision-arcadia/insta.png" alt="Instagram" />
+              </a>
+              <a href="#" target="_blank" rel="noopener" aria-label="TikTok Vision-Arcadia">
+                <img src="/assets/vision-arcadia/tiktok.png" alt="TikTok" />
+              </a>
+              <a href="#" target="_blank" rel="noopener" aria-label="GitHub Vision-Arcadia">
+                <img src="/assets/vision-arcadia/github.png" alt="GitHub" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-content">
+          <div class="eyebrow">Automatizaciones · Agentes de IA · Bots · Web</div>
+
+          <h1 class="hero-title">
+            Sistemas que trabajan<br />
+            mientras vos dormís
+          </h1>
+
+          <p class="hero-subtitle">
+            Soy <strong>Vision-Arcadia</strong>. Diseño e implemento automatizaciones y agentes de IA para que tu negocio
+            responda más rápido, venda mejor y pierda menos tiempo en tareas repetitivas. Bots en WhatsApp/Telegram,
+            integraciones, despliegues y sitios web listos para producción.
+          </p>
+
+          <div class="hero-badges">
+            <div class="hero-badge">Bots WhatsApp / Telegram</div>
+            <div class="hero-badge">Agentes de IA</div>
+            <div class="hero-badge">Automatizaciones</div>
+            <div class="hero-badge">Web + Deploy</div>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn-primary" href="#contacto">
+              Pedir propuesta
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+            <a class="btn-secondary" href="#servicios">
+              Ver servicios
+              <i class="fa-solid fa-layer-group"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE -->
+    <section class="about" id="sobre">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Sobre mí</div>
+          <h2 class="section-title">Tecnología aplicada, sin humo</h2>
+          <p class="section-description">
+            Me obsesiona una idea simple: que la tecnología sirva para mover la aguja del negocio. Menos “demo”, más
+            producción. Menos promesas, más sistemas funcionando.
+          </p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-text">
+            <p>
+              Trabajo con automatizaciones, flujos de trabajo y servicios conectados para que tu operación tenga
+              memoria, velocidad y criterio. Si hoy alguien copia y pega, persigue mensajes, actualiza planillas o
+              “atiende” consultas repetidas, ahí suele haber una máquina esperando nacer.
+            </p>
+            <p>
+              Lo hago con una lógica de ingeniería práctica: entiendo el proceso, defino el resultado, diseño la
+              arquitectura, y recién ahí automatizo. Cuando corresponde, sumo IA: no como adorno, sino como motor.
+            </p>
+
+            <div class="about-highlight">
+              <strong>Enfoque:</strong> construir sistemas robustos, medibles y fáciles de operar. Que no dependan de
+              “magia”, sino de buen diseño.
+            </div>
+          </div>
+
+          <div>
+            <ul class="about-list">
+              <li>Automatización de procesos (CRM, leads, soporte, operaciones).</li>
+              <li>Agentes de IA con contexto (documentos, FAQs, base de conocimiento).</li>
+              <li>Bots para WhatsApp/Telegram con flujos reales y derivación humana.</li>
+              <li>Sitios web y landings con despliegue, performance y seguridad.</li>
+              <li>Integraciones entre herramientas y APIs, de extremo a extremo.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICIOS -->
+    <section class="experience" id="servicios">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Servicios</div>
+          <h2 class="section-title">Lo que construyo para tu negocio</h2>
+          <p class="section-description">
+            Soluciones pensadas para operar en el mundo real: con errores, con picos de demanda, con equipos humanos,
+            y con clientes impacientes.
+          </p>
+        </div>
+
+        <div class="experience-layout">
+          <div class="experience-text">
+            <p>
+              Puedo ayudarte a automatizar desde lo obvio (captura de leads, seguimiento, recordatorios) hasta lo
+              delicado (enrutamiento de conversaciones, calificación inteligente, generación de respuestas, extracción
+              de datos, reportes, sincronizaciones entre sistemas).
+            </p>
+            <p>
+              Si necesitás presencia online, también diseño y despliego sitios web con foco en conversión, velocidad y
+              mantenimiento simple. La idea es que todo se conecte: marketing, ventas, soporte y operación.
+            </p>
+
+            <div class="experience-tags">
+              <div class="experience-tag">Automatizaciones</div>
+              <div class="experience-tag">Agentes IA</div>
+              <div class="experience-tag">WhatsApp</div>
+              <div class="experience-tag">Telegram</div>
+              <div class="experience-tag">Integraciones</div>
+              <div class="experience-tag">Web + Deploy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESO -->
+    <section class="reservas" id="proceso">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Proceso</div>
+          <h2 class="section-title">De la idea a producción, sin drama</h2>
+          <p class="section-description">
+            La mayoría de los problemas no se arreglan con más herramientas, sino con claridad. Por eso trabajo con un
+            proceso corto, concreto y trazable.
+          </p>
+        </div>
+
+        <div class="reservas-grid">
+          <div class="reservas-block">
+            <h3>Cómo arrancamos</h3>
+            <p>
+              Me contás qué estás intentando lograr y dónde se traba el día a día. Después bajo eso a un flujo real:
+              entradas, decisiones, salidas y responsables.
+            </p>
+
+            <ul class="reservas-list">
+              <li><strong>Diagnóstico:</strong> identifico cuellos de botella y tareas repetidas.</li>
+              <li><strong>Diseño:</strong> defino arquitectura, herramientas y puntos de control.</li>
+              <li><strong>Implementación:</strong> construyo, pruebo y dejo operativo.</li>
+              <li><strong>Mejora continua:</strong> iteraciones por métricas, no por intuición.</li>
+            </ul>
+
+            <div class="reservas-cta">
+              <a class="btn-primary" href="https://wa.me/5491162857653" target="_blank" rel="noopener">
+                WhatsApp
+                <svg class="wa-icon-svg" viewBox="0 0 32 32" aria-hidden="true">
+                  <path d="M21.6 19.8l-2.1-.9a1 1 0 0 0-1 .1l-1.2.8a8.9 8.9 0 0 1-4.1-4.1l.8-1.2a1 1 0 0 0 .1-1l-.9-2.1A1 1 0 0 0 11.3 11l-1.7.7a1.5 1.5 0 0 0-.9 1.3 10.8 10.8 0 0 0 10.3 10.3 1.5 1.5 0 0 0 1.3-.9l.7-1.7a1 1 0 0 0-.4-1.9z"/>
+                </svg>
+              </a>
+              <a class="btn-secondary" href="#portfolio">
+                Ver ejemplos
+                <i class="fa-solid fa-images"></i>
+              </a>
+            </div>
+
+            <div class="reservas-note">
+              Tip: si me escribís con “qué hacés”, “qué herramientas usás” y “qué objetivo tenés”, acelera mucho la
+              primera propuesta.
+            </div>
+          </div>
+
+          <div class="reservas-block">
+            <h3>Lo que entrego</h3>
+            <p>
+              No entrego “ideas”: entrego sistemas. Documentados, testeados, con accesos ordenados y con un mínimo de
+              mantenimiento requerido.
+            </p>
+            <p style="margin-top: 0.7rem;">
+              Si tu operación depende de varios pasos manuales, lo dejamos medible. Si tu soporte se vuelve un caos,
+              lo enrutamos. Si tu venta se cae por lentitud, automatizamos el seguimiento.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section class="gallery" id="portfolio">
+      <div class="container">
+        <div class="section-header" style="text-align:center;">
+          <div class="section-eyebrow">Portfolio</div>
+          <h2 class="section-title">Capturas y resultados</h2>
+          <p class="section-description" style="margin-left:auto;margin-right:auto;">
+            Algunos ejemplos visuales (dashboards, flujos, bots y sitios). Reemplazá estas imágenes por tus casos reales.
+          </p>
+        </div>
+
+        <div class="gallery-carousel">
+          <div class="carousel" data-carousel="portfolio">
+            <div class="carousel-inner">
+              <div class="carousel-slide active">
+                <img
+                  src="/assets/vision-arcadia/imagen1.png"
+                  alt="Ejemplo: flujo de automatización / agente IA"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="carousel-slide">
+                <img
+                  src="/assets/vision-arcadia/imagen2.png"
+                  alt="Ejemplo: bot WhatsApp/Telegram y derivación a humano"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="carousel-slide">
+                <img
+                  src="/assets/vision-arcadia/imagen3.png"
+                  alt="Ejemplo: sitio web desplegado y optimizado"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+
+            <div class="carousel-controls">
+              <button class="carousel-btn carousel-prev" type="button" aria-label="Imagen anterior">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <button class="carousel-btn carousel-next" type="button" aria-label="Imagen siguiente">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+
+            <div class="carousel-indicators"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO (SIN MAPA) -->
+    <section class="contact" id="contacto">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Contacto</div>
+          <h2 class="section-title">Hablemos de tu caso</h2>
+          <p class="section-description">
+            Si me contás el objetivo y el “dolor” (qué está trabando hoy tu operación), te respondo con una propuesta
+            concreta: alcance, pasos y un plan realista.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-info-card">
+            <div class="contact-row">
+              <div class="contact-label">WhatsApp</div>
+              <ul class="contact-phone-list">
+                <li>
+                  <a href="https://wa.me/5491162857653" target="_blank" rel="noopener">
+                    +54 9 11 6285-7653
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="contact-row">
+              <div class="contact-label">Email (opcional)</div>
+              <div class="contact-value">
+                contacto@vision-arcadia.com
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <div class="contact-label">Horario</div>
+              <div class="contact-value">
+                Coordinamos por mensaje. Si necesitás urgencia, lo aclarás al inicio.
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-actions">
+            <div>
+              <h3>Qué mandarme por WhatsApp</h3>
+              <p>
+                Un mensaje corto, pero con sustancia: qué vendés, por dónde te escriben los clientes, qué parte del
+                proceso querés automatizar y qué herramienta usás hoy (si usás).
+              </p>
+            </div>
+
+            <div>
+              <a class="btn-primary" href="https://wa.me/5491162857653" target="_blank" rel="noopener">
+                Escribir ahora
+                <svg class="wa-icon-svg" viewBox="0 0 32 32" aria-hidden="true">
+                  <path d="M21.6 19.8l-2.1-.9a1 1 0 0 0-1 .1l-1.2.8a8.9 8.9 0 0 1-4.1-4.1l.8-1.2a1 1 0 0 0 .1-1l-.9-2.1A1 1 0 0 0 11.3 11l-1.7.7a1.5 1.5 0 0 0-.9 1.3 10.8 10.8 0 0 0 10.3 10.3 1.5 1.5 0 0 0 1.3-.9l.7-1.7a1 1 0 0 0-.4-1.9z"/>
+                </svg>
+              </a>
+              <div class="mini" style="margin-top:0.8rem;">
+                Respuesta típica: te devuelvo preguntas clave + un plan de implementación.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand"><span>Vision</span>-Arcadia</div>
+        <div class="footer-text">
+          Automatizaciones, agentes de IA, bots para WhatsApp/Telegram y sitios web listos para producción.
+          Tecnología con intención: construir sistemas que generan tiempo, orden y resultados.
+        </div>
+      </div>
+
+      <div>
+        <ul class="footer-links">
+          <li><a href="#sobre">Sobre mí</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#proceso">Proceso</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-meta">
+        <div>© <span id="year"></span> Vision-Arcadia. Todos los derechos reservados.</div>
+        <small>Diseñado para velocidad, claridad y conversión. Ajustable a tu identidad visual.</small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BOTÓN FLOTANTE DE WHATSAPP (ÚNICO) -->
+  <div class="whatsapp-float">
+    <a
+      href="https://wa.me/5491162857653"
+      target="_blank"
+      rel="noopener"
+      class="whatsapp-btn"
+      aria-label="WhatsApp Vision-Arcadia"
+    >
+      <svg class="wa-icon-svg-float" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M21.6 19.8l-2.1-.9a1 1 0 0 0-1 .1l-1.2.8a8.9 8.9 0 0 1-4.1-4.1l.8-1.2a1 1 0 0 0 .1-1l-.9-2.1A1 1 0 0 0 11.3 11l-1.7.7a1.5 1.5 0 0 0-.9 1.3 10.8 10.8 0 0 0 10.3 10.3 1.5 1.5 0 0 0 1.3-.9l.7-1.7a1 1 0 0 0-.4-1.9z"/>
+      </svg>
+    </a>
   </div>
+</div>
 
-  <script>
-    // Año dinámico
-    document.getElementById('y').textContent = new Date().getFullYear();
+<script>
+  // Año automático en el footer
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Diccionarios i18n
-    const I18N = {
-      en: {
-        "meta.title": "AutoVid Generator — AI Video Startup (Coming Soon)",
-        "meta.description": "AutoVid Generator is an emerging startup that hosts and refines text-to-video AI models and delivers personalized user experiences through automated video editing with FFmpeg. Powered by AI models, Google APIs, Gemini, FFmpeg, and more.",
-        "meta.og_title": "AutoVid Generator — AI Video Startup (Coming Soon)",
-        "meta.og_desc": "Emerging startup: hosting & refining text-to-video AI models + automated video editing via FFmpeg. Powered by AI models, Google APIs, Gemini, FFmpeg, and more.",
-        "meta.tw_title": "AutoVid Generator — AI Video Startup (Coming Soon)",
-        "meta.tw_desc": "Hosting & refining text-to-video AI models with automated FFmpeg editing. Uses AI models, Google APIs, Gemini, FFmpeg, and more.",
+  // Toggle del menú en móvil
+  const navToggle = document.getElementById('nav-toggle');
+  const navMenu = document.getElementById('nav-menu');
 
-        brand: "AutoVid Generator",
-        brand_by: "By Vision Arcadia",
-        badge: "AI Video Startup",
-        test_app: "Test App",
-        applying: "Applying to Google for Startups",
+  navToggle.addEventListener('click', function () {
+    navMenu.classList.toggle('open');
+  });
 
-        hero_title: "Host & refine text-to-video AI with automated editing",
-        hero_body: "AutoVid Generator is an emerging startup focused on hosting and refining text-to-video AI models and delivering a personalized user experience through an automated FFmpeg-driven editing pipeline. We integrate AI models, Google APIs, Gemini, FFmpeg, and more.",
+  // Cerrar menú cuando se selecciona una opción en móvil
+  navMenu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      navMenu.classList.remove('open');
+    });
+  });
 
-        problem_h3: "The problem we solve",
-        problem_p: "Video creation at scale is slow, fragmented, and hard to personalize across channels. Teams frequently stitch together ad-hoc scripts, inconsistent post-processing, and manual timelines—leading to brittle pipelines, unpredictable quality, and missed deadlines. Beyond generation, organizations also need deterministic editing, templating, and metadata-driven personalization (e.g., captions, overlays, audio ducking, aspect-ratio variants) with auditability and repeatable outputs for production use.",
+  // Carrousels - lógica genérica
+  document.querySelectorAll('.carousel').forEach(function (carousel) {
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const prevBtn = carousel.querySelector('.carousel-prev');
+    const nextBtn = carousel.querySelector('.carousel-next');
+    const indicatorsContainer = carousel.querySelector('.carousel-indicators');
 
-        solution_h3: "Our solution (MVP)",
-        solution_p: "We are building a centralized platform for AI video generation and automated editing. It orchestrates prompt intake, model outputs, an FFmpeg-based compositing engine and more. Our focus is the production pipeline.",
+    if (!slides.length) return;
 
-        status_h3: "Current status",
-        status_p: "We are in alpha building core orchestration and media pipelines. A beta is planned for Q1 2026. Subscribe to get updates.",
+    let currentIndex = 0;
 
-        aboutus_h3: "About Us",
-        aboutus_p: "Vision Arcadia is an emerging project looking to develop and integrate AI models with a robust automation layer for video generation and editing. Our goal is to deliver a reliable, scalable, and developer-friendly experience that turns creative intent into production-ready outputs.",
-
-        kpi_beta: "Beta: <strong>Early registration closed</strong>",
-        kpi_time: "Time savings: <strong>~90%</strong>",
-        kpi_stack: "Stack: <strong>AI Models, Google APIs, Gemini, FFmpeg + more</strong>",
-
-        cta: "Join the beta <span>Coming Soon</span>",
-        cta_sub: "Coming Soon",
-
-        aboutstartup_h3: "About the Startup",
-        aboutstartup_p: "Vision Arcadia powers AutoVid Generator with a focus on AI-driven video applications. Our mission is to enable anyone to produce hundreds of high-impact, personalized video variations in minutes—not days.",
-
-        rights: "All rights reserved.",
-        privacy: "<strong>Privacy Policy:</strong> We collect only the information you voluntarily provide (e.g., an email for beta access) and we do not sell your data. To request access or deletion, write to <a href=\"mailto:info@vision-arcadia.store\">info@vision-arcadia.store</a>."
-      },
-      es: {
-        "meta.title": "AutoVid Generator — Startup de Video con IA (Próximamente)",
-        "meta.description": "AutoVid Generator es una startup emergente que aloja y refina modelos de IA de texto a video y ofrece experiencias personalizadas mediante edición automatizada con FFmpeg. Impulsada por modelos de IA, Google APIs, Gemini, FFmpeg y más.",
-        "meta.og_title": "AutoVid Generator — Startup de Video con IA (Próximamente)",
-        "meta.og_desc": "Startup emergente: alojamiento y refinamiento de modelos de IA texto a video + edición automatizada con FFmpeg. Impulsada por modelos de IA, Google APIs, Gemini, FFmpeg y más.",
-        "meta.tw_title": "AutoVid Generator — Startup de Video con IA (Próximamente)",
-        "meta.tw_desc": "Alojamos y refinamos modelos de IA texto a video con edición automatizada FFmpeg. Usamos modelos de IA, Google APIs, Gemini, FFmpeg y más.",
-
-        brand: "AutoVid Generator",
-        brand_by: "Por Vision Arcadia",
-        badge: "Startup de Video con IA",
-        test_app: "Test App",
-        applying: "Postulando a Google for Startups",
-
-        hero_title: "Aloja y refina IA texto→video con edición automatizada",
-        hero_body: "AutoVid Generator es una startup emergente enfocada en alojar y refinar modelos de IA texto a video y entregar una experiencia de usuario personalizada mediante una canalización de edición automatizada con FFmpeg. Integramos modelos de IA, Google APIs, Gemini, FFmpeg y más.",
-
-        problem_h3: "El problema que resolvemos",
-        problem_p: "Crear video a escala es lento, fragmentado y difícil de personalizar entre canales. Los equipos suelen unir guiones ad-hoc, posprocesos inconsistentes y líneas de tiempo manuales, lo que deriva en pipelines frágiles, calidad impredecible y plazos incumplidos. Más allá de la generación, las organizaciones necesitan edición determinista, plantillas y personalización guiada por metadatos (p. ej., subtítulos, overlays, ducking de audio, variantes de relación de aspecto) con auditabilidad y salidas repetibles para producción.",
-
-        solution_h3: "Nuestra solución (MVP)",
-        solution_p: "Estamos construyendo una plataforma centralizada para generación de video con IA y edición automatizada. Orquesta ingesta de prompts, salidas de modelos, un motor de composición basado en FFmpeg y más. Nuestro foco es la canalización de producción.",
-
-        status_h3: "Estado actual",
-        status_p: "Estamos en fase alpha construyendo la orquestación central y pipelines de media. Planeamos una beta para Q1 2026. Suscríbete para recibir novedades.",
-
-        aboutus_h3: "Sobre Nosotros",
-        aboutus_p: "Vision Arcadia es un proyecto emergente que busca desarrollar e integrar modelos de IA con una robusta capa de automatización para generación y edición de video. Nuestro objetivo es ofrecer una experiencia confiable, escalable y amigable para desarrolladores que convierta la intención creativa en resultados listos para producción.",
-
-        kpi_beta: "Beta: <strong>Inscripción temprana cerrada</strong>",
-        kpi_time: "Ahorro de tiempo: <strong>~90%</strong>",
-        kpi_stack: "Stack: <strong>Modelos de IA, Google APIs, Gemini, FFmpeg + más</strong>",
-
-        cta: "Unirse a la beta <span>Próximamente</span>",
-        cta_sub: "Próximamente",
-
-        aboutstartup_h3: "Sobre la Startup",
-        aboutstartup_p: "Vision Arcadia impulsa AutoVid Generator con foco en aplicaciones de video con IA. Nuestra misión es habilitar que cualquiera produzca cientos de variaciones de video personalizadas y de alto impacto en minutos, no días.",
-
-        rights: "Todos los derechos reservados.",
-        privacy: "<strong>Política de Privacidad:</strong> Recopilamos solo la información que brindas voluntariamente (p. ej., un correo para acceso a la beta) y no vendemos tus datos. Para solicitar acceso o eliminación, escribe a <a href=\"mailto:info@vision-arcadia.store\">info@vision-arcadia.store</a>."
-      }
-    };
-
-    // Utilidades i18n
-    function applyI18n(lang){
-      const dict = I18N[lang] || I18N.en;
-
-      // Text nodes
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (!key) return;
-        const html = dict[key];
-        if (html != null) el.innerHTML = html;
+    // Crear indicadores
+    slides.forEach(function (_, idx) {
+      const dot = document.createElement('span');
+      if (idx === 0) dot.classList.add('active');
+      dot.addEventListener('click', function () {
+        goToSlide(idx);
       });
+      indicatorsContainer.appendChild(dot);
+    });
 
-      // Attr nodes: data-i18n-attr="attrName|key"
-      document.querySelectorAll('[data-i18n-attr]').forEach(el => {
-        const [attr, key] = el.getAttribute('data-i18n-attr').split('|');
-        const val = dict[key];
-        if (attr && val != null) el.setAttribute(attr, val);
+    const indicators = indicatorsContainer.querySelectorAll('span');
+
+    function goToSlide(index) {
+      currentIndex = (index + slides.length) % slides.length;
+      slides.forEach(function (slide, i) {
+        slide.classList.toggle('active', i === currentIndex);
       });
-
-      // Actualiza estado visual de botones
-      document.querySelectorAll('.lang-switch button').forEach(btn => {
-        btn.setAttribute('aria-current', btn.dataset.lang === lang ? 'true' : 'false');
+      indicators.forEach(function (dot, i) {
+        dot.classList.toggle('active', i === currentIndex);
       });
-
-      // html lang
-      document.documentElement.setAttribute('lang', lang);
-
-      // Persistencia
-      try { localStorage.setItem('site_lang', lang); } catch(_) {}
     }
 
-    // Eventos
-    document.getElementById('btn-en').addEventListener('click', () => applyI18n('en'));
-    document.getElementById('btn-es').addEventListener('click', () => applyI18n('es'));
+    function nextSlide() { goToSlide(currentIndex + 1); }
+    function prevSlide() { goToSlide(currentIndex - 1); }
 
-    // Idioma inicial preferencia (localStorage) o navegador
-    (function initLang(){
-      let lang = 'en';
-      try {
-        lang = localStorage.getItem('site_lang') || (navigator.language || 'en').slice(0,2);
-      } catch(_) {}
-      if (!['en','es'].includes(lang)) lang = 'en';
-      applyI18n(lang);
-    })();
-  </script>
+    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+
+    // Auto-play
+    let autoPlay = setInterval(nextSlide, 7000);
+
+    // Pausa auto-play al pasar el mouse (desktop)
+    carousel.addEventListener('mouseenter', function () {
+      clearInterval(autoPlay);
+    });
+
+    carousel.addEventListener('mouseleave', function () {
+      autoPlay = setInterval(nextSlide, 7000);
+    });
+  });
+</script>
 </body>
 </html>
