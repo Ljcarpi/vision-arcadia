@@ -1,1275 +1,450 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Vision-Arcadia — Automatizaciones, Agentes de IA y Web para Negocios</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta
-    name="description"
-    content="Vision-Arcadia: automatizaciones, agentes de IA para tu negocio, bots de WhatsApp/Telegram, diseño y despliegue de sitios web. De la idea a producción, con foco en resultados."
-  />
-  <link rel="icon" type="image/png" href="/assets/vision-arcadia/icon.png" />
-  <link rel="preload" as="image" href="/assets/vision-arcadia/imagen1.png" />
-
-  <!-- Fuentes -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- Iconos -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-
-  <style>
-    :root {
-      --color-bg: #0b0f1a;
-      --color-bg-soft: rgba(255, 255, 255, 0.06);
-      --color-bg-soft-alt: rgba(255, 255, 255, 0.04);
-      --color-primary: #7c3aed;           /* violeta */
-      --color-primary-2: #22d3ee;         /* cian */
-      --color-primary-soft: rgba(124, 58, 237, 0.14);
-      --color-text: #e9e7ff;
-      --color-text-muted: rgba(233, 231, 255, 0.72);
-      --color-border: rgba(255, 255, 255, 0.12);
-      --shadow-soft: 0 18px 46px rgba(0, 0, 0, 0.45);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(1200px 600px at 20% 10%, rgba(124,58,237,0.20), transparent 60%),
-                  radial-gradient(900px 500px at 80% 0%, rgba(34,211,238,0.18), transparent 55%),
-                  radial-gradient(1100px 700px at 50% 100%, rgba(124,58,237,0.12), transparent 65%),
-                  var(--color-bg);
-      color: var(--color-text);
-      line-height: 1.6;
-    }
-
-    img { max-width: 100%; display: block; }
-    a { color: inherit; text-decoration: none; }
-
-    .page-wrapper { min-height: 100vh; display: flex; flex-direction: column; }
-
-    .container {
-      width: 100%;
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    /* NAVBAR */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(14px);
-      background: rgba(11, 15, 26, 0.72);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
-    }
-
-    .nav-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 68px;
-      column-gap: 4.5rem;
-      position: relative;
-    }
-
-    .nav-brand {
-      font-family: 'Cinzel', serif;
-      font-weight: 500;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      font-size: 0.92rem;
-      white-space: nowrap;
-    }
-
-    .nav-brand span {
-      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .nav-menu {
-      display: flex;
-      align-items: center;
-      gap: 1.8rem;
-      font-size: 0.88rem;
-    }
-
-    .nav-menu a {
-      position: relative;
-      text-transform: uppercase;
-      letter-spacing: 0.20em;
-      font-weight: 300;
-      color: var(--color-text-muted);
-    }
-
-    .nav-menu a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -0.3rem;
-      width: 0;
-      height: 1px;
-      background: linear-gradient(to right, var(--color-primary-2), transparent);
-      transition: width 0.25s ease;
-    }
-
-    .nav-menu a:hover { color: var(--color-text); }
-    .nav-menu a:hover::after { width: 72%; }
-
-    .nav-cta {
-      padding: 0.45rem 1rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: linear-gradient(135deg, rgba(124,58,237,0.95), rgba(34,211,238,0.85));
-      font-size: 0.82rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #0b0f1a !important;
-      font-weight: 700;
-      box-shadow: 0 14px 28px rgba(124,58,237,0.20);
-    }
-
-    .nav-toggle { display: none; font-size: 1.4rem; cursor: pointer; }
-
-    /* HERO */
-    .hero {
-      padding: 2.4rem 0 1.6rem;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0.00));
-      border-top: none;
-    }
-
-    .hero-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 1.35rem;
-    }
-
-    .hero-logo-wrapper { display: flex; justify-content: center; align-items: center; width: 100%; }
-
-    .hero-logo-card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      padding: 1.2rem 1.05rem;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      box-shadow: var(--shadow-soft);
-      max-width: 300px;   /* más chico */
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero-logo-card::before {
-      content: "";
-      position: absolute;
-      inset: -2px;
-      background: radial-gradient(450px 220px at 20% 10%, rgba(34,211,238,0.22), transparent 60%),
-                  radial-gradient(480px 240px at 80% 0%, rgba(124,58,237,0.25), transparent 55%);
-      filter: blur(10px);
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .hero-logo-card img { position: relative; z-index: 1; }
-
-    .hero-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.0rem;
-      width: 100%;
-    }
-
-    .eyebrow {
-      text-transform: uppercase;
-      font-size: 0.78rem;
-      letter-spacing: 0.22em;
-      color: rgba(34,211,238,0.95);
-    }
-
-    .hero-title {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(1.8rem, 2.8vw, 2.55rem);
-      line-height: 1.22;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--color-text);
-    }
-
-    .hero-subtitle {
-      font-size: 0.98rem;
-      color: var(--color-text-muted);
-      max-width: 44rem;
-    }
-
-    .hero-badges {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    .hero-badge {
-      border-radius: 999px;
-      border: 1px solid rgba(34,211,238,0.20);
-      padding: 0.38rem 0.85rem;
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      background: rgba(34,211,238,0.08);
-      color: rgba(233,231,255,0.88);
-    }
-
-    .hero-actions {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-top: 0.15rem;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.7rem 1.2rem;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-2));
-      color: #0b0f1a;
-      font-size: 0.84rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      box-shadow: 0 14px 30px rgba(124,58,237,0.25);
-    }
-
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.7rem 1.1rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--color-text);
-      font-size: 0.84rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      transition: transform 0.18s ease, background 0.18s ease;
-    }
-
-    .btn-secondary:hover {
-      transform: translateY(-1px);
-      background: rgba(255, 255, 255, 0.07);
-    }
-
-    /* SECCIONES */
-    section {
-      padding: 2.6rem 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .section-header { margin-bottom: 1.7rem; text-align: left; }
-
-    .section-eyebrow {
-      text-transform: uppercase;
-      font-size: 0.76rem;
-      letter-spacing: 0.24em;
-      color: rgba(34,211,238,0.95);
-    }
-
-    .section-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.42rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-top: 0.35rem;
-      color: var(--color-text);
-    }
-
-    .section-description {
-      max-width: 38rem;
-      margin-top: 0.55rem;
-      font-size: 0.95rem;
-      color: var(--color-text-muted);
-    }
-
-    /* STACK / HERRAMIENTAS */
-    .stack {
-      padding: 1.9rem 0 2.2rem;
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .stack-inner {
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      background: rgba(255, 255, 255, 0.03);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
-      padding: 1.25rem 1.25rem;
-    }
-
-    .stack-header {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      margin-bottom: 1.1rem;
-      text-align: center;
-    }
-
-    .stack-header .kicker {
-      text-transform: uppercase;
-      font-size: 0.74rem;
-      letter-spacing: 0.24em;
-      color: rgba(233,231,255,0.62);
-    }
-
-    .stack-header h2 {
-      font-family: 'Cinzel', serif;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-      font-size: 1.12rem;
-      color: rgba(233,231,255,0.96);
-    }
-
-    .stack-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0.85rem;
-      align-items: stretch;
-      justify-content: center;
-    }
-
-    .stack-card {
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      background: rgba(0, 0, 0, 0.22);
-      padding: 1.3rem 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.65rem;
-      min-height: 120px;
-      transition: transform 0.18s ease, background 0.18s ease;
-    }
-
-    .stack-card:hover {
-      transform: translateY(-1px);
-      background: rgba(0, 0, 0, 0.30);
-    }
-
-    .stack-card img {
-      height: 90px;
-      width: auto;
-      opacity: 1;
-      filter: drop-shadow(0 14px 30px rgba(0,0,0,0.45));
-    }
-
-    .stack-card .fallback {
-      font-size: 0.86rem;
-      color: rgba(233,231,255,0.85);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .stack-note {
-      margin-top: 0.95rem;
-      text-align: center;
-      font-size: 0.86rem;
-      color: rgba(233,231,255,0.62);
-    }
-
-    /* SOBRE */
-    .about { background: rgba(255, 255, 255, 0.02); }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 2.1rem;
-      align-items: flex-start;
-    }
-
-    .about-text p { font-size: 0.95rem; color: var(--color-text-muted); }
-    .about-text p + p { margin-top: 0.7rem; }
-
-    .about-highlight {
-      margin-top: 1.1rem;
-      padding: 1rem 1.1rem;
-      border-radius: 18px;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      background: rgba(255, 255, 255, 0.04);
-      font-size: 0.9rem;
-      color: var(--color-text-muted);
-    }
-
-    .about-highlight strong { color: var(--color-text); }
-
-    .about-list {
-      list-style: none;
-      display: grid;
-      gap: 0.45rem;
-      font-size: 0.92rem;
-      margin-top: 0.2rem;
-      color: var(--color-text-muted);
-    }
-
-    .about-list li::before {
-      content: "•";
-      color: rgba(34,211,238,0.95);
-      margin-right: 0.4rem;
-    }
-
-    /* SERVICIOS */
-    .experience { background: rgba(255, 255, 255, 0.03); }
-
-    .experience-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr);
-      gap: 2.3rem;
-      align-items: center;
-    }
-
-    .experience-text p { font-size: 0.95rem; color: var(--color-text-muted); }
-    .experience-text p + p { margin-top: 0.7rem; }
-
-    .experience-tags {
-      margin-top: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-    }
-
-    .experience-tag {
-      padding: 0.34rem 0.9rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      background: rgba(255, 255, 255, 0.04);
-      color: rgba(233,231,255,0.88);
-    }
-
-    /* PROCESO */
-    .reservas { background: rgba(255, 255, 255, 0.02); }
-
-    .reservas-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 2rem;
-      align-items: stretch;
-    }
-
-    .reservas-block {
-      border-radius: 20px;
-      padding: 1.4rem 1.3rem;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.30);
-    }
-
-    .reservas-block h3 {
-      font-family: 'Cinzel', serif;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      font-size: 0.98rem;
-      margin-bottom: 0.35rem;
-      color: var(--color-text);
-    }
-
-    .reservas-block p { font-size: 0.93rem; color: var(--color-text-muted); }
-
-    .reservas-list {
-      list-style: none;
-      margin-top: 0.8rem;
-      font-size: 0.9rem;
-      color: var(--color-text-muted);
-    }
-
-    .reservas-list li + li { margin-top: 0.35rem; }
-    .reservas-list strong { color: var(--color-text); }
-
-    .reservas-cta { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
-    .reservas-cta a { font-size: 0.86rem; }
-
-    .reservas-note { font-size: 0.82rem; color: rgba(233,231,255,0.62); margin-top: 0.8rem; }
-
-    /* CAROUSEL */
-    .carousel {
-      position: relative;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: var(--shadow-soft);
-      background: #000;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-    }
-
-    .carousel-inner { position: relative; width: 100%; height: 100%; }
-
-    .carousel-slide {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 0.7s ease;
-    }
-
-    .carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
-    .carousel-slide.active { opacity: 1; position: relative; }
-
-    .carousel-controls {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 0.6rem;
-      pointer-events: none;
-    }
-
-    .carousel-btn {
-      pointer-events: auto;
-      border: none;
-      border-radius: 999px;
-      width: 34px;
-      height: 34px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.55);
-      color: #fff;
-      cursor: pointer;
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-
-    .carousel-btn:hover { background: rgba(0, 0, 0, 0.85); transform: translateY(-1px); }
-
-    .carousel-indicators {
-      position: absolute;
-      bottom: 0.7rem;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: center;
-      gap: 0.45rem;
-      pointer-events: none;
-    }
-
-    .carousel-indicators span {
-      pointer-events: auto;
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.45);
-      transition: transform 0.2s ease, background 0.2s ease, width 0.2s ease;
-    }
-
-    .carousel-indicators span.active {
-      width: 18px;
-      background: #ffffff;
-      transform: translateY(-1px);
-    }
-
-    /* PORTFOLIO */
-    .gallery { background: rgba(255, 255, 255, 0.03); }
-    .gallery-carousel { max-width: 960px; margin: 0 auto; }
-    .gallery .carousel { height: 260px; }
-
-    /* CONTACTO */
-    .contact { background: rgba(255, 255, 255, 0.02); }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 2rem;
-      align-items: stretch;
-    }
-
-    .contact-info-card {
-      border-radius: 20px;
-      padding: 1.3rem 1.2rem;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.30);
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-    }
-
-    .contact-row { display: flex; flex-direction: column; gap: 0.25rem; }
-
-    .contact-label {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-      color: rgba(233,231,255,0.62);
-    }
-
-    .contact-value { font-size: 0.97rem; color: rgba(233,231,255,0.92); }
-
-    .contact-phone-list {
-      list-style: none;
-      font-size: 0.92rem;
-      color: var(--color-text-muted);
-    }
-
-    .contact-phone-list a {
-      color: rgba(233,231,255,0.95);
-      font-weight: 600;
-    }
-
-    .contact-actions {
-      border-radius: 20px;
-      padding: 1.3rem 1.2rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.26);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .contact-actions h3 {
-      font-family: 'Cinzel', serif;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      font-size: 0.98rem;
-      color: var(--color-text);
-    }
-
-    .contact-actions p { font-size: 0.93rem; color: var(--color-text-muted); }
-
-    .contact-actions .mini {
-      font-size: 0.82rem;
-      color: rgba(233,231,255,0.62);
-    }
-
-    /* FOOTER */
-    footer {
-      padding: 1.9rem 0 2.2rem;
-      background: rgba(0, 0, 0, 0.35);
-      color: rgba(233,231,255,0.92);
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .footer-inner {
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 1.1fr);
-      gap: 2.2rem;
-      font-size: 0.8rem;
-    }
-
-    .footer-brand {
-      font-family: 'Cinzel', serif;
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-      font-size: 0.82rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-brand span {
-      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .footer-text { color: rgba(233,231,255,0.68); }
-
-    .footer-links {
-      list-style: none;
-      display: grid;
-      gap: 0.3rem;
-    }
-
-    .footer-links a { color: rgba(233,231,255,0.68); }
-    .footer-links a:hover { color: rgba(233,231,255,0.95); }
-
-    .footer-meta { text-align: right; }
-    .footer-meta div { color: rgba(233,231,255,0.68); }
-    .footer-meta small { color: rgba(233,231,255,0.45); }
-
-    /* WHATSAPP FLOTANTE */
-    .whatsapp-float {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-      z-index: 60;
-    }
-
-    .whatsapp-btn {
-      position: relative;
-      width: 56px;
-      height: 56px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at 0 0, #2fe07a, #17a75a);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
-      color: #fff;
-    }
-
-    .wa-icon-svg { width: 1.55rem; height: 1.55rem; fill: #ffffff; }
-    .wa-icon-svg-float { width: 2.2rem; height: 2.2rem; fill: #ffffff; }
-
-    /* RESPONSIVE */
-    @media (max-width: 960px) {
-      .about-grid, .experience-layout, .reservas-grid, .contact-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .gallery .carousel { height: 230px; }
-      .footer-inner { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
-      .footer-meta { text-align: left; grid-column: 1 / -1; }
-      .stack-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 768px) {
-      .nav-toggle { display: block; }
-      .nav-menu {
-        position: absolute;
-        inset-inline: 0;
-        top: 68px;
-        padding: 0.7rem 1.5rem 1.3rem;
-        background: rgba(11, 15, 26, 0.92);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        flex-direction: column;
-        align-items: flex-end;
-        transform-origin: top;
-        transform: scaleY(0);
-        opacity: 0;
-        pointer-events: none;
-        transition: transform 0.18s ease, opacity 0.18s ease;
-      }
-      .nav-menu.open { transform: scaleY(1); opacity: 1; pointer-events: auto; }
-      .nav-brand { letter-spacing: 0.24em; font-size: 0.86rem; }
-      .whatsapp-float { bottom: 1rem; right: 1rem; }
-      .footer-inner { grid-template-columns: minmax(0, 1fr); text-align: left; }
-      .footer-meta { text-align: left; }
-    }
-
-    @media (max-width: 520px) {
-      .hero-actions { flex-direction: column; align-items: stretch; }
-      .hero-title { font-size: 1.62rem; }
-      .gallery .carousel { height: 200px; }
-      .about-highlight, .reservas-block, .contact-info-card, .contact-actions { padding: 1.05rem 1rem; }
-      .nav-bar { column-gap: 1.5rem; }
-      .stack-grid { grid-template-columns: minmax(0, 1fr); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrquestAr - Tu negocio, atendiendo solo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #60a5fa, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80vw;
+            height: 60vh;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+            z-index: -1;
+        }
+
+        .step-line {
+            background: linear-gradient(to bottom, #3b82f6 0%, #1e293b 100%);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .table-gradient-row:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation { animation: float 6s ease-in-out infinite; }
+        
+        .glow-button {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.8);
+            transform: scale(1.02);
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-container::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+    </style>
 </head>
+<body class="antialiased">
 
-<body>
-<div class="page-wrapper">
-  <!-- NAV -->
-  <header>
-    <div class="container nav-bar">
-      <div class="nav-brand"><span>Vision</span>-Arcadia</div>
+    <!-- Nav -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-slate-950/80 backdrop-blur-md border-b border-white/10">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <i data-lucide="cpu" class="w-5 h-5 text-white"></i>
+            </div>
+            <span class="text-xl font-bold tracking-tighter uppercase">OrquestAr</span>
+        </div>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold transition-all glow-button">
+            Agendar Demo
+        </button>
+    </nav>
 
-      <div class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
-        <i class="fa-solid fa-bars"></i>
-      </div>
-
-      <nav class="nav-menu" id="nav-menu">
-        <a href="#sobre">Sobre mí</a>
-        <a href="#servicios">Servicios</a>
-        <a href="#proceso">Proceso</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#contacto">Contacto</a>
-        <a
-          href="https://wa.me/5491162857653"
-          class="nav-cta"
-          target="_blank"
-          rel="noopener"
-        >
-          Hablemos
-        </a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <main>
-    <section class="hero" id="inicio">
-      <div class="container hero-inner">
-        <div class="hero-logo-wrapper">
-          <div class="hero-logo-card" aria-label="Logo Vision-Arcadia">
-            <img src="/assets/vision-arcadia/icon.png" alt="Logo Vision-Arcadia" />
-          </div>
+    <!-- Hero Section -->
+    <header class="relative pt-40 pb-20 px-6 min-h-[80vh] flex flex-col items-center text-center overflow-hidden">
+        <div class="hero-glow"></div>
+        <div class="max-w-4xl animate__animated animate__fadeInUp">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+                OrquestAr: <span class="text-gradient">Tu negocio, atendiendo solo.</span>
+            </h1>
+            <p class="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
+                El primer Asistente de Ventas con IA que vende, gestiona y cobra en WhatsApp 24/7 sin que vos tengas que hacer nada.
+            </p>
+            <div class="flex justify-center">
+                <button class="bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-bold text-xl glow-button flex items-center gap-3">
+                    <i data-lucide="rocket" class="w-6 h-6"></i> Agendá una Demo Personalizada
+                </button>
+            </div>
         </div>
 
-        <div class="hero-content">
-          <div class="eyebrow">Automatizaciones · Agentes de IA · Bots · Web</div>
-
-          <h1 class="hero-title">
-            Sistemas que trabajan<br />
-            mientras vos dormís
-          </h1>
-
-          <p class="hero-subtitle">
-            Diseño e implemento automatizaciones y agentes de IA para que tu negocio <strong>responda en minutos</strong>,
-            <strong>cierre más</strong> y deje de perder tiempo en tareas repetitivas. Bots en WhatsApp/Telegram,
-            integraciones y sitios web listos para producción.
-          </p>
-
-          <div class="hero-badges">
-            <div class="hero-badge">Bots WhatsApp / Telegram</div>
-            <div class="hero-badge">Agentes de IA</div>
-            <div class="hero-badge">Automatizaciones</div>
-            <div class="hero-badge">Web + Deploy</div>
-          </div>
-
-          <div class="hero-actions">
-            <a class="btn-primary" href="#contacto">
-              Pedir propuesta
-              <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            </a>
-            <a class="btn-secondary" href="#servicios">
-              Ver servicios
-              <i class="fa-solid fa-layer-group"></i>
-            </a>
-          </div>
+        <!-- Hero Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20 max-w-5xl w-full animate__animated animate__fadeInUp animate__delay-1s">
+            <div class="glass-card p-6 rounded-2xl text-left border-l-4 border-l-blue-500">
+                <h3 class="text-3xl font-bold text-blue-400 mb-1">4 hs</h3>
+                <p class="text-sm text-slate-400 italic">Promedio diario respondiendo WhatsApp</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl text-left border-l-4 border-l-blue-500">
+                <h3 class="text-3xl font-bold text-blue-400 mb-1">78%</h3>
+                <p class="text-sm text-slate-400 italic">De clientes compran en otro lado si no hay respuesta rápida</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl text-left border-l-4 border-l-blue-500">
+                <h3 class="text-3xl font-bold text-blue-400 mb-1">40%</h3>
+                <p class="text-sm text-slate-400 italic">De consultas perdidas por falta de seguimiento</p>
+            </div>
         </div>
-      </div>
+    </header>
+
+    <!-- Tabla Comparativa -->
+    <section class="py-24 px-6 max-w-5xl mx-auto reveal">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-5xl font-bold mb-4">El Salto <span class="text-blue-500">Evolutivo</span></h2>
+            <p class="text-slate-400 italic">Comparativa de eficiencia operativa</p>
+        </div>
+
+        <div class="glass-card rounded-3xl overflow-hidden border-white/10 shadow-2xl">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-800/50">
+                        <th class="p-6 text-slate-300 font-bold border-b border-white/10">Capacidad</th>
+                        <th class="p-6 text-red-400 font-bold border-b border-white/10">Sin OrquestAr</th>
+                        <th class="p-6 text-blue-400 font-bold border-b border-white/10 bg-blue-500/5 text-center">Con OrquestAr</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-gradient-row">
+                        <td class="p-6 font-semibold border-b border-white/5">Atención</td>
+                        <td class="p-6 text-slate-400 border-b border-white/5 italic">Limitada a tu horario</td>
+                        <td class="p-6 text-blue-300 font-bold border-b border-white/5 bg-blue-500/5 text-center">24/7 Sin Descanso</td>
+                    </tr>
+                    <tr class="table-gradient-row">
+                        <td class="p-6 font-semibold border-b border-white/5">Velocidad</td>
+                        <td class="p-6 text-slate-400 border-b border-white/5 italic">Minutos u horas</td>
+                        <td class="p-6 text-green-400 font-bold border-b border-white/5 bg-blue-500/5 text-center">Inmediata (&lt; 30s)</td>
+                    </tr>
+                    <tr class="table-gradient-row">
+                        <td class="p-6 font-semibold border-b border-white/5">Errores de carga</td>
+                        <td class="p-6 text-slate-400 border-b border-white/5 italic">Frecuentes (Manual)</td>
+                        <td class="p-6 text-blue-300 font-bold border-b border-white/5 bg-blue-500/5 text-center">Precisión Absoluta</td>
+                    </tr>
+                    <tr class="table-gradient-row">
+                        <td class="p-6 font-semibold border-b border-white/5">Cobros</td>
+                        <td class="p-6 text-slate-400 border-b border-white/5 italic">Carga manual/Links</td>
+                        <td class="p-6 text-blue-300 font-bold border-b border-white/5 bg-blue-500/5 text-center">MercadoPago Auto</td>
+                    </tr>
+                    <tr class="table-gradient-row">
+                        <td class="p-6 font-semibold border-b border-white/5">Facturación</td>
+                        <td class="p-6 text-slate-400 border-b border-white/5 italic">Post-venta manual</td>
+                        <td class="p-6 text-blue-300 font-bold border-b border-white/5 bg-blue-500/5 text-center">Automática por WA</td>
+                    </tr>
+                    <tr class="table-gradient-row">
+                        <td class="p-6 font-semibold">Simultaneidad</td>
+                        <td class="p-6 text-slate-400 italic">Un cliente a la vez</td>
+                        <td class="p-6 text-blue-300 font-bold bg-blue-500/5 text-center">Ilimitada</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </section>
 
-    <!-- STACK / HERRAMIENTAS -->
-    <section class="stack" id="stack">
-      <div class="container">
-        <div class="stack-inner">
-          <div class="stack-header">
-            <div class="kicker">Infra real, resultados reales</div>
-            <h2>Herramientas con las que construyo</h2>
-          </div>
-
-          <div class="stack-grid" aria-label="Herramientas utilizadas">
-            <!-- Nota: poné tus archivos acá (ideal: SVG/PNG con fondo transparente)
-                 /assets/partners/n8n.png
-                 /assets/partners/gemini.png
-                 /assets/partners/meta.png
-                 /assets/partners/google-cloud.png
-            -->
-            <div class="stack-card">
-              <img src="/assets/partners/n8n.png" alt="n8n" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-              <span class="fallback" style="display:none;">n8n</span>
+    <!-- Solución Multimodal / Simulador Chat Extendido -->
+    <section class="py-24 px-6 bg-slate-900/50 reveal">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
+            <div class="lg:w-1/3">
+                <h2 class="text-4xl font-bold mb-6">Un empleado que <span class="text-blue-500">entiende todo.</span></h2>
+                <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+                    Interpretamos texto, voz e imágenes. Mirá cómo OrquestAr gestiona una venta compleja de principio a fin sin intervención humana.
+                </p>
+                <div class="space-y-4">
+                    <div class="glass-card p-4 rounded-xl flex items-center gap-4">
+                        <i data-lucide="message-square" class="text-blue-500"></i>
+                        <span class="font-semibold">Conversación Fluida</span>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl flex items-center gap-4">
+                        <i data-lucide="map-pin" class="text-red-500"></i>
+                        <span class="font-semibold">Logística de Envío</span>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl flex items-center gap-4">
+                        <i data-lucide="credit-card" class="text-green-500"></i>
+                        <span class="font-semibold">Pasarela de Pago</span>
+                    </div>
+                </div>
             </div>
-
-            <div class="stack-card">
-              <img src="/assets/partners/gemini.png" alt="Gemini" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-              <span class="fallback" style="display:none;">Gemini</span>
-            </div>
-
-            <div class="stack-card">
-              <img src="/assets/partners/meta.png" alt="Meta" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-              <span class="fallback" style="display:none;">Meta</span>
-            </div>
-
-            <div class="stack-card">
-              <img src="/assets/partners/google-cloud.png" alt="Google Cloud" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-              <span class="fallback" style="display:none;">Google Cloud</span>
-            </div>
-          </div>
-
-          <div class="stack-note">
             
-          </div>
+            <div class="lg:w-2/3 relative w-full">
+                <div class="absolute inset-0 bg-blue-600/10 blur-[120px] rounded-full"></div>
+                <div class="relative glass-card w-full rounded-[32px] overflow-hidden border-white/20 shadow-2xl">
+                    <!-- Header Chat -->
+                    <div class="bg-slate-800/80 p-4 border-b border-white/10 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                            <i data-lucide="bot" class="text-white w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm">Asistente OrquestAr</p>
+                            <p class="text-green-400 text-xs flex items-center gap-1">
+                                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> En línea
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Body -->
+                    <div class="p-6 space-y-4 max-h-[500px] overflow-y-auto chat-container bg-slate-900/30">
+                        <!-- Mensaje 1 -->
+                        <div class="flex flex-col items-start max-w-[80%]">
+                            <div class="bg-slate-800 p-4 rounded-2xl rounded-bl-none text-sm border border-white/5">
+                                <p class="mb-2 italic text-slate-400">Enviando imagen...</p>
+                                <div class="w-48 h-24 bg-slate-700/50 rounded-lg flex items-center justify-center mb-2">
+                                    <i data-lucide="image" class="text-slate-500"></i>
+                                </div>
+                                <p>Hola! ¿Tenés stock de esta herramienta?</p>
+                            </div>
+                        </div>
+
+                        <!-- Respuesta 1 -->
+                        <div class="flex flex-col items-end ml-auto max-w-[80%]">
+                            <div class="bg-blue-600/20 p-4 rounded-2xl rounded-br-none text-sm border border-blue-500/30 text-blue-100">
+                                ¡Hola! Sí, tenemos stock del Taladro Percutor Bosch. El precio es de $114.500. ¿Te gustaría que armemos el pedido?
+                            </div>
+                        </div>
+
+                        <!-- Mensaje 2 -->
+                        <div class="flex flex-col items-start max-w-[80%]">
+                            <div class="bg-slate-800 p-4 rounded-2xl rounded-bl-none text-sm border border-white/5">
+                                Sí, quiero comprarlo con envío a domicilio a CABA.
+                            </div>
+                        </div>
+
+                        <!-- Respuesta 2 -->
+                        <div class="flex flex-col items-end ml-auto max-w-[80%]">
+                            <div class="bg-blue-600/20 p-4 rounded-2xl rounded-br-none text-sm border border-blue-500/30 text-blue-100">
+                                Perfecto. Por favor, decime tu dirección exacta y el medio de pago que preferís (MercadoPago o Transferencia).
+                            </div>
+                        </div>
+
+                        <!-- Mensaje 3 -->
+                        <div class="flex flex-col items-start max-w-[80%]">
+                            <div class="bg-slate-800 p-4 rounded-2xl rounded-bl-none text-sm border border-white/5">
+                                Av. Santa Fe 1234, 4to B. Pago con MercadoPago.
+                            </div>
+                        </div>
+
+                        <!-- Respuesta 3 (Link Pago) -->
+                        <div class="flex flex-col items-end ml-auto max-w-[80%]">
+                            <div class="bg-blue-600/20 p-4 rounded-2xl rounded-br-none text-sm border border-blue-500/30 text-blue-100">
+                                <p class="mb-3">¡Excelente! Aquí tenés tu link de pago seguro por $114.500:</p>
+                                <div class="bg-blue-500 hover:bg-blue-400 p-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-colors font-bold">
+                                    <i data-lucide="external-link" class="w-4 h-4"></i> Pagar con MercadoPago
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Respuesta 4 (Factura) -->
+                        <div class="flex flex-col items-end ml-auto max-w-[80%]">
+                            <div class="bg-green-600/10 p-4 rounded-2xl rounded-br-none text-sm border border-green-500/30 text-green-100">
+                                <p class="mb-3">¡Pago acreditado con éxito! Ya estamos preparando tu envío. Te adjunto la factura de tu compra:</p>
+                                <div class="bg-slate-800/80 p-3 rounded-lg border border-white/10 flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-red-500/20 rounded flex items-center justify-center">
+                                        <i data-lucide="file-text" class="text-red-400 w-5 h-5"></i>
+                                    </div>
+                                    <div class="text-xs">
+                                        <p class="font-bold">Factura_B-0012.pdf</p>
+                                        <p class="text-slate-500">124 KB • PDF</p>
+                                    </div>
+                                    <i data-lucide="download" class="w-4 h-4 ml-auto text-slate-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </section>
 
-    <!-- SOBRE -->
-    <section class="about" id="sobre">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-eyebrow">Sobre mí</div>
-          <h2 class="section-title">Tecnología aplicada, sin humo</h2>
-          <p class="section-description">
-            Me obsesiona una idea simple: que la tecnología mueva la aguja del negocio. Menos demo, más producción.
-          </p>
-        </div>
+    <!-- Proceso Línea de Tiempo (6 Pasos) -->
+    <section class="py-24 px-6 reveal">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-16">Flujo de Venta <span class="text-blue-500">Automatizado</span></h2>
+            
+            <div class="relative">
+                <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 step-line -translate-x-1/2 hidden md:block"></div>
 
-        <div class="about-grid">
-          <div class="about-text">
-            <p>
-              Trabajo con automatizaciones, flujos de trabajo y servicios conectados para que tu operación tenga
-              memoria, velocidad y criterio. Si hoy alguien copia y pega, persigue mensajes, actualiza planillas o
-              “atiende” consultas repetidas, ahí suele haber una máquina esperando nacer.
-            </p>
-            <p>
-              Lo hago con lógica de ingeniería práctica: entiendo el proceso, defino el resultado, diseño la
-              arquitectura y recién ahí automatizo. Cuando corresponde, sumo IA: no como adorno, sino como motor.
-            </p>
+                <div class="space-y-16">
+                    <!-- Step 1 -->
+                    <div class="relative flex flex-col md:flex-row items-center gap-8 group">
+                        <div class="md:w-1/2 text-right hidden md:block">
+                            <h3 class="text-xl font-bold">1. Consulta Inicial</h3>
+                            <p class="text-slate-400">El cliente escribe, envía un audio o una foto del producto por WhatsApp.</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center z-10 font-bold text-xl shadow-lg shadow-blue-600/40 shrink-0 transition-transform group-hover:scale-125">1</div>
+                        <div class="md:w-1/2 md:text-left">
+                            <h3 class="text-xl font-bold md:hidden">1. Consulta Inicial</h3>
+                            <div class="glass-card p-4 rounded-2xl mt-2 md:mt-0">
+                                "¡Hola! ¿Tienen cemento disponible?"
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="about-highlight">
-              <strong>Enfoque:</strong> sistemas robustos, medibles y fáciles de operar. Que no dependan de “magia”, sino de buen diseño.
+                    <!-- Step 2 -->
+                    <div class="relative flex flex-col md:flex-row-reverse items-center gap-8 group">
+                        <div class="md:w-1/2 text-left hidden md:block">
+                            <h3 class="text-xl font-bold">2. Respuesta Inteligente</h3>
+                            <p class="text-slate-400">OrquestAr responde inmediatamente con stock y precios del catálogo.</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center z-10 font-bold text-xl shadow-lg shadow-blue-600/40 shrink-0 transition-transform group-hover:scale-125">2</div>
+                        <div class="md:w-1/2 md:text-right">
+                            <h3 class="text-xl font-bold md:hidden">2. Respuesta Inteligente</h3>
+                            <div class="glass-card p-4 rounded-2xl mt-2 md:mt-0 border-blue-500/30">
+                                "Sí, tenemos. La bolsa de 50kg está a $9.500."
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative flex flex-col md:flex-row items-center gap-8 group">
+                        <div class="md:w-1/2 text-right hidden md:block">
+                            <h3 class="text-xl font-bold">3. Requerimiento de Datos</h3>
+                            <p class="text-slate-400">El cliente pide el producto y el asistente le solicita los datos de envío y facturación.</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center z-10 font-bold text-xl shadow-lg shadow-blue-600/40 shrink-0 transition-transform group-hover:scale-125">3</div>
+                        <div class="md:w-1/2 md:text-left">
+                            <h3 class="text-xl font-bold md:hidden">3. Requerimiento de Datos</h3>
+                            <div class="glass-card p-4 rounded-2xl mt-2 md:mt-0 italic">
+                                "Excelente, decime tu dirección para el envío y si necesitás factura A o B."
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative flex flex-col md:flex-row-reverse items-center gap-8 group">
+                        <div class="md:w-1/2 text-left hidden md:block">
+                            <h3 class="text-xl font-bold">4. Gestión de Pago</h3>
+                            <p class="text-slate-400">El cliente envía los datos y OrquestAr le entrega el link de pago automáticamente.</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center z-10 font-bold text-xl shadow-lg shadow-blue-600/40 shrink-0 transition-transform group-hover:scale-125">4</div>
+                        <div class="md:w-1/2 md:text-right">
+                            <h3 class="text-xl font-bold md:hidden">4. Gestión de Pago</h3>
+                            <div class="glass-card p-4 rounded-2xl mt-2 md:mt-0 border-blue-500/30">
+                                "Perfecto. Aquí tenés el link para abonar el pedido de 10 bolsas..."
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="relative flex flex-col md:flex-row items-center gap-8 group">
+                        <div class="md:w-1/2 text-right hidden md:block">
+                            <h3 class="text-xl font-bold">5. Pago y Factura</h3>
+                            <p class="text-slate-400">El cliente abona y recibe instantáneamente su factura PDF por WhatsApp.</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center z-10 font-bold text-xl shadow-lg shadow-blue-600/40 shrink-0 transition-transform group-hover:scale-125">5</div>
+                        <div class="md:w-1/2 md:text-left">
+                            <h3 class="text-xl font-bold md:hidden">5. Pago y Factura</h3>
+                            <div class="glass-card p-4 rounded-2xl mt-2 md:mt-0 bg-green-500/10 border-green-500/20">
+                                "¡Pago recibido! Te adjunto el PDF de tu comprobante."
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div class="relative flex flex-col md:flex-row-reverse items-center gap-8 group">
+                        <div class="md:w-1/2 text-left hidden md:block">
+                            <h3 class="text-xl font-bold">6. Aviso al Negocio</h3>
+                            <p class="text-slate-400">El asistente avisa a tu negocio para procesar el pedido ya pagado y facturado.</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center z-10 font-bold text-xl shadow-lg shadow-green-500/40 shrink-0 transition-transform group-hover:scale-125">6</div>
+                        <div class="md:w-1/2 md:text-right">
+                            <h3 class="text-xl font-bold md:hidden">6. Aviso al Negocio</h3>
+                            <div class="glass-card p-4 rounded-2xl mt-2 md:mt-0 border-green-500/40">
+                                <span class="text-xs uppercase text-slate-500 block mb-1 text-center md:text-right">Notificación para vos:</span>
+                                "Nueva Venta Pagada: Juan Pérez - Despachar Pedido #1245."
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <div>
-            <ul class="about-list">
-              <li>Automatización de procesos (CRM, leads, soporte, operaciones).</li>
-              <li>Agentes de IA con contexto (documentos, FAQs, base de conocimiento).</li>
-              <li>Bots para WhatsApp/Telegram con flujos reales y derivación humana.</li>
-              <li>Sitios web y landings con despliegue, performance y seguridad.</li>
-              <li>Integraciones entre herramientas y APIs, de extremo a extremo.</li>
-            </ul>
-          </div>
         </div>
-      </div>
     </section>
 
-    <!-- SERVICIOS -->
-    <section class="experience" id="servicios">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-eyebrow">Servicios</div>
-          <h2 class="section-title">Lo que construyo para tu negocio</h2>
-          <p class="section-description">
-            Soluciones pensadas para operar en el mundo real: con errores, con picos de demanda, con equipos humanos,
-            y con clientes impacientes.
-          </p>
-        </div>
-
-        <div class="experience-layout">
-          <div class="experience-text">
-            <p>
-              Puedo ayudarte a automatizar desde lo obvio (captura de leads, seguimiento, recordatorios) hasta lo
-              delicado (enrutamiento de conversaciones, calificación inteligente, generación de respuestas, extracción
-              de datos, reportes, sincronizaciones entre sistemas).
+    <!-- CTA Final -->
+    <section class="py-24 px-6 relative overflow-hidden reveal">
+        <div class="absolute inset-0 bg-blue-600/10 -z-10"></div>
+        <div class="max-w-4xl mx-auto text-center glass-card p-12 rounded-[3rem] border-blue-500/30">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Tu negocio merece trabajar para vos, <span class="text-blue-500">no al revés.</span></h2>
+            <p class="text-xl text-slate-400 mb-10">
+                Cada mensaje que no respondés hoy es una venta que se va. OrquestAr lo resuelve ahora.
             </p>
-            <p>
-              Si necesitás presencia online, también diseño y despliego sitios web con foco en conversión, velocidad y
-              mantenimiento simple. La idea es que todo se conecte: marketing, ventas, soporte y operación.
+            <button class="bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-bold text-xl transition-all glow-button">
+                Agendá una Demo Personalizada
+            </button>
+            <p class="mt-8 text-sm text-slate-500 italic">
+                Sin costo, sin compromiso. Te mostramos cómo OrquestAr atiende tu rubro específico.
             </p>
-
-            <div class="experience-tags">
-              <div class="experience-tag">Automatizaciones</div>
-              <div class="experience-tag">Agentes IA</div>
-              <div class="experience-tag">WhatsApp</div>
-              <div class="experience-tag">Telegram</div>
-              <div class="experience-tag">Integraciones</div>
-              <div class="experience-tag">Web + Deploy</div>
-            </div>
-          </div>
         </div>
-      </div>
     </section>
 
-    <!-- PROCESO -->
-    <section class="reservas" id="proceso">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-eyebrow">Proceso</div>
-          <h2 class="section-title">De la idea a producción, sin drama</h2>
-          <p class="section-description">
-            La mayoría de los problemas no se arreglan con más herramientas, sino con claridad. Por eso trabajo con un
-            proceso corto, concreto y trazable.
-          </p>
-        </div>
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/5 px-6 text-center text-slate-500 text-sm">
+        <p>&copy; 2025 OrquestAr AI. Automatización que trabaja mientras vos descansás.</p>
+    </footer>
 
-        <div class="reservas-grid">
-          <div class="reservas-block">
-            <h3>Cómo arrancamos</h3>
-            <p>
-              Me contás qué estás intentando lograr y dónde se traba el día a día. Después bajo eso a un flujo real:
-              entradas, decisiones, salidas y responsables.
-            </p>
+    <script>
+        lucide.createIcons();
 
-            <ul class="reservas-list">
-              <li><strong>Diagnóstico:</strong> identifico cuellos de botella y tareas repetidas.</li>
-              <li><strong>Diseño:</strong> defino arquitectura, herramientas y puntos de control.</li>
-              <li><strong>Implementación:</strong> construyo, pruebo y dejo operativo.</li>
-              <li><strong>Mejora continua:</strong> iteraciones por métricas, no por intuición.</li>
-            </ul>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                threshold: 0.1
+            };
 
-            <div class="reservas-cta">
-              <a class="btn-primary" href="https://wa.me/5491162857653" target="_blank" rel="noopener">
-                WhatsApp
-                <svg class="wa-icon-svg" viewBox="0 0 32 32" aria-hidden="true">
-                  <path d="M21.6 19.8l-2.1-.9a1 1 0 0 0-1 .1l-1.2.8a8.9 8.9 0 0 1-4.1-4.1l.8-1.2a1 1 0 0 0 .1-1l-.9-2.1A1 1 0 0 0 11.3 11l-1.7.7a1.5 1.5 0 0 0-.9 1.3 10.8 10.8 0 0 0 10.3 10.3 1.5 1.5 0 0 0 1.3-.9l.7-1.7a1 1 0 0 0-.4-1.9z"/>
-                </svg>
-              </a>
-              <a class="btn-secondary" href="#portfolio">
-                Ver ejemplos
-                <i class="fa-solid fa-images"></i>
-              </a>
-            </div>
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
 
-            <div class="reservas-note">
-              Tip: si me escribís con “qué hacés”, “qué herramientas usás” y “qué objetivo tenés”, acelera mucho la primera propuesta.
-            </div>
-          </div>
-
-          <div class="reservas-block">
-            <h3>Lo que entrego</h3>
-            <p>
-              No entrego “ideas”: entrego sistemas. Documentados, testeados, con accesos ordenados y con un mínimo de
-              mantenimiento requerido.
-            </p>
-            <p style="margin-top: 0.7rem;">
-              Si tu operación depende de varios pasos manuales, lo dejamos medible. Si tu soporte se vuelve un caos,
-              lo enrutamos. Si tu venta se cae por lentitud, automatizamos el seguimiento.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PORTFOLIO -->
-    <section class="gallery" id="portfolio">
-      <div class="container">
-        <div class="section-header" style="text-align:center;">
-          <div class="section-eyebrow">Portfolio</div>
-          <h2 class="section-title">Capturas y resultados</h2>
-          <p class="section-description" style="margin-left:auto;margin-right:auto;">
-            Algunos ejemplos visuales (dashboards, flujos, bots y sitios). Reemplazá estas imágenes por tus casos reales.
-          </p>
-        </div>
-
-        <div class="gallery-carousel">
-          <div class="carousel" data-carousel="portfolio">
-            <div class="carousel-inner">
-              <div class="carousel-slide active">
-                <img
-                  src="/assets/vision-arcadia/imagen1.png"
-                  alt="Ejemplo: flujo de automatización / agente IA"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div class="carousel-slide">
-                <img
-                  src="/assets/vision-arcadia/imagen2.png"
-                  alt="Ejemplo: bot WhatsApp/Telegram y derivación a humano"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div class="carousel-slide">
-                <img
-                  src="/assets/vision-arcadia/imagen3.png"
-                  alt="Ejemplo: sitio web desplegado y optimizado"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            </div>
-
-            <div class="carousel-controls">
-              <button class="carousel-btn carousel-prev" type="button" aria-label="Imagen anterior">
-                <i class="fa-solid fa-chevron-left"></i>
-              </button>
-              <button class="carousel-btn carousel-next" type="button" aria-label="Imagen siguiente">
-                <i class="fa-solid fa-chevron-right"></i>
-              </button>
-            </div>
-
-            <div class="carousel-indicators"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACTO (SIN MAPA) -->
-    <section class="contact" id="contacto">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-eyebrow">Contacto</div>
-          <h2 class="section-title">Hablemos de tu caso</h2>
-          <p class="section-description">
-            Si me contás el objetivo y el “dolor” (qué está trabando hoy tu operación), te respondo con una propuesta
-            concreta: alcance, pasos y un plan realista.
-          </p>
-        </div>
-
-        <div class="contact-grid">
-          <div class="contact-info-card">
-            <div class="contact-row">
-              <div class="contact-label">WhatsApp</div>
-              <ul class="contact-phone-list">
-                <li>
-                  <a href="https://wa.me/5491162857653" target="_blank" rel="noopener">
-                    +54 9 11 6285-7653
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div class="contact-row">
-              <div class="contact-label">Email (opcional)</div>
-              <div class="contact-value">
-                contacto@vision-arcadia.store
-              </div>
-            </div>
-
-            <div class="contact-row">
-              <div class="contact-label">Horario</div>
-              <div class="contact-value">
-                Coordinamos por mensaje. Si necesitás urgencia, lo aclarás al inicio.
-              </div>
-            </div>
-          </div>
-
-          <div class="contact-actions">
-            <div>
-              <h3>Qué mandarme por WhatsApp</h3>
-              <p>
-                Un mensaje corto, pero con sustancia: qué vendés, por dónde te escriben los clientes, qué parte del
-                proceso querés automatizar y qué herramienta usás hoy (si usás).
-              </p>
-            </div>
-
-            <div>
-              <a class="btn-primary" href="https://wa.me/5491162857653" target="_blank" rel="noopener">
-                Escribir ahora
-                <svg class="wa-icon-svg" viewBox="0 0 32 32" aria-hidden="true">
-                  <path d="M21.6 19.8l-2.1-.9a1 1 0 0 0-1 .1l-1.2.8a8.9 8.9 0 0 1-4.1-4.1l.8-1.2a1 1 0 0 0 .1-1l-.9-2.1A1 1 0 0 0 11.3 11l-1.7.7a1.5 1.5 0 0 0-.9 1.3 10.8 10.8 0 0 0 10.3 10.3 1.5 1.5 0 0 0 1.3-.9l.7-1.7a1 1 0 0 0-.4-1.9z"/>
-                </svg>
-              </a>
-              <div class="mini" style="margin-top:0.8rem;">
-                Respuesta típica: te devuelvo preguntas clave + un plan de implementación.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="container footer-inner">
-      <div>
-        <div class="footer-brand"><span>Vision</span>-Arcadia</div>
-        <div class="footer-text">
-          Automatizaciones, agentes de IA, bots para WhatsApp/Telegram y sitios web listos para producción.
-          Tecnología con intención: construir sistemas que generan tiempo, orden y resultados.
-        </div>
-      </div>
-
-      <div>
-        <ul class="footer-links">
-          <li><a href="#sobre">Sobre mí</a></li>
-          <li><a href="#servicios">Servicios</a></li>
-          <li><a href="#proceso">Proceso</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
-          <li><a href="#contacto">Contacto</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-meta">
-        <div>© <span id="year"></span> Vision-Arcadia. Todos los derechos reservados.</div>
-        <small>Diseñado para velocidad, claridad y conversión. Ajustable a tu identidad visual.</small>
-      </div>
-    </div>
-  </footer>
-
-  <!-- BOTÓN FLOTANTE DE WHATSAPP (ÚNICO) -->
-  <div class="whatsapp-float">
-    <a
-      href="https://wa.me/5491162857653"
-      target="_blank"
-      rel="noopener"
-      class="whatsapp-btn"
-      aria-label="WhatsApp Vision-Arcadia"
-    >
-      <svg class="wa-icon-svg-float" viewBox="0 0 32 32" aria-hidden="true">
-        <path d="M21.6 19.8l-2.1-.9a1 1 0 0 0-1 .1l-1.2.8a8.9 8.9 0 0 1-4.1-4.1l.8-1.2a1 1 0 0 0 .1-1l-.9-2.1A1 1 0 0 0 11.3 11l-1.7.7a1.5 1.5 0 0 0-.9 1.3 10.8 10.8 0 0 0 10.3 10.3 1.5 1.5 0 0 0 1.3-.9l.7-1.7a1 1 0 0 0-.4-1.9z"/>
-      </svg>
-    </a>
-  </div>
-</div>
-
-<script>
-  // Año automático en el footer
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // Toggle del menú en móvil
-  const navToggle = document.getElementById('nav-toggle');
-  const navMenu = document.getElementById('nav-menu');
-
-  navToggle.addEventListener('click', function () {
-    navMenu.classList.toggle('open');
-  });
-
-  // Cerrar menú cuando se selecciona una opción en móvil
-  navMenu.querySelectorAll('a').forEach(function (link) {
-    link.addEventListener('click', function () {
-      navMenu.classList.remove('open');
-    });
-  });
-
-  // Carrousels - lógica genérica
-  document.querySelectorAll('.carousel').forEach(function (carousel) {
-    const slides = carousel.querySelectorAll('.carousel-slide');
-    const prevBtn = carousel.querySelector('.carousel-prev');
-    const nextBtn = carousel.querySelector('.carousel-next');
-    const indicatorsContainer = carousel.querySelector('.carousel-indicators');
-
-    if (!slides.length) return;
-
-    let currentIndex = 0;
-
-    // Crear indicadores
-    slides.forEach(function (_, idx) {
-      const dot = document.createElement('span');
-      if (idx === 0) dot.classList.add('active');
-      dot.addEventListener('click', function () {
-        goToSlide(idx);
-      });
-      indicatorsContainer.appendChild(dot);
-    });
-
-    const indicators = indicatorsContainer.querySelectorAll('span');
-
-    function goToSlide(index) {
-      currentIndex = (index + slides.length) % slides.length;
-      slides.forEach(function (slide, i) {
-        slide.classList.toggle('active', i === currentIndex);
-      });
-      indicators.forEach(function (dot, i) {
-        dot.classList.toggle('active', i === currentIndex);
-      });
-    }
-
-    function nextSlide() { goToSlide(currentIndex + 1); }
-    function prevSlide() { goToSlide(currentIndex - 1); }
-
-    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-
-    // Auto-play
-    let autoPlay = setInterval(nextSlide, 7000);
-
-    // Pausa auto-play al pasar el mouse (desktop)
-    carousel.addEventListener('mouseenter', function () {
-      clearInterval(autoPlay);
-    });
-
-    carousel.addEventListener('mouseleave', function () {
-      autoPlay = setInterval(nextSlide, 7000);
-    });
-  });
-</script>
+            document.querySelectorAll('.reveal').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>
